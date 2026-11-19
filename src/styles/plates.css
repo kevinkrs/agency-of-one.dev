@@ -10,6 +10,14 @@
 .plate .node { stroke-width: 1.1; }
 .plate .lit { stroke: var(--accent); }
 .plate .lit-fill { fill: var(--accent); stroke: none; }
+/* Status colours. They carry meaning, never decoration: ok = succeeded or healthy, warn = waiting,
+   limited or slow, err = rejected or failed, ai = the model at work, info = data being stored or
+   copied. Blue (.lit) stays the colour of a request in motion and of the active control.
+   Each works as a stroke; add -fill for a filled shape, and on a .tag it colours the text. */
+.plate .ok { stroke: var(--ok); } .plate .warn { stroke: var(--warn); } .plate .err { stroke: var(--err); } .plate .ai { stroke: var(--ai); } .plate .info { stroke: var(--info); }
+.plate .ok-fill { fill: var(--ok); stroke: none; } .plate .warn-fill { fill: var(--warn); stroke: none; } .plate .err-fill { fill: var(--err); stroke: none; } .plate .ai-fill { fill: var(--ai); stroke: none; } .plate .info-fill { fill: var(--info); stroke: none; }
+.plate .tag.ok { fill: var(--ok); stroke: none; } .plate .tag.warn { fill: var(--warn); stroke: none; } .plate .tag.err { fill: var(--err); stroke: none; } .plate .tag.ai { fill: var(--ai); stroke: none; } .plate .tag.info { fill: var(--info); stroke: none; }
+
 /* Tiny technical labels: route names, status codes, timings. Keep them short. */
 .plate .tag { fill: var(--muted); stroke: none; font-size: 2.3px; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
 /* A request or token travelling along a path. Give it style="offset-path: path('M..')" and an
