@@ -115,8 +115,7 @@ const stops = layers.length + 2;
       radial-gradient(90% 80% at 8% 96%, color-mix(in srgb, #00b7ff calc(var(--d, 0) * 20%), transparent), transparent 60%),
       var(--base);
   }
-  @media (prefers-color-scheme: dark) { :global(.js-flight) .stage { --paper: #111110; } }
-  :global(.js-flight) .scene { position: absolute; inset: 0; height: auto; overflow: visible; }
+  :global(.js-flight) .scene { position: absolute; inset: 0; height: auto; overflow: visible; perspective-origin: 50% calc(50% + var(--oy)); }
 
   :global(.js-flight) .panel {
     position: absolute;
@@ -138,16 +137,17 @@ const stops = layers.length + 2;
   :global(.js-flight) .cue::before { content: ''; width: 1.5px; height: 2.25rem; background: var(--accent); transform-origin: top; animation: drop 1.8s var(--ease) infinite; }
   @keyframes drop { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 
-  :global(.js-flight) footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 14px; opacity: 0; transition: opacity 0.35s var(--ease); }
-  :global(.js-flight) .end.is-active ~ footer { opacity: 1; }
+  :global(.js-flight) footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 14px; opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease), visibility 0s 0.35s; }
+  :global(.js-flight) .end.is-active ~ footer { opacity: 1; visibility: visible; transition-delay: 0s; }
+  :global(.js-flight) .panel.end { padding-bottom: 5.5rem; }
 
   @media (min-width: 900px) {
     .flight { --p: min(60svh, 40vw); }
     :global(.js-flight) .flight { --ox: 17vw; --oy: 0px; }
-    :global(.js-flight) .panel { left: max(6vw, 56px); right: auto; bottom: auto; top: 50%; width: min(24rem, 32vw); padding: 0; background: none; border-top: 0; transform: translateY(calc(-50% + 14px)); }
+    :global(.js-flight) .panel { left: max(6vw, 56px); right: auto; bottom: auto; top: 50%; width: min(27rem, 32vw); padding: 0; background: none; border-top: 0; transform: translateY(calc(-50% + 14px)); }
     :global(.js-flight) .panel.is-active { transform: translateY(-50%); }
     :global(.js-flight) .panel.hero { width: min(46rem, 50vw); }
-    :global(.js-flight) .panel.end { width: min(30rem, 38vw); }
+    :global(.js-flight) .panel.end { width: min(30rem, 38vw); padding-bottom: 0; }
     :global(.js-flight) footer { left: max(6vw, 56px); padding: 0 0 28px; }
 
     :global(.js-flight) .rail { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); display: grid; gap: 0.6rem; justify-items: end; font-size: 0.8125rem; }

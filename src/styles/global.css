@@ -45,5 +45,7 @@ h1, h2 { font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
 [data-tone='card'] { --bg: #1a2033; --fg: #e8ebf5; --muted: #9aa1b5; --faint: #4d556b; --rule: #2a3044; --edge: #5e6a92; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14;
   /* Status colours, used only where they carry meaning. */
   --ok: #5fe0a4; --warn: #ffbe55; --err: #ff7a7a; --ai: #b79bff; --info: #5fd4ff; }
+/* The opening screen is white paper whatever the visitor's system setting. */
+[data-tone='paper'] { color-scheme: light; --bg: #fcfcfc; --fg: #171717; --muted: #6b6b6b; --faint: #a3a3a3; --rule: #e2e2e2; --accent: #0055ff; --accent-text: #0047d6; --on-accent: #fff; }
 /* Text and lines on the stage once the camera is inside the stack and the ground has gone dark. */
-[data-tone='deep'] { --bg: #0a0c16; --fg: #eef0f7; --muted: #a3a9bb; --faint: #5a6178; --rule: #262b3d; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; }
+[data-tone='deep'] { color-scheme: dark; --bg: #0a0c16; --fg: #eef0f7; --muted: #a3a9bb; --faint: #5a6178; --rule: #262b3d; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; }

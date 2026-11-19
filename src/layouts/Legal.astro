@@ -7,7 +7,7 @@ const { title } = Astro.props;
 
 <Base title={`${title} · ${brand.name}`} description={`${title} for agency-of-one.dev`} noindex>
   <main class="legal">
-    <a class="back" href="/">← {brand.mark}</a>
+    <a class="back" href="/">{brand.mark}</a>
     <h1>{title}</h1>
     <div class="body"><slot /></div>
   </main>

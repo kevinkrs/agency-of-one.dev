@@ -49,6 +49,7 @@ function init() {
   const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
   const navs = [...root.querySelectorAll<HTMLElement>('[data-nav]')];
   const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+  const themeColor = document.querySelector('meta[name="theme-color"]');
   const followers = [...root.querySelectorAll<HTMLElement>('[data-of]')]; // slabs and cast shadows
   document.documentElement.classList.add('js-flight');
 
@@ -63,6 +64,8 @@ function init() {
   const frame = (now: number) => {
     const p = pinned !== null ? Number(pinned) : clamp(-root.getBoundingClientRect().top / stage.offsetHeight, 0, STOPS.length - 1);
     const c = pose(p);
+    // Phones: the overviews are pulled together so all plates clear the text panel.
+    if (innerWidth < 900) c.gap *= 1 - 0.2 * (1 - c.k);
     const sway = pinned !== null ? 0 : (1 - c.k) * 4 * Math.sin(now / 1900);
     world.style.setProperty('--gap', c.gap.toFixed(1));
     world.style.transform = `translate3d(var(--ox), calc(var(--oy) + ${c.y.toFixed(1)}px), 0) scale(${c.s.toFixed(4)}) rotateX(${(c.rx - my * 4).toFixed(2)}deg) rotateZ(${(c.rz + sway + mx * 6).toFixed(2)}deg) translateZ(${(c.fi * c.gap).toFixed(1)}px)`;
@@ -78,7 +81,12 @@ function init() {
     followers.forEach((el) => (el.style.opacity = plateOpacity(Number(el.dataset.of), c).toFixed(3)));
     // The ground darkens with depth; once it is dark the stage switches to light text.
     stage.style.setProperty('--d', c.d.toFixed(3));
-    stage.dataset.tone = c.d > 0.45 ? 'deep' : '';
+    const tone = c.d > 0.45 ? 'deep' : 'paper';
+    if (stage.dataset.tone !== tone) {
+      // Also on <html>, so overscroll and scrollbars match the ground, and in the browser chrome.
+      stage.dataset.tone = document.documentElement.dataset.tone = tone;
+      themeColor?.setAttribute('content', tone === 'deep' ? '#06070c' : '#fcfcfc');
+    }
     // Dots run the full height of the stack on the one riser: even ones down, odd ones back up.
     const depth = (plates.length - 1) * c.gap;
     dots.forEach((el, n) => {

@@ -92,7 +92,7 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
   .hop, .hopl, .bounce { --o: 0; }
   .hop { animation: signin-hop 8s linear var(--t) infinite; }
   .hopl { animation: signin-hopl 8s linear var(--t) infinite; }
-  .bounce { animation: signin-bounce 8s linear var(--t) infinite; }
+  .bounce { animation: signin-reject 8s linear var(--t) infinite; }
   .flash { animation: signin-flash 8s linear var(--t) infinite; }
   .flashok { animation: signin-flashok 8s linear var(--t) infinite; }
   .lookup { animation: signin-lookup 8s linear var(--t) infinite; }
@@ -119,7 +119,7 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
     13%, 100% { offset-distance: 100%; --o: 0; }
   }
   /* The blocked request runs to the gate, is pushed back twice, and fades. */
-  @keyframes signin-bounce {
+  @keyframes signin-reject {
     0% { offset-distance: 0%; --o: 0; fill: var(--accent); }
     1% { --o: 1; }
     12% { offset-distance: 100%; --o: 1; fill: var(--accent); }
