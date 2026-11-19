@@ -1,0 +1,103 @@
+---
+// Models plate. One request per 6s cycle: in through the input guard, through the queue, a
+// forward pass across the network layer by layer, out through the output guard, then the evals
+// tick. Timings (--t) are seconds into the cycle.
+import Marker from './Marker.astro';
+
+const sizes = [4, 6, 6, 6, 6, 3];
+const X0 = 47, DX = 6.4, CY = 30, DY = 6.4;
+const rnd = (a: number, b: number, c = 0) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
+const node = (l: number, i: number) => ({ x: X0 + l * DX, y: CY + (i - (sizes[l] - 1) / 2) * DY });
+const FIRE = 2.8, STEP = 0.28; // when layer 0 fires, and the delay per layer
+const shield = (x: number) => `M${x} 23h10v9c0 4-2.5 6.5-5 8-2.5-1.5-5-4-5-8z`;
+const bars = [5, 8, 6, 11, 7, 9, 14];
+const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' }, { y: 87, w: 9, score: '0.71' }];
+---
+<!-- request path -->
+<path d="M0 30H7M17 30H21M38 30H42M84 30H87M97 30H100" />
+<path class="flash" style="--t: 0.45s" d={shield(7)} />
+<path class="flash" style="--t: 5s" d={shield(87)} />
+<path class="dash" d="M92 23V4H29.5V26.5" />
+
+<!-- queue -->
+{[21, 27, 33].map((x, i) => (
+  <>
+    <rect x={x} y="26.5" width="5" height="7" rx="0.8" />
+    <rect class="lit-fill slot" style={`--t: ${1.1 + i * 0.4}s`} x={x + 0.9} y="27.4" width="3.2" height="5.2" rx="0.4" />
+  </>
+))}
+<text class="tag" x="21" y="38">3 waiting</text>
+
+<!-- network: every edge, then every node -->
+<rect x="42" y="8" width="42" height="44" rx="2" />
+{sizes.slice(0, -1).map((n, l) => (
+  <g class="edges" style={`--t: ${FIRE + l * STEP + 0.08}s`}>
+    {Array.from({ length: n }, (_, i) => Array.from({ length: sizes[l + 1] }, (_, j) => {
+      const a = node(l, i), b = node(l + 1, j);
+      return <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} style={`--w: ${(rnd(l, i, j) ** 2).toFixed(2)}`} />;
+    }))}
+  </g>
+))}
+{sizes.map((n, l) => (
+  <g class="fire" style={`--t: ${FIRE + l * STEP}s`}>
+    {Array.from({ length: n }, (_, i) => <circle cx={node(l, i).x} cy={node(l, i).y} r="0.95" style={`--a: ${(0.25 + 0.75 * rnd(l, i)).toFixed(2)}`} />)}
+  </g>
+))}
+<text class="tag" x="42" y="56">6 layers · forward pass</text>
+
+<!-- the request itself, hop by hop -->
+<circle class="packet hop" r="1.1" style="--t: 0s; offset-path: path('M0 30H12')" />
+<circle class="packet hop" r="1.1" style="--t: 0.6s; offset-path: path('M12 30H23.5')" />
+<circle class="packet hop" r="1.1" style="--t: 2.3s; offset-path: path('M36 30H47')" />
+<circle class="packet hop" r="1.1" style="--t: 4.5s; offset-path: path('M79 30H92')" />
+<circle class="packet hop" r="1.1" style="--t: 5.1s; offset-path: path('M92 30H100')" />
+
+<!-- latency -->
+<rect x="7" y="66" width="29" height="26" rx="1.5" />
+<text class="tag" x="10" y="70.5">latency</text>
+{bars.map((h, i) => <rect class:list={[i === bars.length - 1 ? 'lit-fill slot' : 'soft']} style="--t: 5.1s" x={10 + i * 3.4} y={86 - h} width="2.2" height={h} />)}
+<text class="tag" x="10" y="90">p95 1.8 s</text>
+
+<!-- evals -->
+<path class="dash" d="M78 52V66" />
+<rect x="42" y="66" width="42" height="26" rx="1.5" />
+<text class="tag" x="45" y="70.5">evals</text>
+{evals.map((e, i) => (
+  <>
+    <path class="flash" style={`--t: ${5.2 + i * 0.2}s`} d={`M45.5 ${e.y}l1.4 1.4 2.4-2.9`} />
+    <rect class="soft" x="52" y={e.y - 1.4} width={e.w} height="2.4" />
+    <text class="tag" x="81" y={e.y + 0.8} text-anchor="end">{e.score}</text>
+  </>
+))}
+
+<Marker n={1} x={12} y={23} /><Marker n={2} x={38} y={26.5} /><Marker n={3} x={84} y={66} />
+
+<style>
+  .edges line { stroke: var(--faint); stroke-width: 0.12; }
+  .fire circle { fill: var(--bg); stroke-width: 0.2; }
+  .slot { opacity: 0; }
+
+  .hop { opacity: 0; animation: models-hop 6s linear var(--t) infinite; }
+  .flash { animation: models-flash 6s linear var(--t) infinite; }
+  .slot { animation: models-slot 6s linear var(--t) infinite; }
+  .fire circle { animation: models-fire 6s linear var(--t) infinite; }
+  .edges line { animation: models-edge 6s linear var(--t) infinite; }
+
+  @keyframes models-hop {
+    0% { offset-distance: 0%; opacity: 0; }
+    1% { opacity: 1; }
+    8% { offset-distance: 100%; opacity: 1; }
+    9%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes models-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--accent); } }
+  @keyframes models-slot { 0%, 9%, 100% { opacity: 0; } 1%, 7% { opacity: 1; } }
+  /* --a is the node's activation, --w the edge's weight: both fixed per element. */
+  @keyframes models-fire {
+    0%, 30%, 100% { fill: var(--bg); stroke: var(--fg); }
+    2%, 8% { fill: color-mix(in srgb, var(--accent) calc(var(--a) * 100%), var(--bg)); stroke: var(--accent); }
+  }
+  @keyframes models-edge {
+    0%, 14%, 100% { stroke: var(--faint); stroke-width: 0.12; }
+    2%, 6% { stroke: color-mix(in srgb, var(--accent) calc(var(--w) * 100%), var(--faint)); stroke-width: 0.22; }
+  }
+</style>

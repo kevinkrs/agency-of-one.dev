@@ -1,0 +1,12 @@
+---
+import Marker from './Marker.astro';
+const machine = (x: number, y: number) => `M${x + 3} ${y + 5}H${x + 9}M${x + 3} ${y + 9}H${x + 9}`;
+const machines = [[13, 36], [29, 36], [13, 56], [59, 36], [75, 36], [59, 56], [75, 56]];
+---
+<path d="M50 0V8M50 18V24M27 24H73M27 24V30M73 24V30" />
+<rect x="42" y="8" width="16" height="10" rx="5" />
+<rect class="dash" x="8" y="30" width="38" height="62" rx="2" /><rect class="dash" x="54" y="30" width="38" height="62" rx="2" />
+{machines.map(([x, y]) => <><rect x={x} y={y} width="12" height="14" rx="1.5" /><path d={machine(x, y)} /></>)}
+<rect class="dash" x="29" y="56" width="12" height="14" rx="1.5" />
+<path d="M12 82h8l2-5 3 9 2-4h14M58 82h8l2-5 3 9 2-4h14" />
+<Marker n={1} x={58} y={8} /><Marker n={2} x={50} y={61} /><Marker n={3} x={41} y={56} />

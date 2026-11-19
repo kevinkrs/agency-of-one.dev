@@ -1,0 +1,24 @@
+/* Shared drawing vocabulary for the plates in src/components/plates/. Every plate is a 100x100
+   plan-view drawing. Animations run only on the plate the camera is on (.is-focus). */
+.plate { fill: none; stroke: var(--fg); stroke-width: 0.3; stroke-linecap: round; stroke-linejoin: round; }
+.plate .fill { fill: var(--fg); stroke: none; }
+.plate .soft { fill: var(--faint); stroke: none; }
+.plate .solid { fill: var(--bg); }
+.plate .dash { stroke: var(--muted); stroke-dasharray: 0.9 1; }
+.plate .hair { stroke: var(--faint); stroke-width: 0.14; }
+.plate .node { stroke-width: 1.1; }
+.plate .lit { stroke: var(--accent); }
+.plate .lit-fill { fill: var(--accent); stroke: none; }
+/* Tiny technical labels: route names, status codes, timings. Keep them short. */
+.plate .tag { fill: var(--muted); stroke: none; font-size: 2.3px; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+/* A request or token travelling along a path. Give it style="offset-path: path('M..')" and an
+   animation from the plate's own keyframes that moves offset-distance 0% -> 100%. */
+.plate .packet { fill: var(--accent); stroke: none; offset-rotate: 0deg; }
+
+.plate:not(.is-focus) * { animation-play-state: paused !important; }
+
+.plate .marker circle { fill: var(--accent); stroke: var(--bg); stroke-width: 0.5; }
+.plate .marker text { fill: #fff; stroke: none; font-size: 3.1px; font-weight: 600; }
+/* In the flight, markers only show on the plate the camera is on, one after the other. */
+.js-flight .plate .marker { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: center; transition: opacity 0.3s var(--ease), transform 0.5s var(--ease); }
+.js-flight .plate.is-focus .marker { opacity: 1; transform: none; transition-delay: calc(var(--n) * 140ms + 150ms); }
