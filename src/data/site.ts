@@ -43,6 +43,11 @@ export const layers = [
     text: 'No single machine matters. It stays up while you sleep.',
     points: ['Load balancing', 'Redundancy across zones', 'Scaling and alerts'],
   },
+  {
+    id: 'insights', label: 'Insights', title: 'What it tells you',
+    text: 'You cannot fix what you cannot see. Every click and every request leaves a trail.',
+    points: ['Events: what people really do', 'Funnels: where they drop off', 'Traces: where the time goes'],
+  },
 ];
 
 export const close = {

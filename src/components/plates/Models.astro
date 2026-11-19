@@ -15,15 +15,15 @@ const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' },
 ---
 <!-- request path -->
 <path d="M0 30H7M17 30H21M38 30H42M84 30H87M97 30H100" />
-<path class="flash" style="--t: 0.45s" d={shield(7)} />
-<path class="flash" style="--t: 5s" d={shield(87)} />
+<path class="flash" style="--t: 0.45s; --c: var(--ok)" d={shield(7)} />
+<path class="flash" style="--t: 5s; --c: var(--ok)" d={shield(87)} />
 <path class="dash" d="M92 23V4H29.5V26.5" />
 
 <!-- queue -->
 {[21, 27, 33].map((x, i) => (
   <>
     <rect x={x} y="26.5" width="5" height="7" rx="0.8" />
-    <rect class="lit-fill slot" style={`--t: ${1.1 + i * 0.4}s`} x={x + 0.9} y="27.4" width="3.2" height="5.2" rx="0.4" />
+    <rect class="warn-fill slot" style={`--t: ${1.1 + i * 0.4}s`} x={x + 0.9} y="27.4" width="3.2" height="5.2" rx="0.4" />
   </>
 ))}
 <text class="tag" x="21" y="38">3 waiting</text>
@@ -55,7 +55,7 @@ const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' },
 <!-- latency -->
 <rect x="7" y="66" width="29" height="26" rx="1.5" />
 <text class="tag" x="10" y="70.5">latency</text>
-{bars.map((h, i) => <rect class:list={[i === bars.length - 1 ? 'lit-fill slot' : 'soft']} style="--t: 5.1s" x={10 + i * 3.4} y={86 - h} width="2.2" height={h} />)}
+{bars.map((h, i) => <rect class:list={[i === bars.length - 1 ? 'warn-fill slot' : 'soft']} style="--t: 5.1s" x={10 + i * 3.4} y={86 - h} width="2.2" height={h} />)}
 <text class="tag" x="10" y="90">p95 1.8 s</text>
 
 <!-- evals -->
@@ -64,9 +64,9 @@ const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' },
 <text class="tag" x="45" y="70.5">evals</text>
 {evals.map((e, i) => (
   <>
-    <path class="flash" style={`--t: ${5.2 + i * 0.2}s`} d={`M45.5 ${e.y}l1.4 1.4 2.4-2.9`} />
+    <path class="flash" style={`--t: ${5.2 + i * 0.2}s; --c: var(${i === 2 ? '--warn' : '--ok'})`} d={`M45.5 ${e.y}l1.4 1.4 2.4-2.9`} />
     <rect class="soft" x="52" y={e.y - 1.4} width={e.w} height="2.4" />
-    <text class="tag" x="81" y={e.y + 0.8} text-anchor="end">{e.score}</text>
+    <text class:list={['tag', { warn: i === 2 }]} x="81" y={e.y + 0.8} text-anchor="end">{e.score}</text>
   </>
 ))}
 
@@ -89,15 +89,16 @@ const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' },
     8% { offset-distance: 100%; --o: 1; }
     9%, 100% { offset-distance: 100%; --o: 0; }
   }
-  @keyframes models-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--accent); } }
+  /* --c is the colour an element flashes in: green for a check that passed, amber for one at risk. */
+  @keyframes models-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--c, var(--accent)); } }
   @keyframes models-slot { 0%, 9%, 100% { --o: 0; } 1%, 7% { --o: 1; } }
   /* --a is the node's activation, --w the edge's weight: both fixed per element. */
   @keyframes models-fire {
     0%, 30%, 100% { fill: var(--bg); stroke: var(--fg); }
-    2%, 8% { fill: color-mix(in srgb, var(--accent) calc(var(--a) * 100%), var(--bg)); stroke: var(--accent); }
+    2%, 8% { fill: color-mix(in srgb, var(--ai) calc(var(--a) * 100%), var(--bg)); stroke: var(--ai); }
   }
   @keyframes models-edge {
     0%, 14%, 100% { stroke: var(--faint); stroke-width: 0.12; }
-    2%, 6% { stroke: color-mix(in srgb, var(--accent) calc(var(--w) * 100%), var(--faint)); stroke-width: 0.22; }
+    2%, 6% { stroke: color-mix(in srgb, var(--ai) calc(var(--w) * 100%), var(--faint)); stroke-width: 0.22; }
   }
 </style>

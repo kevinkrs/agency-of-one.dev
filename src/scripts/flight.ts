@@ -1,4 +1,6 @@
-// Scroll flies a camera down through the stack. Stop 0 is the hero, 1..5 are the layers, 6 the end.
+// Scroll flies a camera down through the stack. Stop 0 is the hero, then one stop per layer, then
+// the end. LAYERS must match the number of layers in src/data/site.ts.
+export const LAYERS = 6;
 
 export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number; k: number; y: number; d: number };
 // rx/rz: camera tilt in degrees. s: scale. gap: px between plates. fi: index of the plate the
@@ -6,8 +8,12 @@ export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number;
 // y: px the whole view is shifted down (negative = up), to centre an overview that hangs low.
 // d: how deep the ground has darkened, 0 (the opening's paper) to 1 (deepest).
 const overview = (s: number, gap: number, fi: number, y: number, d: number): Pose => ({ rx: 57, rz: 45, s, gap, fi, k: 0, y, d });
-const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1, y: 0, d: 0.86 + i * 0.035 });
-export const STOPS: Pose[] = [overview(0.5, 170, 0, -140, 0), focus(0), focus(1), focus(2), focus(3), focus(4), overview(0.46, 210, 2, 0, 1)];
+const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1, y: 0, d: 0.86 + (i / (LAYERS - 1)) * 0.14 });
+export const STOPS: Pose[] = [
+  overview(0.46, 150, 0, -150, 0),
+  ...Array.from({ length: LAYERS }, (_, i) => focus(i)),
+  overview(0.42, 180, (LAYERS - 1) / 2, 0, 1),
+];
 
 const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
 // Rest at each stop for the first and last 18% of a screen, glide in between.
@@ -73,10 +79,10 @@ function init() {
     // The ground darkens with depth; once it is dark the stage switches to light text.
     stage.style.setProperty('--d', c.d.toFixed(3));
     stage.dataset.tone = c.d > 0.45 ? 'deep' : '';
-    // Dots run the full height of the stack: odd ones up the right riser, even ones down the left.
+    // Dots run the full height of the stack on the one riser: even ones down, odd ones back up.
     const depth = (plates.length - 1) * c.gap;
     dots.forEach((el, n) => {
-      const u = (now / 5200 + n / dots.length) % 1;
+      const u = (now / 6400 + n / dots.length) % 1;
       el.style.transform = `translateZ(${(-(n % 2 ? 1 - u : u) * depth).toFixed(1)}px)`;
     });
     panels.forEach((el, i) => el.classList.toggle('is-active', near && i === at));

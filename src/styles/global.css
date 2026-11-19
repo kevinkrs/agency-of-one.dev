@@ -42,7 +42,7 @@ h1, h2, p { margin: 0; }
 h1, h2 { font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
 
 /* Every plate wears the same dark card style, on any ground. */
-[data-tone='card'] { --bg: #10131c; --fg: #e8ebf5; --muted: #9aa1b5; --faint: #4d556b; --rule: #2a3044; --edge: #4a5371; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14;
+[data-tone='card'] { --bg: #1a2033; --fg: #e8ebf5; --muted: #9aa1b5; --faint: #4d556b; --rule: #2a3044; --edge: #5e6a92; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14;
   /* Status colours, used only where they carry meaning. */
   --ok: #5fe0a4; --warn: #ffbe55; --err: #ff7a7a; --ai: #b79bff; --info: #5fd4ff; }
 /* Text and lines on the stage once the camera is inside the stack and the ground has gone dark. */

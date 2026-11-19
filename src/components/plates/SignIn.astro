@@ -24,13 +24,13 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
 <text class="tag" x="45" y="12.5">bcrypt</text>
 <rect class="soft hashflash" style="--t: 2.2s" x="45" y="15.5" width="14" height="2" />
 <rect class="soft" x="45" y="20" width="14" height="2" />
-<path class="pop lit" style="--t: 2.8s" d="M48.5 26.5l1.6 1.6 3-3.6" />
+<path class="pop ok" style="--t: 2.8s" d="M48.5 26.5l1.6 1.6 3-3.6" />
 <rect x="70" y="8" width="24" height="22" rx="1.5" />
 <text class="tag" x="72.5" y="12.5">users</text>
 {[14.5, 19.5, 24.5].map((y, i) => (
   <>
-    <rect class:list={[i === 1 && 'flash']} style="--t: 2.4s" x="72.5" y={y} width="19" height="4" rx="0.8" />
-    <rect class:list={['soft', i === 1 && 'hashflash']} style="--t: 2.4s" x="74" y={y + 1.3} width="10" height="1.4" />
+    <rect class:list={[i === 1 && 'lookup']} style="--t: 2.4s" x="72.5" y={y} width="19" height="4" rx="0.8" />
+    <rect class:list={['soft', i === 1 && 'lookupfill']} style="--t: 2.4s" x="74" y={y + 1.3} width="10" height="1.4" />
   </>
 ))}
 
@@ -66,11 +66,11 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
 ))}
 <path class="node gate" style="--t: 6.5s" d="M58 72V80" />
 <path class="node nudge" style="--t: 7.05s" d="M58 84V92" />
-<rect class="flash" style="--t: 6.7s" x="68" y="71" width="26" height="10" rx="1.5" />
+<rect class="flashok" style="--t: 6.7s" x="68" y="71" width="26" height="10" rx="1.5" />
 <text class="tag" x="71" y="76.8">/posts</text>
 <rect x="68" y="83" width="26" height="10" rx="1.5" />
 <text class="tag" x="71" y="88.8">/billing</text>
-<text class="tag pop" style="--t: 6.85s" x="91" y="88.8" text-anchor="end">403</text>
+<text class="tag err pop" style="--t: 6.85s" x="91" y="88.8" text-anchor="end">403</text>
 
 <!-- packets: password, hash query, session confirm, code, token, then the request twice -->
 <circle class="packet hop" r="1.1" style="--t: 1.6s; offset-path: path('M34 19H46')" />
@@ -94,6 +94,9 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
   .hopl { animation: signin-hopl 8s linear var(--t) infinite; }
   .bounce { animation: signin-bounce 8s linear var(--t) infinite; }
   .flash { animation: signin-flash 8s linear var(--t) infinite; }
+  .flashok { animation: signin-flashok 8s linear var(--t) infinite; }
+  .lookup { animation: signin-lookup 8s linear var(--t) infinite; }
+  .lookupfill { animation: signin-lookupfill 8s linear var(--t) infinite; }
   .hashflash { animation: signin-hashflash 8s linear var(--t) infinite; }
   .dot { animation: signin-dot 8s linear var(--t) infinite; }
   .digit { animation: signin-digit 8s linear var(--t) infinite; }
@@ -117,34 +120,40 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
   }
   /* The blocked request runs to the gate, is pushed back twice, and fades. */
   @keyframes signin-bounce {
-    0% { offset-distance: 0%; --o: 0; }
+    0% { offset-distance: 0%; --o: 0; fill: var(--accent); }
     1% { --o: 1; }
-    12% { offset-distance: 100%; --o: 1; }
+    12% { offset-distance: 100%; --o: 1; fill: var(--accent); }
+    12.5% { fill: var(--err); }
     15% { offset-distance: 90%; --o: 1; }
     17.5% { offset-distance: 100%; --o: 1; }
     20%, 100% { offset-distance: 94%; --o: 0; }
   }
   @keyframes signin-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--accent); } }
+  @keyframes signin-flashok { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--ok); } }
+  /* The user-store lookup is data being read: info. */
+  @keyframes signin-lookup { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--info); } }
+  @keyframes signin-lookupfill { 0%, 16%, 100% { fill: var(--faint); } 2%, 9% { fill: var(--info); } }
   @keyframes signin-hashflash { 0%, 16%, 100% { fill: var(--faint); } 2%, 9% { fill: var(--accent); } }
   /* Typing and code entry: an empty slot fills in, stays, then clears. */
   @keyframes signin-dot { 0%, 40%, 100% { stroke: var(--faint); } 2% { stroke: var(--accent); } 6%, 34% { stroke: var(--fg); } }
-  @keyframes signin-digit { 0%, 40%, 100% { fill: var(--faint); } 2% { fill: var(--accent); } 6%, 34% { fill: var(--fg); } }
+  @keyframes signin-digit { 0%, 40%, 100% { fill: var(--faint); } 2% { fill: var(--accent); } 6%, 34% { fill: var(--ok); } }
   /* A failed attempt fills a cell. A successful sign-in clears them. */
   @keyframes signin-fail {
     0%, 38%, 100% { fill: var(--bg); }
-    1.5% { fill: var(--accent); }
-    6%, 34% { fill: var(--fg); }
+    1.5% { fill: var(--warn); }
+    6%, 34% { fill: var(--warn); }
   }
   @keyframes signin-pop { 0%, 13%, 100% { --o: 0; } 2%, 9% { --o: 1; } }
   /* Expiry bar: full on issue, drains, refreshed before it runs out, full again at the seam. */
   @keyframes signin-bar {
     0%, 6% { --tf: scaleX(1); fill: var(--accent); }
     10% { --tf: scaleX(1); fill: var(--fg); }
-    28% { --tf: scaleX(0.35); fill: var(--fg); }
+    22% { --tf: scaleX(0.567); fill: var(--fg); }
+    28% { --tf: scaleX(0.35); fill: var(--warn); }
     31% { --tf: scaleX(1); fill: var(--accent); }
     36%, 100% { --tf: scaleX(1); fill: var(--fg); }
   }
   /* Gate lifts for an allowed role and drops again. */
-  @keyframes signin-gate { 0%, 14%, 100% { --tf: translateY(0); } 3%, 10% { --tf: translateY(-7px); } }
-  @keyframes signin-nudge { 0%, 10%, 100% { --tf: translateX(0); } 3% { --tf: translateX(-0.8px); } 6% { --tf: translateX(0.3px); } }
+  @keyframes signin-gate { 0%, 14%, 100% { --tf: translateY(0); stroke: var(--fg); } 3%, 10% { --tf: translateY(-7px); stroke: var(--ok); } }
+  @keyframes signin-nudge { 0%, 10%, 100% { --tf: translateX(0); stroke: var(--fg); } 3% { --tf: translateX(-0.8px); stroke: var(--err); } 6% { --tf: translateX(0.3px); stroke: var(--err); } }
 </style>
