@@ -9,6 +9,7 @@
   --rule: #e2e2e2;
   --accent: #0055ff;
   --accent-text: #0047d6;
+  --on-accent: #fff;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (prefers-color-scheme: dark) {
@@ -39,3 +40,11 @@ a:hover { color: var(--accent-text); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 h1, h2, p { margin: 0; }
 h1, h2 { font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
+
+/* One tone per layer of the stack. A plate always wears its tone; the whole stage takes it on
+   while the camera is on that layer. The opening and closing screens keep the neutral tokens. */
+[data-tone='interface'] { --bg: #ffd400; --fg: #141414; --muted: #5c4d00; --faint: #b39500; --rule: #d9b400; --accent: #1a3cff; --accent-text: #1430cc; --on-accent: #fff; }
+[data-tone='sign-in'] { --bg: #ff6b3d; --fg: #1a0f0a; --muted: #6b2410; --faint: #c24a25; --rule: #e05a30; --accent: #fff; --accent-text: #1a0f0a; --on-accent: #1a0f0a; }
+[data-tone='server'] { --bg: #1f4fff; --fg: #fff; --muted: #c9d6ff; --faint: #7f9bff; --rule: #4a70ff; --accent: #ffd400; --accent-text: #ffd400; --on-accent: #141414; }
+[data-tone='models'] { --bg: #5b2be0; --fg: #fff; --muted: #d6c9ff; --faint: #9a7bf0; --rule: #7a52ea; --accent: #7dffb0; --accent-text: #7dffb0; --on-accent: #141414; }
+[data-tone='cloud'] { --bg: #0c1a33; --fg: #fff; --muted: #b9c4d9; --faint: #5a6b8c; --rule: #25365a; --accent: #ff6b3d; --accent-text: #ff8a66; --on-accent: #141414; }

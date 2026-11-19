@@ -1,5 +1,6 @@
 /* Shared drawing vocabulary for the plates in src/components/plates/. Every plate is a 100x100
-   plan-view drawing. Animations run only on the plate the camera is on (.is-focus). */
+   plan-view drawing. Animations run only on plates marked .is-live (the one the camera is on, and all of them
+   in the closing overview); markers show on the .is-focus plate. */
 .plate { fill: none; stroke: var(--fg); stroke-width: 0.3; stroke-linecap: round; stroke-linejoin: round; }
 .plate .fill { fill: var(--fg); stroke: none; }
 .plate .soft { fill: var(--faint); stroke: none; }
@@ -24,10 +25,10 @@
 .plate * { opacity: var(--o); }
 .plate *:not([transform]) { transform: var(--tf); }
 
-.plate:not(.is-focus) * { animation-play-state: paused !important; }
+.plate:not(.is-live) * { animation-play-state: paused !important; }
 
 .plate .marker circle { fill: var(--accent); stroke: var(--bg); stroke-width: 0.5; }
-.plate .marker text { fill: #fff; stroke: none; font-size: 3.1px; font-weight: 600; }
+.plate .marker text { fill: var(--on-accent); stroke: none; font-size: 3.1px; font-weight: 600; }
 /* In the flight, markers only show on the plate the camera is on, one after the other. */
 .js-flight .plate .marker { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: center; transition: opacity 0.3s var(--ease), transform 0.5s var(--ease); }
 .js-flight .plate.is-focus .marker { opacity: 1; transform: none; transition-delay: calc(var(--n) * 140ms + 150ms); }

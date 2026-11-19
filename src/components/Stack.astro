@@ -18,11 +18,13 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
   {layers.map((layer, i) => {
     const Drawing = drawings[i];
     return (!only || only === layer.id) && (
-      <svg class:list={['plate', { 'is-focus': flat }]} data-plate style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
+      <svg class:list={['plate', { 'is-focus is-live': flat }]} data-plate data-tone={layer.id} style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
         <Drawing />
       </svg>
     );
   })}
+  {!flat && layers.slice(1).map((_, i) => <><i class="riser l" style={`--i: ${i}`} /><i class="riser r" style={`--i: ${i}`} /></>)}
+  {!flat && Array.from({ length: 8 }, (_, n) => <i class:list={['dot', n % 2 ? 'r' : 'l']} data-dot />)}
 </div>
 
 <style>
@@ -42,6 +44,25 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
     transform: translateZ(calc(var(--gap) * var(--i) * -1px)) scale(0.5);
     will-change: transform;
   }
+  /* Risers join each plate to the next one down, on the left and right edge; dots are the
+     requests going down (left) and the answers coming back up (right). flight.ts moves the dots. */
+  .riser {
+    position: absolute;
+    top: 50%;
+    width: 3px;
+    height: calc(var(--gap) * 1px);
+    background: var(--fg);
+    opacity: 0.7;
+    transform-origin: top;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--gap) * var(--i) * -1px)) rotateX(-90deg);
+  }
+  /* A second ribbon at a right angle, so the riser never turns edge-on to the camera. */
+  .riser::after { content: ''; position: absolute; inset: 0; background: inherit; transform: rotateY(90deg); }
+  .dot { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px; border-radius: 50%; background: var(--accent); }
+  .riser.l, .dot.l { left: -16px; }
+  .riser.r, .dot.r { left: calc(100% + 16px); }
+
   .world.flat { display: flex; flex-wrap: wrap; gap: 32px; width: auto; height: auto; transform: none; }
   .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1.5px; border-radius: 6px; }
 </style>

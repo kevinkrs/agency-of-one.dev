@@ -15,6 +15,8 @@ Iteration 1 (user): accent changed from orange to blue; figure redrawn as an exp
 
 Iteration 2 (user): less text, a hero that kicks in, and an immersive fly-through. The page is now one sticky full-screen stage: scroll flies a 3D camera from the assembled stack (hero) down through five plates (interface, sign-in, server, models, cloud), each showing three numbered points, and ends on the exploded overview with the contact links. The text column, ticks and isometric SVG figure below are superseded by this.
 
+Iteration 3 (user): plates carry running processes (one file each in src/components/plates/), each layer has its own colour tone (yellow, orange, blue, violet, navy) that floods the stage while the camera is on it, the opening and closing screens stay neutral white, and the layers are joined by risers with dots travelling down and up.
+
 ## Direction contract
 
 THESIS: A nearly empty page where a few sentences tell the journey and one small isometric line figure does the showing: it grows from a box into a running system as you read. Refuses the dark hero with a node diagram and a row of feature cards.

@@ -1,11 +1,12 @@
 // Scroll flies a camera down through the stack. Stop 0 is the hero, 1..5 are the layers, 6 the end.
 
-export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number; k: number };
+export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number; k: number; y: number };
 // rx/rz: camera tilt in degrees. s: scale. gap: px between plates. fi: index of the plate the
 // camera looks at. k: 1 when inside the stack (plates above the camera fade), 0 for overviews.
-const overview = (s: number, gap: number, fi: number): Pose => ({ rx: 57, rz: 45, s, gap, fi, k: 0 });
-const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1 });
-export const STOPS: Pose[] = [overview(0.62, 34, 0), focus(0), focus(1), focus(2), focus(3), focus(4), overview(0.46, 210, 2)];
+// y: px the whole view is shifted down (negative = up), to centre an overview that hangs low.
+const overview = (s: number, gap: number, fi: number, y = 0): Pose => ({ rx: 57, rz: 45, s, gap, fi, k: 0, y });
+const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1, y: 0 });
+export const STOPS: Pose[] = [overview(0.5, 170, 0, -140), focus(0), focus(1), focus(2), focus(3), focus(4), overview(0.46, 210, 2)];
 
 const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
 // Rest at each stop for the first and last 18% of a screen, glide in between.
@@ -21,7 +22,7 @@ export function pose(p: number): Pose {
   const t = glide(q - i);
   const a = STOPS[i], b = STOPS[i + 1];
   const mix = (key: keyof Pose) => a[key] * (1 - t) + b[key] * t; // exact at both ends
-  return { rx: mix('rx'), rz: mix('rz'), s: mix('s'), gap: mix('gap'), fi: mix('fi'), k: mix('k') };
+  return { rx: mix('rx'), rz: mix('rz'), s: mix('s'), gap: mix('gap'), fi: mix('fi'), k: mix('k'), y: mix('y') };
 }
 
 // Plates the camera has flown past vanish; plates further down dim with depth.
@@ -40,6 +41,8 @@ function init() {
   const plates = [...root.querySelectorAll<HTMLElement>('[data-plate]')];
   const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
   const navs = [...root.querySelectorAll<HTMLElement>('[data-nav]')];
+  const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+  const tones = plates.map((el) => el.dataset.tone ?? '');
   document.documentElement.classList.add('js-flight');
 
   // ?at=3 pins a stop, for working on one layer and for screenshots.
@@ -55,12 +58,23 @@ function init() {
     const c = pose(p);
     const sway = pinned !== null ? 0 : (1 - c.k) * 4 * Math.sin(now / 1900);
     world.style.setProperty('--gap', c.gap.toFixed(1));
-    world.style.transform = `translate3d(var(--ox), var(--oy), 0) scale(${c.s.toFixed(4)}) rotateX(${(c.rx - my * 4).toFixed(2)}deg) rotateZ(${(c.rz + sway + mx * 6).toFixed(2)}deg) translateZ(${(c.fi * c.gap).toFixed(1)}px)`;
+    world.style.transform = `translate3d(var(--ox), calc(var(--oy) + ${c.y.toFixed(1)}px), 0) scale(${c.s.toFixed(4)}) rotateX(${(c.rx - my * 4).toFixed(2)}deg) rotateZ(${(c.rz + sway + mx * 6).toFixed(2)}deg) translateZ(${(c.fi * c.gap).toFixed(1)}px)`;
     const at = Math.round(p);
     const near = Math.abs(p - at) < 0.3;
+    const end = at === STOPS.length - 1;
     plates.forEach((el, j) => {
       el.style.opacity = plateOpacity(j, c).toFixed(3);
       el.classList.toggle('is-focus', near && j === at - 1);
+      // Running: the plate the camera is on, and every plate in the two overviews.
+      el.classList.toggle('is-live', end || at === 0 || j === at - 1);
+    });
+    // The stage wears the tone of the layer the camera is on; the overviews stay neutral.
+    stage.dataset.tone = tones[at - 1] ?? '';
+    // Dots run the full height of the stack: odd ones up the right riser, even ones down the left.
+    const depth = (plates.length - 1) * c.gap;
+    dots.forEach((el, n) => {
+      const u = (now / 5200 + n / dots.length) % 1;
+      el.style.transform = `translateZ(${(-(n % 2 ? 1 - u : u) * depth).toFixed(1)}px)`;
     });
     panels.forEach((el, i) => el.classList.toggle('is-active', near && i === at));
     navs.forEach((el, i) => el.classList.toggle('is-current', i === at - 1));
