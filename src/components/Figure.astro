@@ -9,10 +9,28 @@ const names = ['an idea', ...stages.map((s) => s.name)];
 const CX = 150;
 const iso = (cy: number) => `matrix(1 .5 -1 .5 ${CX} ${cy - 50})`;
 const side = (cy: number) => `M50 ${cy}L150 ${cy + 50} 250 ${cy}V${cy + 6}L150 ${cy + 56} 50 ${cy + 6}Z`;
-const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
+const Y = { ui: 80, auth: 150, server: 220, ml: 290, cloud: 360 };
+const ghost = (cy: number) => `M50 ${cy}L150 ${cy - 50} 250 ${cy} 150 ${cy + 50}Z`;
+// plate -> the stage it arrives at; until then its outline waits as a ghost
+const ghosts = [[Y.ml, 6], [Y.cloud, 5], [Y.server, 3], [Y.auth, 4]];
 ---
 <figure class="figure" data-figure data-names={JSON.stringify(names)}>
-  <svg viewBox="0 0 360 428" role="img" aria-label="A product assembled as a stack of layers: the interface on top, then sign-in, a server with a database, several machines in the cloud, and machine learning models at the bottom.">
+  <svg viewBox="0 0 360 428" role="img" aria-label="A product assembled as a stack of layers: the interface on top, then sign-in, a server with a database, machine learning models, and at the bottom the cloud machines it all runs on.">
+    {ghosts.map(([cy, from]) => <g class="layer" data-from="0" data-to={from - 1}><path class="ghost" d={ghost(cy)} /></g>)}
+
+    <!-- 5 cloud: the base everything runs on, several machines instead of one -->
+    <g class="layer plate" data-from="5">
+      <path class="solid" d={side(Y.cloud)} />
+      <g transform={iso(Y.cloud)}>
+        <rect class="solid" width="100" height="100" />
+        <rect class="dashed" x="6" y="6" width="88" height="88" />
+        {[14, 40, 66].flatMap((x) => [18, 58].map((y) => (
+          <><rect x={x} y={y} width="20" height="24" /><path d={`M${x + 5} ${y + 8}H${x + 15}M${x + 5} ${y + 15}H${x + 15}`} /></>
+        )))}
+      </g>
+      <path class="lead" d={`M256 ${Y.cloud}H272`} /><text x="278" y={Y.cloud + 4}>cloud</text>
+    </g>
+
     <!-- 6 ML models -->
     <g class="layer plate" data-from="6">
       <path class="solid" d={side(Y.ml)} />
@@ -23,20 +41,6 @@ const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
         <rect x="60" y="82" width="8" height="8" /><rect x="72" y="82" width="8" height="8" /><rect x="84" y="82" width="8" height="8" />
       </g>
       <path class="lead" d={`M256 ${Y.ml}H272`} /><text x="278" y={Y.ml + 4}>models</text>
-    </g>
-
-    <!-- 5 cloud -->
-    <g class="layer plate" data-from="5">
-      <path class="solid" d={side(Y.cloud)} />
-      <g transform={iso(Y.cloud)}>
-        <rect class="solid" width="100" height="100" />
-        <rect class="dashed" x="6" y="6" width="88" height="88" />
-        <rect x="14" y="14" width="20" height="20" /><rect x="40" y="14" width="20" height="20" /><rect x="66" y="14" width="20" height="20" />
-        <path d="M19 21H29M19 27H29M45 21H55M45 27H55M71 21H81M71 27H81" />
-        <path d="M24 34V44H76V34M50 34V52" />
-        <path d="M14 84 28 72 40 78 54 60 68 68 86 50" />
-      </g>
-      <path class="lead" d={`M256 ${Y.cloud}H272`} /><text x="278" y={Y.cloud + 4}>cloud</text>
     </g>
 
     <!-- 3 server + database -->
@@ -105,8 +109,7 @@ const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
       <circle class="dot" r="3.5" style={`offset-path: path('M250 ${Y.server + 6}V${Y.cloud}'); animation-duration: 1.5s`} />
     </g>
     <g class="layer" data-from="6">
-      <path class="axis" d={`M250 ${Y.cloud + 6}V${Y.ml}M50 ${Y.cloud + 6}V${Y.ml}`} />
-      <circle class="dot" r="3.5" style={`offset-path: path('M50 ${Y.cloud + 6}V${Y.ml}'); animation-duration: 3.6s`} />
+      <circle class="dot" r="3.5" style={`offset-path: path('M50 ${Y.server + 6}V${Y.ml}'); animation-duration: 3.6s`} />
     </g>
   </svg>
   <figcaption><span data-fig-n>6</span> / 6 <span data-fig-name>{names[6]}</span></figcaption>
@@ -117,11 +120,11 @@ const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
 </script>
 
 <style>
-  .figure { margin: 0; width: 100%; max-width: 360px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .figure { margin: 0; width: 100%; max-width: 620px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   svg { display: block; width: 100%; flex: 1 1 auto; min-height: 0; overflow: visible; fill: none; stroke: var(--fg); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   /* Keeps hairlines even inside the skewed plates and when the figure is scaled down. */
   svg :global(*) { vector-effect: non-scaling-stroke; }
-  text { fill: var(--muted); stroke: none; font-size: 11px; letter-spacing: 0.01em; }
+  text { fill: var(--muted); stroke: none; font-size: 8.5px; letter-spacing: 0.01em; }
   /* 14% = the stack's left edge inside the 360-wide viewBox */
   figcaption { margin-top: 10px; padding-left: 14%; font-size: 0.8125rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   figcaption [data-fig-name] { margin-left: 0.6em; color: var(--fg); }
@@ -133,6 +136,7 @@ const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
   .dashed { stroke: var(--faint); stroke-dasharray: 3 4; }
   .sketch { stroke: var(--muted); stroke-dasharray: 3 4; }
   .lead { stroke: var(--faint); }
+  .ghost { stroke: var(--faint); stroke-dasharray: 4 5; }
   .axis { stroke: var(--faint); stroke-dasharray: 2 5; }
   .cursor { fill: var(--accent); stroke: none; animation: blink 1.1s steps(1) infinite; }
   .dot { fill: var(--accent); stroke: none; offset-rotate: 0deg; animation: travel 2s ease-in-out infinite alternate; }
@@ -151,6 +155,8 @@ const Y = { ui: 80, auth: 150, server: 220, cloud: 290, ml: 360 };
     text, .lead { display: none; }
     figcaption { padding-left: 0; text-align: center; }
   }
+  /* On desktop the title block carries the sheet number. */
+  @media (min-width: 900px) { figcaption { display: none; } }
 
   @keyframes blink { 50% { opacity: 0; } }
   @keyframes travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }

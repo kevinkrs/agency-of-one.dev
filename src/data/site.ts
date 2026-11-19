@@ -21,7 +21,7 @@ export const stages = [
   { id: 'frontend', name: 'frontend', title: 'Then it looks finished.', text: 'The boxes become an interface people can touch. Nothing behind it works yet. This is where most demos stop.' },
   { id: 'server', name: 'server + database', title: 'Now the button has to do something.', text: "Requests go out, answers come back, and the data has to live somewhere it won't get lost." },
   { id: 'auth', name: 'authentication', title: 'Who is allowed in?', text: 'Sign-in, sessions, permissions. Invisible when it is right, expensive when it is wrong.' },
-  { id: 'cloud', name: 'cloud', title: 'It has to stay up while you sleep.', text: 'One machine becomes several. Deploys, scaling, monitoring, backups.' },
+  { id: 'cloud', name: 'cloud', title: 'It has to stay up while you sleep.', text: 'Everything above needs somewhere to run. One machine becomes several, with deploys, scaling, monitoring and backups.' },
   { id: 'models', name: 'ML models', title: 'And then it should think.', text: 'Models read, classify and answer in the background. They are slow, costly and sometimes wrong, so they need queues and checks.' },
 ];
 

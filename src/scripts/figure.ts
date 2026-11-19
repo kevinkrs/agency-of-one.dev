@@ -7,8 +7,8 @@ function init() {
   if (!fig) return;
   const layers = [...fig.querySelectorAll<SVGElement>('[data-from]')];
   const names: string[] = JSON.parse(fig.dataset.names ?? '[]');
-  const n = fig.querySelector('[data-fig-n]');
-  const name = fig.querySelector('[data-fig-name]');
+  const ns = document.querySelectorAll('[data-fig-n]');
+  const nameEls = document.querySelectorAll('[data-fig-name]');
 
   const set = (stage: number) => {
     document.documentElement.dataset.stage = String(stage);
@@ -18,8 +18,8 @@ function init() {
       l.classList.toggle('is-on', isOn(stage, from, to));
       l.classList.toggle('is-new', stage === from && from > 0);
     }
-    if (n) n.textContent = String(stage);
-    if (name) name.textContent = names[stage] ?? '';
+    ns.forEach((el) => (el.textContent = String(stage)));
+    nameEls.forEach((el) => (el.textContent = names[stage] ?? ''));
   };
 
   fig.classList.add('js'); // without JS the whole figure stays drawn

@@ -13,6 +13,8 @@ Constraints: minimal with a technical edge (references the user named: rauno.me,
 Backup directions: .impeccable/backup/ (round-2 "sheet" is the named fallback).
 Iteration 1 (user): accent changed from orange to blue; figure redrawn as an exploded isometric stack that assembles; stage headings rewritten as sentences.
 
+Branch `drawing-sheet`: the round-2 "sheet" direction built as an alternative to `main` (One Figure). Differences: light grey sheet ground (#e6e6e4, #161615 in dark), orange accent (#ff5a00), fixed drawing border with centre ticks, fixed title block bottom right carrying the sheet number, stack drawn large with ghost outlines of the layers to come. User feedback applied on both branches: cloud is the base plate at the bottom, not a layer with a chart.
+
 ## Direction contract
 
 THESIS: A nearly empty page where a few sentences tell the journey and one small isometric line figure does the showing: it grows from a box into a running system as you read. Refuses the dark hero with a node diagram and a row of feature cards.
