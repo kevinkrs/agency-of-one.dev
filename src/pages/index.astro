@@ -1,0 +1,165 @@
+---
+import Base from '../layouts/Base.astro';
+import Figure from '../components/Figure.astro';
+import { brand, hero, stages, close } from '../data/site';
+
+const links = [
+  { label: 'Talk to Kevin', href: `mailto:${brand.email}` },
+  { label: 'LinkedIn', href: brand.linkedin },
+  { label: 'CV', href: brand.cv },
+];
+const closeLinks = [
+  { label: brand.email, href: `mailto:${brand.email}` },
+  links[1],
+  links[2],
+];
+---
+<Base title="Agency of One: Kevin Kraus, product engineer" description={`${hero.title} ${hero.text}`}>
+  <ol class="ticks" aria-hidden="true">
+    {stages.map(() => <li />)}
+  </ol>
+  <main class="layout">
+    <div class="fig-col">
+      <div class="fig"><Figure /></div>
+    </div>
+    <div class="text">
+      <section class="hero" data-stage="0">
+        <div class="mark">{brand.mark}</div>
+        <h1>{hero.title}</h1>
+        <p>{hero.text}</p>
+        <div class="links">
+          {links.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </section>
+
+      {stages.map((s, i) => (
+        <section class="stage" id={s.id} data-stage={i + 1}>
+          <h2>{s.title}</h2>
+          <p>{s.text}</p>
+        </section>
+      ))}
+
+      <section class="close" id="contact" data-stage="6">
+        <div class="close-body">
+          <h2>{close.title}</h2>
+          <p>{close.text}</p>
+          <div class="links big">
+            {closeLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+          </div>
+        </div>
+        <footer>
+          <span>Agency of One · Kevin Kraus · Hamburg</span>
+          <a href="/impressum/">Impressum</a>
+          <a href="/datenschutz/">Datenschutz</a>
+        </footer>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  /* Mobile first: single column, figure pinned on top. */
+  .layout { display: block; }
+  .fig-col { display: contents; }
+  .fig {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 42svh;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ticks { display: none; }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 60svh;
+    padding: 4rem 24px;
+  }
+  section > :global(*), .close-body > :global(*) { max-width: 440px; }
+  p { color: var(--muted); }
+  h1 { font-size: 2.5rem; line-height: 1.15; }
+  h2 { font-size: 1.75rem; line-height: 1.2; }
+  h1 + p, h2 + p { margin-top: 1rem; }
+
+  .mark { font-size: 1.5rem; font-weight: 700; line-height: 1; margin-bottom: 3.5rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 2.5rem; font-size: 1.25rem; font-weight: 500; }
+  .links a:first-child { color: var(--accent-text); }
+  .links.big { font-size: 1.5rem; }
+
+  .close { min-height: 80svh; }
+  .close-body { margin-block: auto; padding-block: 4rem; }
+  .close h2 { font-size: 2.5rem; line-height: 1.15; }
+  footer { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; max-width: none; font-size: 0.8125rem; color: var(--faint); }
+
+  @media (min-width: 900px) {
+    .layout {
+      display: grid;
+      grid-template-columns: 520px 360px;
+      column-gap: 90px;
+      max-width: 1000px;
+      margin-inline: auto;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .fig-col { display: block; grid-column: 2; grid-row: 1; }
+    .text { grid-column: 1; grid-row: 1; }
+    .fig {
+      top: calc(50svh - 240px);
+      height: 480px;
+      padding: 0;
+      border-bottom: 0;
+      background: none;
+    }
+
+    section { padding: 4rem 0; }
+    .hero, .close { min-height: 100svh; }
+    .stage { min-height: 90svh; }
+    .close { padding-bottom: 2rem; }
+    .close-body { padding-block: 4rem; }
+
+    .ticks {
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+      position: fixed;
+      left: 56px;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .ticks li {
+      width: 18px;
+      height: 0;
+      border-top: 1.5px solid var(--faint);
+      transition: width 400ms var(--ease), border-color 400ms var(--ease), border-top-width 400ms var(--ease);
+    }
+    :global(html[data-stage="2"]) .ticks li:nth-child(-n+1),
+    :global(html[data-stage="3"]) .ticks li:nth-child(-n+2),
+    :global(html[data-stage="4"]) .ticks li:nth-child(-n+3),
+    :global(html[data-stage="5"]) .ticks li:nth-child(-n+4),
+    :global(html[data-stage="6"]) .ticks li:nth-child(-n+5) { border-color: var(--fg); }
+    :global(html[data-stage="1"]) .ticks li:nth-child(1),
+    :global(html[data-stage="2"]) .ticks li:nth-child(2),
+    :global(html[data-stage="3"]) .ticks li:nth-child(3),
+    :global(html[data-stage="4"]) .ticks li:nth-child(4),
+    :global(html[data-stage="5"]) .ticks li:nth-child(5),
+    :global(html[data-stage="6"]) .ticks li:nth-child(6) {
+      width: 38px;
+      border-top-width: 2.5px;
+      border-color: var(--accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticks li { transition: none; }
+  }
+</style>

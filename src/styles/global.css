@@ -1,0 +1,41 @@
+@import '@fontsource-variable/host-grotesk';
+
+:root {
+  color-scheme: light dark;
+  --bg: #fcfcfc;
+  --fg: #171717;
+  --muted: #6b6b6b;
+  --faint: #a3a3a3;
+  --rule: #e2e2e2;
+  --accent: #0055ff;
+  --accent-text: #0047d6;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --fg: #ededeb;
+    --muted: #9a9a96;
+    --faint: #6a6a66;
+    --rule: #2a2a28;
+    --accent: #4d8dff;
+    --accent-text: #7aa7ff;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); color: var(--fg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: 'Host Grotesk Variable', system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--accent);
+}
+::selection { background: var(--accent); color: #fff; }
+a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 0.3em; }
+a:hover { color: var(--accent-text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+h1, h2, p { margin: 0; }
+h1, h2 { font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }

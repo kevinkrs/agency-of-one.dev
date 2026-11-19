@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>The Canvas</title>
+<style>
+*{box-sizing:border-box;margin:0}body{width:1440px;height:900px;overflow:hidden;background:#14171c radial-gradient(#3a424e 1.2px,transparent 1.3px) 0 0/28px 28px;font-family:Helvetica,Arial,sans-serif;color:#cfd4dc;position:relative}
+.mark{position:absolute;left:64px;top:52px;font-size:26px;font-weight:700}
+h1{position:absolute;left:64px;top:120px;font-size:44px;line-height:1.1;letter-spacing:-.02em;font-weight:500;max-width:470px}
+.cta{position:absolute;left:64px;top:300px;font-size:24px;font-weight:500;color:#14171c;background:#ffb224;padding:14px 22px;border-radius:8px}
+.node{position:absolute;border:1.5px solid #cfd4dc;border-radius:12px;background:#1b1f26}
+.node h2{font:500 24px Helvetica;padding:16px 20px;border-bottom:1.5px solid #3a424e}
+.node .b{margin:18px 20px;height:14px;background:#3a424e;border-radius:3px}
+.node .box{margin:18px 20px;height:120px;border:1.5px dashed #5b6472;border-radius:6px}
+.ghost{border-style:dashed;border-color:#5b6472;background:transparent}
+.ghost h2{color:#5b6472;border-color:transparent}
+svg{position:absolute;inset:0}
+.mini{position:absolute;right:48px;bottom:44px;width:260px;height:120px;border:1.5px solid #3a424e;border-radius:8px;background:#14171c}
+.mini i{position:absolute;height:10px;border-radius:2px;background:#3a424e}.mini i:first-child{background:#ffb224}
+</style>
+<div class="mark">A/1</div>
+<h1>Products are complex. Skip finding out yourself.</h1>
+<div class="cta">Talk to Kevin</div>
+<svg width="1440" height="900" fill="none" stroke-width="1.5"><path d="M900 470C1010 470 1010 330 1120 330" stroke="#cfd4dc"/><path d="M900 520C1010 520 1010 660 1120 660" stroke="#5b6472" stroke-dasharray="6 7"/><circle cx="965" cy="445" r="7" fill="#ffb224"/><circle cx="1040" cy="352" r="7" fill="#ffb224" opacity=".5"/></svg>
+<div class="node" style="left:560px;top:320px;width:340px;height:340px"><h2>Wireframe</h2><div class="b" style="width:60%"></div><div class="box"></div><div class="b" style="width:40%"></div></div>
+<div class="node ghost" style="left:1120px;top:250px;width:300px;height:170px"><h2>Frontend</h2></div>
+<div class="node ghost" style="left:1120px;top:580px;width:300px;height:170px"><h2>Server</h2></div>
+<div class="mini"><i style="left:16px;top:54px;width:36px"></i><i style="left:70px;top:30px;width:36px"></i><i style="left:70px;top:78px;width:36px"></i><i style="left:124px;top:54px;width:36px"></i><i style="left:178px;top:30px;width:36px"></i><i style="left:178px;top:78px;width:36px"></i></div>
