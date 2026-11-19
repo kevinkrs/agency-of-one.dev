@@ -31,7 +31,7 @@ One person has been through the whole cycle (idea, prototype, product in product
 
 ## Capabilities and Constraints
 
-- Single page. The visitor scrolls, and the scroll drives one product being built: wireframe, frontend, server, authentication, cloud, ML models processing in the background.
+- Single page. The visitor scrolls, and the scroll flies through one product layer by layer: interface, auth, server, ML models, cloud, and insights (events and tracing).
 - English only.
 - Ends with a call to action: mailto to kevin@agency-of-one.dev, a LinkedIn link, and a link to kevinkrs.com as CV/Vita.
 - No contact form, no booking link, no backend.

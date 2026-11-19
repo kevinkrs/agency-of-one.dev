@@ -24,7 +24,7 @@ export const layers = [
     points: ['Loading, empty and error states', 'Fits a phone', 'Works with a keyboard'],
   },
   {
-    id: 'sign-in', label: 'Sign-in', title: 'Who gets in',
+    id: 'auth', label: 'Auth', title: 'Who gets in',
     text: 'Invisible when it is right, expensive when it is wrong.',
     points: ['Sessions that expire', 'Roles: who may see what', 'Reset, lockout, second factor'],
   },

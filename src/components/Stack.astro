@@ -5,7 +5,7 @@
 import '../styles/plates.css';
 import { layers } from '../data/site';
 import Interface from './plates/Interface.astro';
-import SignIn from './plates/SignIn.astro';
+import Auth from './plates/Auth.astro';
 import Server from './plates/Server.astro';
 import Models from './plates/Models.astro';
 import Cloud from './plates/Cloud.astro';
@@ -13,7 +13,7 @@ import Insights from './plates/Insights.astro';
 
 interface Props { flat?: boolean; only?: string }
 const { flat = false, only } = Astro.props;
-const drawings = [Interface, SignIn, Server, Models, Cloud, Insights];
+const drawings = [Interface, Auth, Server, Models, Cloud, Insights];
 ---
 <div class:list={['world', { flat }]} data-world>
   {layers.map((layer, i) => {

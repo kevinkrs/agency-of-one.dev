@@ -1,5 +1,5 @@
 ---
-// Sign-in plate. One login per 8s cycle: failed tries fill the attempts counter, the password is
+// Auth plate. One login per 8s cycle: failed tries fill the attempts counter, the password is
 // typed, submit sends it to the verifier (salted hash compared with the stored hash), a TOTP code
 // confirms, a session token is issued with an expiry bar that drains and is refreshed, then a
 // request carrying the editor role passes the gate to /posts and is stopped at /billing.
