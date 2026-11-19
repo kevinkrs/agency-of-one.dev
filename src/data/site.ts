@@ -53,4 +53,5 @@ export const layers = [
 export const close = {
   title: 'Building an AI\u2011native product?', // \u2011: a hyphen the line may not break at
   text: "Reach out if you want to speed up your development and skip the mistakes I've already made.",
+  build: 'Experience decides. Agents execute.', // heading of the build timeline under the text
 };

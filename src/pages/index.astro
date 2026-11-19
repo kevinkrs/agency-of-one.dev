@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Stack from '../components/Stack.astro';
+import BuildTrace from '../components/BuildTrace.astro';
 import { brand, hero, layers, close } from '../data/site';
 
 const links = [
@@ -42,6 +43,7 @@ const stops = layers.length + 2;
       <section class="panel end" data-panel>
         <h2>{close.title}</h2>
         <p>{close.text}</p>
+        <BuildTrace />
         <div class="links big">
           <a href={`mailto:${brand.email}`}>{brand.email}</a>
           <a href={brand.linkedin}>LinkedIn</a>
