@@ -87,9 +87,9 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
   .dot { stroke: var(--faint); stroke-width: 1.1; }
   .digit { fill: var(--faint); stroke: none; }
   .bar { transform-box: fill-box; transform-origin: 0 50%; }
-  .pop { opacity: 0; }
+  .pop { --o: 0; }
 
-  .hop, .hopl, .bounce { opacity: 0; }
+  .hop, .hopl, .bounce { --o: 0; }
   .hop { animation: signin-hop 8s linear var(--t) infinite; }
   .hopl { animation: signin-hopl 8s linear var(--t) infinite; }
   .bounce { animation: signin-bounce 8s linear var(--t) infinite; }
@@ -104,25 +104,25 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
   .nudge { animation: signin-nudge 8s linear var(--t) infinite; }
 
   @keyframes signin-hop {
-    0% { offset-distance: 0%; opacity: 0; }
-    1% { opacity: 1; }
-    6% { offset-distance: 100%; opacity: 1; }
-    7%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    6% { offset-distance: 100%; --o: 1; }
+    7%, 100% { offset-distance: 100%; --o: 0; }
   }
   @keyframes signin-hopl {
-    0% { offset-distance: 0%; opacity: 0; }
-    1% { opacity: 1; }
-    12% { offset-distance: 100%; opacity: 1; }
-    13%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    12% { offset-distance: 100%; --o: 1; }
+    13%, 100% { offset-distance: 100%; --o: 0; }
   }
   /* The blocked request runs to the gate, is pushed back twice, and fades. */
   @keyframes signin-bounce {
-    0% { offset-distance: 0%; opacity: 0; }
-    1% { opacity: 1; }
-    12% { offset-distance: 100%; opacity: 1; }
-    15% { offset-distance: 90%; opacity: 1; }
-    17.5% { offset-distance: 100%; opacity: 1; }
-    20%, 100% { offset-distance: 94%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    12% { offset-distance: 100%; --o: 1; }
+    15% { offset-distance: 90%; --o: 1; }
+    17.5% { offset-distance: 100%; --o: 1; }
+    20%, 100% { offset-distance: 94%; --o: 0; }
   }
   @keyframes signin-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--accent); } }
   @keyframes signin-hashflash { 0%, 16%, 100% { fill: var(--faint); } 2%, 9% { fill: var(--accent); } }
@@ -135,16 +135,16 @@ const roles = [{ x: 6, name: 'admin' }, { x: 18, name: 'editor' }, { x: 30, name
     1.5% { fill: var(--accent); }
     6%, 34% { fill: var(--fg); }
   }
-  @keyframes signin-pop { 0%, 13%, 100% { opacity: 0; } 2%, 9% { opacity: 1; } }
+  @keyframes signin-pop { 0%, 13%, 100% { --o: 0; } 2%, 9% { --o: 1; } }
   /* Expiry bar: full on issue, drains, refreshed before it runs out, full again at the seam. */
   @keyframes signin-bar {
-    0%, 6% { transform: scaleX(1); fill: var(--accent); }
-    10% { transform: scaleX(1); fill: var(--fg); }
-    28% { transform: scaleX(0.35); fill: var(--fg); }
-    31% { transform: scaleX(1); fill: var(--accent); }
-    36%, 100% { transform: scaleX(1); fill: var(--fg); }
+    0%, 6% { --tf: scaleX(1); fill: var(--accent); }
+    10% { --tf: scaleX(1); fill: var(--fg); }
+    28% { --tf: scaleX(0.35); fill: var(--fg); }
+    31% { --tf: scaleX(1); fill: var(--accent); }
+    36%, 100% { --tf: scaleX(1); fill: var(--fg); }
   }
   /* Gate lifts for an allowed role and drops again. */
-  @keyframes signin-gate { 0%, 14%, 100% { transform: translateY(0); } 3%, 10% { transform: translateY(-7px); } }
-  @keyframes signin-nudge { 0%, 10%, 100% { transform: translateX(0); } 3% { transform: translateX(-0.8px); } 6% { transform: translateX(0.3px); } }
+  @keyframes signin-gate { 0%, 14%, 100% { --tf: translateY(0); } 3%, 10% { --tf: translateY(-7px); } }
+  @keyframes signin-nudge { 0%, 10%, 100% { --tf: translateX(0); } 3% { --tf: translateX(-0.8px); } 6% { --tf: translateX(0.3px); } }
 </style>

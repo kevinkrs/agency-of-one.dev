@@ -79,13 +79,13 @@ const packets: [number, keyof typeof route][] = [
 <Marker n={1} x={66} y={8} /><Marker n={2} x={50} y={50} /><Marker n={3} x={94} y={84} />
 
 <style>
-  .off { opacity: 0; }
-  .load { transform-box: fill-box; transform-origin: left; transform: scaleX(0.35); }
-  .load-s { transform: scaleX(0.1); }
+  .off { --o: 0; }
+  .load { transform-box: fill-box; transform-origin: left; --tf: scaleX(0.35); }
+  .load-s { --tf: scaleX(0.1); }
   .bell { transform-origin: 0 -1.2px; }
   .solid-wire { stroke: var(--fg); }
 
-  .hop { opacity: 0; animation: cloud-hop 8s linear var(--t) infinite; }
+  .hop { --o: 0; animation: cloud-hop 8s linear var(--t) infinite; }
   .tick { animation: cloud-ping 8s linear var(--t) infinite; }
   .tick-a1 { animation-name: cloud-ping-a1; }
   .load { animation: cloud-load 8s linear infinite; }
@@ -97,19 +97,19 @@ const packets: [number, keyof typeof route][] = [
   .alert { animation: cloud-alert 8s linear infinite; }
   .bell { animation: cloud-bell 8s linear infinite; }
   .h1 { animation: cloud-h1 8s linear infinite; }
-  .h2 { opacity: 0; animation: cloud-h2 8s linear infinite; }
-  .h3 { opacity: 0; animation: cloud-h3 8s linear infinite; }
+  .h2 { --o: 0; animation: cloud-h2 8s linear infinite; }
+  .h3 { --o: 0; animation: cloud-h3 8s linear infinite; }
   .scale-box { animation: cloud-scale-box 8s linear infinite; }
-  .scale-tag { opacity: 0; animation: cloud-scale-tag 8s linear infinite; }
-  .s-on { opacity: 0; animation: cloud-s-on 8s linear infinite; }
+  .scale-tag { --o: 0; animation: cloud-scale-tag 8s linear infinite; }
+  .s-on { --o: 0; animation: cloud-s-on 8s linear infinite; }
   .solid-wire { animation: cloud-s-on 8s linear infinite; }
   .slot { animation: cloud-slot 8s linear infinite; }
 
   @keyframes cloud-hop {
-    0% { offset-distance: 0%; opacity: 0; }
-    1% { opacity: 1; }
-    11% { offset-distance: 100%; opacity: 1; }
-    12%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    11% { offset-distance: 100%; --o: 1; }
+    12%, 100% { offset-distance: 100%; --o: 0; }
   }
   /* health check: a tick lights every 2s */
   @keyframes cloud-ping {
@@ -118,48 +118,48 @@ const packets: [number, keyof typeof route][] = [
   }
   /* a1: two pings, then the tick stops until the machine is replaced */
   @keyframes cloud-ping-a1 {
-    0%, 4.5%, 25%, 29.5%, 100% { stroke: var(--fg); opacity: 1; }
-    1%, 3%, 26%, 28% { stroke: var(--accent); opacity: 1; }
-    34%, 92% { stroke: var(--fg); opacity: 0; }
-    95% { opacity: 1; }
+    0%, 4.5%, 25%, 29.5%, 100% { stroke: var(--fg); --o: 1; }
+    1%, 3%, 26%, 28% { stroke: var(--accent); --o: 1; }
+    34%, 92% { stroke: var(--fg); --o: 0; }
+    95% { --o: 1; }
   }
   @keyframes cloud-load {
-    0%, 34% { transform: scaleX(0.35); fill: var(--fg); }
-    38% { transform: scaleX(0.55); fill: var(--fg); }
-    50% { transform: scaleX(0.72); fill: var(--fg); }
-    56% { transform: scaleX(0.8); fill: var(--accent); }
-    60% { transform: scaleX(0.86); fill: var(--accent); }
-    67%, 91% { transform: scaleX(0.5); fill: var(--fg); }
-    96%, 100% { transform: scaleX(0.35); fill: var(--fg); }
+    0%, 34% { --tf: scaleX(0.35); fill: var(--fg); }
+    38% { --tf: scaleX(0.55); fill: var(--fg); }
+    50% { --tf: scaleX(0.72); fill: var(--fg); }
+    56% { --tf: scaleX(0.8); fill: var(--accent); }
+    60% { --tf: scaleX(0.86); fill: var(--accent); }
+    67%, 91% { --tf: scaleX(0.5); fill: var(--fg); }
+    96%, 100% { --tf: scaleX(0.35); fill: var(--fg); }
   }
   @keyframes cloud-load-a1 {
-    0%, 31% { transform: scaleX(0.35); }
-    34%, 93% { transform: scaleX(0.05); }
-    96%, 100% { transform: scaleX(0.35); }
+    0%, 31% { --tf: scaleX(0.35); }
+    34%, 93% { --tf: scaleX(0.05); }
+    96%, 100% { --tf: scaleX(0.35); }
   }
   @keyframes cloud-load-s {
-    0%, 66% { transform: scaleX(0.1); }
-    75%, 92% { transform: scaleX(0.45); }
-    96%, 100% { transform: scaleX(0.1); }
+    0%, 66% { --tf: scaleX(0.1); }
+    75%, 92% { --tf: scaleX(0.45); }
+    96%, 100% { --tf: scaleX(0.1); }
   }
   /* a1 solid parts leave, the dashed outline takes over */
-  @keyframes cloud-gone { 0%, 31%, 95%, 100% { opacity: 1; } 34%, 92% { opacity: 0; } }
-  @keyframes cloud-down { 0%, 31%, 95%, 100% { opacity: 0; } 34%, 92% { opacity: 1; } }
-  @keyframes cloud-dim { 0%, 31%, 95%, 100% { opacity: 1; } 34%, 92% { opacity: 0.3; } }
-  @keyframes cloud-alert { 0%, 31%, 54%, 100% { opacity: 0; } 33%, 47% { opacity: 1; } }
+  @keyframes cloud-gone { 0%, 31%, 95%, 100% { --o: 1; } 34%, 92% { --o: 0; } }
+  @keyframes cloud-down { 0%, 31%, 95%, 100% { --o: 0; } 34%, 92% { --o: 1; } }
+  @keyframes cloud-dim { 0%, 31%, 95%, 100% { --o: 1; } 34%, 92% { --o: 0.3; } }
+  @keyframes cloud-alert { 0%, 31%, 54%, 100% { --o: 0; } 33%, 47% { --o: 1; } }
   @keyframes cloud-bell {
-    0%, 31%, 54%, 100% { stroke: var(--fg); transform: rotate(0); }
-    33% { stroke: var(--accent); transform: rotate(14deg); }
-    36% { stroke: var(--accent); transform: rotate(-12deg); }
-    39% { stroke: var(--accent); transform: rotate(9deg); }
-    42% { stroke: var(--accent); transform: rotate(-5deg); }
-    45%, 47% { stroke: var(--accent); transform: rotate(0); }
+    0%, 31%, 54%, 100% { stroke: var(--fg); --tf: rotate(0); }
+    33% { stroke: var(--accent); --tf: rotate(14deg); }
+    36% { stroke: var(--accent); --tf: rotate(-12deg); }
+    39% { stroke: var(--accent); --tf: rotate(9deg); }
+    42% { stroke: var(--accent); --tf: rotate(-5deg); }
+    45%, 47% { stroke: var(--accent); --tf: rotate(0); }
   }
-  @keyframes cloud-h1 { 0%, 31%, 96%, 100% { opacity: 1; } 33%, 94% { opacity: 0; } }
-  @keyframes cloud-h2 { 0%, 31%, 67%, 100% { opacity: 0; } 33%, 65% { opacity: 1; } }
-  @keyframes cloud-h3 { 0%, 66%, 94%, 100% { opacity: 0; } 68%, 92% { opacity: 1; } }
-  @keyframes cloud-scale-box { 0%, 59%, 75%, 100% { opacity: 0; } 61%, 69% { opacity: 1; } }
-  @keyframes cloud-scale-tag { 0%, 60%, 94%, 100% { opacity: 0; } 62%, 92% { opacity: 1; } }
-  @keyframes cloud-s-on { 0%, 65%, 95%, 100% { opacity: 0; } 68%, 92% { opacity: 1; } }
-  @keyframes cloud-slot { 0%, 64%, 96%, 100% { opacity: 1; } 67%, 93% { opacity: 0; } }
+  @keyframes cloud-h1 { 0%, 31%, 96%, 100% { --o: 1; } 33%, 94% { --o: 0; } }
+  @keyframes cloud-h2 { 0%, 31%, 67%, 100% { --o: 0; } 33%, 65% { --o: 1; } }
+  @keyframes cloud-h3 { 0%, 66%, 94%, 100% { --o: 0; } 68%, 92% { --o: 1; } }
+  @keyframes cloud-scale-box { 0%, 59%, 75%, 100% { --o: 0; } 61%, 69% { --o: 1; } }
+  @keyframes cloud-scale-tag { 0%, 60%, 94%, 100% { --o: 0; } 62%, 92% { --o: 1; } }
+  @keyframes cloud-s-on { 0%, 65%, 95%, 100% { --o: 0; } 68%, 92% { --o: 1; } }
+  @keyframes cloud-slot { 0%, 64%, 96%, 100% { --o: 1; } 67%, 93% { --o: 0; } }
 </style>

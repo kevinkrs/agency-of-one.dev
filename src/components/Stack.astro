@@ -26,17 +26,22 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
 </div>
 
 <style>
-  .world { position: relative; width: var(--p); height: var(--p); transform-style: preserve-3d; --gap: 120; transform: scale(0.5) rotateX(57deg) rotateZ(45deg) translateZ(240px); will-change: transform; }
+  .world { position: relative; width: var(--p); height: var(--p); transform-style: preserve-3d; --gap: 120; transform: scale(0.5) rotateX(57deg) rotateZ(45deg) translateZ(240px); }
   .plate {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    top: 0;
+    /* Painted at twice its size and scaled back down, so lines and labels stay sharp when the
+       camera tilts and zooms. will-change pins that double-size bitmap. */
+    width: 200%;
+    height: 200%;
     background: var(--bg);
-    border: 1.5px solid var(--fg);
-    border-radius: 6px;
-    transform: translateZ(calc(var(--gap) * var(--i) * -1px));
+    border: 3px solid var(--fg);
+    border-radius: 12px;
+    transform-origin: 0 0;
+    transform: translateZ(calc(var(--gap) * var(--i) * -1px)) scale(0.5);
+    will-change: transform;
   }
   .world.flat { display: flex; flex-wrap: wrap; gap: 32px; width: auto; height: auto; transform: none; }
-  .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; }
+  .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1.5px; border-radius: 6px; }
 </style>

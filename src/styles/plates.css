@@ -15,6 +15,15 @@
    animation from the plate's own keyframes that moves offset-distance 0% -> 100%. */
 .plate .packet { fill: var(--accent); stroke: none; offset-rotate: 0deg; }
 
+/* Plates animate --o and --tf instead of opacity and transform. Animating those two directly makes
+   the browser paint each moving piece as its own low-resolution image inside the 3D scene, which
+   shows as blur. Registered custom properties animate on the main thread and stay sharp. */
+@property --o { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --tf { syntax: '<transform-list> | none'; inherits: false; initial-value: none; }
+/* Elements placed with a transform attribute keep it; animate a child instead. */
+.plate * { opacity: var(--o); }
+.plate *:not([transform]) { transform: var(--tf); }
+
 .plate:not(.is-focus) * { animation-play-state: paused !important; }
 
 .plate .marker circle { fill: var(--accent); stroke: var(--bg); stroke-width: 0.5; }

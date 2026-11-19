@@ -4,7 +4,7 @@ export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number;
 // rx/rz: camera tilt in degrees. s: scale. gap: px between plates. fi: index of the plate the
 // camera looks at. k: 1 when inside the stack (plates above the camera fade), 0 for overviews.
 const overview = (s: number, gap: number, fi: number): Pose => ({ rx: 57, rz: 45, s, gap, fi, k: 0 });
-const focus = (i: number): Pose => ({ rx: 30, rz: -10, s: 1, gap: 700, fi: i, k: 1 });
+const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1 });
 export const STOPS: Pose[] = [overview(0.62, 34, 0), focus(0), focus(1), focus(2), focus(3), focus(4), overview(0.46, 210, 2)];
 
 const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));

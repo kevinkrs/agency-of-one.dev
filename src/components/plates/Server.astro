@@ -85,7 +85,7 @@ const cells = [81, 84.2, 87.4];
 <Marker n={1} x={14} y={22} /><Marker n={2} x={31} y={22} /><Marker n={3} x={14} y={64} />
 
 <style>
-  .packet { opacity: 0; }
+  .packet { --o: 0; }
   .packet.resp { fill: var(--bg); stroke: var(--accent); stroke-width: 0.4; }
   .pa { animation: server-a 8s linear var(--t) infinite; }
   .pb { animation: server-b 8s linear var(--t) infinite; }
@@ -108,28 +108,28 @@ const cells = [81, 84.2, 87.4];
   .bar { transform-box: fill-box; transform-origin: left; animation: server-fill 8s linear 6.8s infinite; }
 
   @keyframes server-a {
-    0% { offset-distance: 0%; opacity: 0; }
-    0.8% { opacity: 1; }
-    25% { offset-distance: 100%; opacity: 1; }
-    25.8%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    0.8% { --o: 1; }
+    25% { offset-distance: 100%; --o: 1; }
+    25.8%, 100% { offset-distance: 100%; --o: 0; }
   }
   @keyframes server-b {
-    0% { offset-distance: 0%; opacity: 0; }
-    0.8% { opacity: 1; }
-    50% { offset-distance: 100%; opacity: 1; }
-    50.8%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    0.8% { --o: 1; }
+    50% { offset-distance: 100%; --o: 1; }
+    50.8%, 100% { offset-distance: 100%; --o: 0; }
   }
   @keyframes server-c {
-    0% { offset-distance: 0%; opacity: 0; }
-    0.8% { opacity: 1; }
-    37.5% { offset-distance: 100%; opacity: 1; }
-    38.3%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    0.8% { --o: 1; }
+    37.5% { offset-distance: 100%; --o: 1; }
+    38.3%, 100% { offset-distance: 100%; --o: 0; }
   }
   @keyframes server-d {
-    0% { offset-distance: 0%; opacity: 0; }
-    0.8% { opacity: 1; }
-    18.75% { offset-distance: 100%; opacity: 1; }
-    19.5%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    0.8% { --o: 1; }
+    18.75% { offset-distance: 100%; --o: 1; }
+    19.5%, 100% { offset-distance: 100%; --o: 0; }
   }
 
   @keyframes server-lit { 0%, 12%, 100% { stroke: var(--fg); } 1.5%, 9% { stroke: var(--accent); } }
@@ -142,7 +142,7 @@ const cells = [81, 84.2, 87.4];
     3%, 36% { fill: var(--bg); stroke: var(--faint); stroke-width: 0.14; }
     38% { fill: var(--accent); stroke: none; }
   }
-  @keyframes server-fill { 0% { transform: scaleX(0); } 15%, 100% { transform: scaleX(1); } }
+  @keyframes server-fill { 0% { --tf: scaleX(0); } 15%, 100% { --tf: scaleX(1); } }
 
   /* Gate inspects five requests (0.64, 1.32, 2.1, 2.7, 3.34 s); the check lights for the four it lets through. */
   @keyframes server-gate {

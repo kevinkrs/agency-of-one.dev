@@ -75,22 +75,22 @@ const evals = [{ y: 75, w: 15, score: '0.97' }, { y: 81, w: 12, score: '0.94' },
 <style>
   .edges line { stroke: var(--faint); stroke-width: 0.12; }
   .fire circle { fill: var(--bg); stroke-width: 0.2; }
-  .slot { opacity: 0; }
+  .slot { --o: 0; }
 
-  .hop { opacity: 0; animation: models-hop 6s linear var(--t) infinite; }
+  .hop { --o: 0; animation: models-hop 6s linear var(--t) infinite; }
   .flash { animation: models-flash 6s linear var(--t) infinite; }
   .slot { animation: models-slot 6s linear var(--t) infinite; }
   .fire circle { animation: models-fire 6s linear var(--t) infinite; }
   .edges line { animation: models-edge 6s linear var(--t) infinite; }
 
   @keyframes models-hop {
-    0% { offset-distance: 0%; opacity: 0; }
-    1% { opacity: 1; }
-    8% { offset-distance: 100%; opacity: 1; }
-    9%, 100% { offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    8% { offset-distance: 100%; --o: 1; }
+    9%, 100% { offset-distance: 100%; --o: 0; }
   }
   @keyframes models-flash { 0%, 16%, 100% { stroke: var(--fg); } 2%, 9% { stroke: var(--accent); } }
-  @keyframes models-slot { 0%, 9%, 100% { opacity: 0; } 1%, 7% { opacity: 1; } }
+  @keyframes models-slot { 0%, 9%, 100% { --o: 0; } 1%, 7% { --o: 1; } }
   /* --a is the node's activation, --w the edge's weight: both fixed per element. */
   @keyframes models-fire {
     0%, 30%, 100% { fill: var(--bg); stroke: var(--fg); }
