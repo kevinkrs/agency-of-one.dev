@@ -1,12 +1,156 @@
 ---
+// Server plate. One 8s loop of requests, left to right: a malformed one is bounced at the
+// validation gate (400), three pass the rate limiter and drain its token bucket, a fourth
+// finds it empty (429). Passing requests are routed to a handler, the write runs in a
+// transaction on the primary, the change streams to the replica, and a snapshot is taken from
+// the replica and test-restored. Timings (--t) are seconds into the cycle.
 import Marker from './Marker.astro';
+
+const handlers = [
+  { y: 14, route: 'GET /orders', t: 4.1 },
+  { y: 30, route: 'POST /orders', t: 2.8 },
+  { y: 46, route: 'GET /me', t: 4.7 },
+];
+const tokens = [26.4, 30.1, 33.8];
+const cells = [81, 84.2, 87.4];
 ---
-<path d="M0 50H6M20 50H26M34 50H38M38 21V79M38 21H42M38 50H42M38 79H42" />
-<rect x="6" y="38" width="14" height="24" rx="1.5" /><path d="M10 50l2.5 3 5-6" />
-<path d="M26 42V58M30 44V56M34 46V54" />
-<rect x="42" y="14" width="22" height="14" rx="1.5" /><rect x="42" y="43" width="22" height="14" rx="1.5" /><rect x="42" y="72" width="22" height="14" rx="1.5" />
-<rect class="soft" x="46" y="19.5" width="12" height="3" /><rect class="soft" x="46" y="48.5" width="14" height="3" /><rect class="soft" x="46" y="77.5" width="10" height="3" />
-<path d="M64 21H69V79H64M64 50H73" />
-<ellipse cx="82" cy="45" rx="9" ry="3.5" /><path d="M73 45v10a9 3.5 0 0 0 18 0v-10M73 50a9 3.5 0 0 0 18 0" />
-<g class="dash"><path d="M82 58.5V70.5" /><ellipse cx="82" cy="74" rx="9" ry="3.5" /><path d="M73 74v9a9 3.5 0 0 0 18 0v-9" /></g>
-<Marker n={1} x={13} y={38} /><Marker n={2} x={30} y={40} /><Marker n={3} x={91} y={74} />
+<!-- trust boundary of the API process -->
+<rect class="hair" x="5" y="7" width="72" height="50" rx="2" />
+
+<!-- wires -->
+<path d="M0 30H8M20 30H24M38 30H46M46 30V14H56M46 30H56M46 30V46H56M75 14H78V46M75 30H80M75 46H78" />
+<path class="dash" d="M14 38V46M31 38V46H0" />
+<path class="dash" d="M92.5 41.5V62.5M80 72H74M52 72H46" />
+
+<!-- validation gate -->
+<rect class="gate" x="8" y="22" width="12" height="16" rx="1.5" />
+<path class="check" d="M11.5 26l1.8 2 3.4-4" />
+<path class="hair" d="M11 33.5H17M11 35.5H15" />
+<text class="tag t400" x="15.5" y="44.2">400</text>
+
+<!-- rate limiter: token bucket -->
+<rect x="24" y="22" width="14" height="16" rx="1.5" />
+{tokens.map((x, i) => <rect class="tok" style={`--t: ${[1.9, 2.6, 3.2][i]}s`} x={x} y="33" width="3" height="2.6" rx="0.4" />)}
+<path class="hair" d="M26.4 31.6H36.8" />
+<text class="tag t429" x="32.6" y="44.2">429</text>
+
+<!-- router and handlers -->
+<circle class="solid" cx="46" cy="30" r="1.4" />
+{handlers.map((h) => (
+  <>
+    <rect class="handler" style={`--t: ${h.t}s`} x="56" y={h.y - 4} width="19" height="8" rx="1.5" />
+    <text class="tag" x="58" y={h.y + 0.8}>{h.route}</text>
+  </>
+))}
+
+<!-- primary, transaction, replica -->
+<g>
+  <ellipse cx="87" cy="22" rx="7" ry="2.5" />
+  <path d="M80 22V40a7 2.5 0 0 0 14 0V22M80 27a7 2.5 0 0 0 14 0" />
+</g>
+<text class="tag" x="80" y="17.6">primary</text>
+<path class="hair" d="M80 44.5v4h10.6v-4" />
+{cells.map((x, i) => <rect class="soft cell" style={`--t: ${3.7 + i * 0.3}s`} x={x} y="45.2" width="2.6" height="2.4" rx="0.4" />)}
+<text class="tag commit" x="80" y="52.4">COMMIT</text>
+
+<ellipse class="rep" cx="87" cy="64" rx="7" ry="2.5" />
+<path d="M80 64V76a7 2.5 0 0 0 14 0V64M80 69a7 2.5 0 0 0 14 0" />
+<text class="tag" x="80" y="83">replica</text>
+
+<!-- backup and restore test -->
+<rect class="snap" x="52" y="64" width="22" height="16" rx="1.5" />
+<text class="tag" x="54" y="69.2">snapshot 02:00</text>
+<rect class="soft bar" x="54" y="74.5" width="18" height="1.6" />
+
+<rect class="rest" x="14" y="64" width="32" height="16" rx="1.5" />
+<ellipse cx="20" cy="69" rx="4" ry="1.4" />
+<path d="M16 69v5a4 1.4 0 0 0 8 0v-5" />
+<path class="check2" d="M38.5 68l1.6 1.8 3-3.4" />
+<text class="tag ok" x="17" y="77.4">restore ok</text>
+
+<!-- requests in, responses back out -->
+<circle class="packet pa" r="1.1" style="--t: 0s; offset-path: path('M0 30H14V46H0')" />
+<circle class="packet pc" r="1.1" style="--t: 0.8s; offset-path: path('M0 30H80')" />
+<circle class="packet pb" r="1.1" style="--t: 1.6s; offset-path: path('M0 30H46V14H78V30H80')" />
+<circle class="packet pb" r="1.1" style="--t: 2.2s; offset-path: path('M0 30H46V46H78V30H80')" />
+<circle class="packet pc" r="1.1" style="--t: 2.8s; offset-path: path('M0 30H31V46H0')" />
+<circle class="packet resp pc" r="1" style="--t: 4.5s; offset-path: path('M80 30H0')" />
+<circle class="packet resp pb" r="1" style="--t: 5.8s; offset-path: path('M80 30H78V14H46V30H0')" />
+<circle class="packet resp pb" r="1" style="--t: 6.4s; offset-path: path('M80 30H78V46H46V30H0')" />
+<!-- replication stream, snapshot copy, restore -->
+<circle class="packet pd" r="1" style="--t: 4.6s; offset-path: path('M92.5 41.5V62.5')" />
+<circle class="packet pd" r="1" style="--t: 6.4s; offset-path: path('M80 72H62')" />
+<circle class="packet pa" r="1" style="--t: 7.9s; offset-path: path('M52 72H24')" />
+
+<Marker n={1} x={14} y={22} /><Marker n={2} x={31} y={22} /><Marker n={3} x={14} y={64} />
+
+<style>
+  .packet { opacity: 0; }
+  .packet.resp { fill: var(--bg); stroke: var(--accent); stroke-width: 0.4; }
+  .pa { animation: server-a 8s linear var(--t) infinite; }
+  .pb { animation: server-b 8s linear var(--t) infinite; }
+  .pc { animation: server-c 8s linear var(--t) infinite; }
+  .pd { animation: server-d 8s linear var(--t) infinite; }
+
+  .gate { animation: server-gate 8s linear infinite; }
+  .check { animation: server-check 8s linear infinite; }
+  .t400 { animation: server-tag 8s linear 1.2s infinite; }
+  .t429 { animation: server-tag 8s linear 4.2s infinite; }
+  .commit { animation: server-tag 8s linear 4.2s infinite; }
+  .ok { animation: server-tag 8s linear 1.5s infinite; }
+  .handler { animation: server-lit 8s linear var(--t) infinite; }
+  .rep { animation: server-lit 8s linear 6s infinite; }
+  .snap { animation: server-lit 8s linear 6.4s infinite; }
+  .rest { animation: server-lit 8s linear 1.3s infinite; }
+  .check2 { animation: server-lit 8s linear 1.5s infinite; }
+  .cell { animation: server-cell 8s linear var(--t) infinite; }
+  .tok { fill: var(--faint); stroke: none; animation: server-tok 8s linear var(--t) infinite; }
+  .bar { transform-box: fill-box; transform-origin: left; animation: server-fill 8s linear 6.8s infinite; }
+
+  @keyframes server-a {
+    0% { offset-distance: 0%; opacity: 0; }
+    0.8% { opacity: 1; }
+    25% { offset-distance: 100%; opacity: 1; }
+    25.8%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes server-b {
+    0% { offset-distance: 0%; opacity: 0; }
+    0.8% { opacity: 1; }
+    50% { offset-distance: 100%; opacity: 1; }
+    50.8%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes server-c {
+    0% { offset-distance: 0%; opacity: 0; }
+    0.8% { opacity: 1; }
+    37.5% { offset-distance: 100%; opacity: 1; }
+    38.3%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes server-d {
+    0% { offset-distance: 0%; opacity: 0; }
+    0.8% { opacity: 1; }
+    18.75% { offset-distance: 100%; opacity: 1; }
+    19.5%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  @keyframes server-lit { 0%, 12%, 100% { stroke: var(--fg); } 1.5%, 9% { stroke: var(--accent); } }
+  @keyframes server-tag { 0%, 14%, 100% { fill: var(--muted); } 2%, 10% { fill: var(--accent); } }
+  @keyframes server-cell { 0%, 15%, 100% { fill: var(--faint); } 1.5%, 13% { fill: var(--accent); } }
+  /* A token is spent as a request passes, and the bucket refills three seconds later. */
+  @keyframes server-tok {
+    0%, 40%, 100% { fill: var(--faint); stroke: none; }
+    1% { fill: var(--accent); }
+    3%, 36% { fill: var(--bg); stroke: var(--faint); stroke-width: 0.14; }
+    38% { fill: var(--accent); stroke: none; }
+  }
+  @keyframes server-fill { 0% { transform: scaleX(0); } 15%, 100% { transform: scaleX(1); } }
+
+  /* Gate inspects five requests (0.64, 1.32, 2.1, 2.7, 3.34 s); the check lights for the four it lets through. */
+  @keyframes server-gate {
+    0%, 7.4%, 13%, 15.9%, 21.5%, 25.65%, 31.25%, 33.15%, 38.75%, 41.15%, 46.75%, 100% { stroke: var(--fg); }
+    8%, 11%, 16.5%, 19.5%, 26.25%, 29.25%, 33.75%, 36.75%, 41.75%, 44.75% { stroke: var(--accent); }
+  }
+  @keyframes server-check {
+    0%, 15.9%, 21.5%, 25.65%, 31.25%, 33.15%, 38.75%, 41.15%, 46.75%, 100% { stroke: var(--fg); }
+    16.5%, 19.5%, 26.25%, 29.25%, 33.75%, 36.75%, 41.75%, 44.75% { stroke: var(--accent); }
+  }
+</style>
