@@ -51,6 +51,6 @@ export const layers = [
 ];
 
 export const close = {
-  title: 'That was one product.',
-  text: "I'm Kevin Kraus. I have taken products from sketch to production many times, so you don't have to find out each layer yourself.",
+  title: 'Building an AI\u2011native product?', // \u2011: a hyphen the line may not break at
+  text: "Reach out if you want to speed up your development and skip the mistakes I've already made.",
 };
