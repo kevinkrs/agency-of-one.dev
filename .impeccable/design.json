@@ -1,0 +1,853 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-19T08:04:58+00:00",
+  "title": "Design System: Agency of One",
+  "extensions": {
+    "colorMeta": {
+      "paper-bg": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "paper-fg": {
+        "role": "neutral",
+        "displayName": "Paper Ink",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "paper-muted": {
+        "role": "neutral",
+        "displayName": "Paper Muted",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "paper-faint": {
+        "role": "neutral",
+        "displayName": "Paper Faint",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "paper-rule": {
+        "role": "neutral",
+        "displayName": "Paper Rule",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "paper-accent": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "tonalRamp": [
+          "oklch(15% 0.157 263)",
+          "oklch(26% 0.206 263)",
+          "oklch(38% 0.241 263)",
+          "oklch(50% 0.258 263)",
+          "oklch(62% 0.256 263)",
+          "oklch(74% 0.236 263)",
+          "oklch(85% 0.202 263)",
+          "oklch(95% 0.157 263)"
+        ]
+      },
+      "paper-accent-text": {
+        "role": "primary",
+        "displayName": "Signal Blue Text",
+        "tonalRamp": [
+          "oklch(15% 0.137 263)",
+          "oklch(26% 0.179 263)",
+          "oklch(38% 0.210 263)",
+          "oklch(50% 0.225 263)",
+          "oklch(62% 0.224 263)",
+          "oklch(74% 0.206 263)",
+          "oklch(85% 0.176 263)",
+          "oklch(95% 0.137 263)"
+        ]
+      },
+      "paper-on-accent": {
+        "role": "neutral",
+        "displayName": "On Signal Blue",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(50% 0.000 90)",
+          "oklch(62% 0.000 90)",
+          "oklch(74% 0.000 90)",
+          "oklch(85% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "deep-ground": {
+        "role": "neutral",
+        "displayName": "Deep Ground",
+        "tonalRamp": [
+          "oklch(15% 0.007 274)",
+          "oklch(26% 0.010 274)",
+          "oklch(38% 0.011 274)",
+          "oklch(50% 0.012 274)",
+          "oklch(62% 0.012 274)",
+          "oklch(74% 0.011 274)",
+          "oklch(85% 0.009 274)",
+          "oklch(95% 0.007 274)"
+        ]
+      },
+      "deep-bg": {
+        "role": "neutral",
+        "displayName": "Deep Panel",
+        "tonalRamp": [
+          "oklch(15% 0.013 275)",
+          "oklch(26% 0.017 275)",
+          "oklch(38% 0.020 275)",
+          "oklch(50% 0.021 275)",
+          "oklch(62% 0.021 275)",
+          "oklch(74% 0.020 275)",
+          "oklch(85% 0.017 275)",
+          "oklch(95% 0.013 275)"
+        ]
+      },
+      "deep-fg": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "tonalRamp": [
+          "oklch(15% 0.006 273)",
+          "oklch(26% 0.008 273)",
+          "oklch(38% 0.009 273)",
+          "oklch(50% 0.010 273)",
+          "oklch(62% 0.009 273)",
+          "oklch(74% 0.009 273)",
+          "oklch(85% 0.007 273)",
+          "oklch(95% 0.006 273)"
+        ]
+      },
+      "deep-muted": {
+        "role": "neutral",
+        "displayName": "Deep Muted",
+        "tonalRamp": [
+          "oklch(15% 0.016 271)",
+          "oklch(26% 0.021 271)",
+          "oklch(38% 0.025 271)",
+          "oklch(50% 0.027 271)",
+          "oklch(62% 0.026 271)",
+          "oklch(74% 0.024 271)",
+          "oklch(85% 0.021 271)",
+          "oklch(95% 0.016 271)"
+        ]
+      },
+      "deep-faint": {
+        "role": "neutral",
+        "displayName": "Deep Faint",
+        "tonalRamp": [
+          "oklch(15% 0.023 272)",
+          "oklch(26% 0.030 272)",
+          "oklch(38% 0.035 272)",
+          "oklch(50% 0.038 272)",
+          "oklch(62% 0.037 272)",
+          "oklch(74% 0.034 272)",
+          "oklch(85% 0.029 272)",
+          "oklch(95% 0.023 272)"
+        ]
+      },
+      "deep-rule": {
+        "role": "neutral",
+        "displayName": "Deep Rule",
+        "tonalRamp": [
+          "oklch(15% 0.020 272)",
+          "oklch(26% 0.027 272)",
+          "oklch(38% 0.031 272)",
+          "oklch(50% 0.033 272)",
+          "oklch(62% 0.033 272)",
+          "oklch(74% 0.031 272)",
+          "oklch(85% 0.026 272)",
+          "oklch(95% 0.020 272)"
+        ]
+      },
+      "glow-blue": {
+        "role": "neutral",
+        "displayName": "Ground Glow Blue",
+        "tonalRamp": [
+          "oklch(15% 0.147 269)",
+          "oklch(26% 0.192 269)",
+          "oklch(38% 0.226 269)",
+          "oklch(50% 0.242 269)",
+          "oklch(62% 0.240 269)",
+          "oklch(74% 0.221 269)",
+          "oklch(85% 0.189 269)",
+          "oklch(95% 0.147 269)"
+        ]
+      },
+      "glow-cyan": {
+        "role": "neutral",
+        "displayName": "Ground Glow Cyan",
+        "tonalRamp": [
+          "oklch(15% 0.095 236)",
+          "oklch(26% 0.125 236)",
+          "oklch(38% 0.147 236)",
+          "oklch(50% 0.157 236)",
+          "oklch(62% 0.156 236)",
+          "oklch(74% 0.144 236)",
+          "oklch(85% 0.123 236)",
+          "oklch(95% 0.095 236)"
+        ]
+      },
+      "card-bg": {
+        "role": "neutral",
+        "displayName": "Card Surface",
+        "tonalRamp": [
+          "oklch(15% 0.023 270)",
+          "oklch(26% 0.030 270)",
+          "oklch(38% 0.035 270)",
+          "oklch(50% 0.037 270)",
+          "oklch(62% 0.037 270)",
+          "oklch(74% 0.034 270)",
+          "oklch(85% 0.029 270)",
+          "oklch(95% 0.023 270)"
+        ]
+      },
+      "card-fg": {
+        "role": "neutral",
+        "displayName": "Card Ink",
+        "tonalRamp": [
+          "oklch(15% 0.008 273)",
+          "oklch(26% 0.011 273)",
+          "oklch(38% 0.013 273)",
+          "oklch(50% 0.014 273)",
+          "oklch(62% 0.014 273)",
+          "oklch(74% 0.013 273)",
+          "oklch(85% 0.011 273)",
+          "oklch(95% 0.008 273)"
+        ]
+      },
+      "card-stroke": {
+        "role": "neutral",
+        "displayName": "Card Line",
+        "tonalRamp": [
+          "oklch(15% 0.014 272)",
+          "oklch(26% 0.018 272)",
+          "oklch(38% 0.021 272)",
+          "oklch(50% 0.022 272)",
+          "oklch(62% 0.022 272)",
+          "oklch(74% 0.021 272)",
+          "oklch(85% 0.018 272)",
+          "oklch(95% 0.014 272)"
+        ]
+      },
+      "card-muted": {
+        "role": "neutral",
+        "displayName": "Card Muted",
+        "tonalRamp": [
+          "oklch(15% 0.018 270)",
+          "oklch(26% 0.024 270)",
+          "oklch(38% 0.028 270)",
+          "oklch(50% 0.030 270)",
+          "oklch(62% 0.030 270)",
+          "oklch(74% 0.027 270)",
+          "oklch(85% 0.023 270)",
+          "oklch(95% 0.018 270)"
+        ]
+      },
+      "card-faint": {
+        "role": "neutral",
+        "displayName": "Card Faint",
+        "tonalRamp": [
+          "oklch(15% 0.023 269)",
+          "oklch(26% 0.030 269)",
+          "oklch(38% 0.035 269)",
+          "oklch(50% 0.037 269)",
+          "oklch(62% 0.037 269)",
+          "oklch(74% 0.034 269)",
+          "oklch(85% 0.029 269)",
+          "oklch(95% 0.023 269)"
+        ]
+      },
+      "card-edge": {
+        "role": "neutral",
+        "displayName": "Card Edge",
+        "tonalRamp": [
+          "oklch(15% 0.039 271)",
+          "oklch(26% 0.051 271)",
+          "oklch(38% 0.060 271)",
+          "oklch(50% 0.064 271)",
+          "oklch(62% 0.064 271)",
+          "oklch(74% 0.059 271)",
+          "oklch(85% 0.050 271)",
+          "oklch(95% 0.039 271)"
+        ]
+      },
+      "card-edge-top": {
+        "role": "neutral",
+        "displayName": "Card Top Edge",
+        "tonalRamp": [
+          "oklch(15% 0.037 272)",
+          "oklch(26% 0.049 272)",
+          "oklch(38% 0.057 272)",
+          "oklch(50% 0.061 272)",
+          "oklch(62% 0.061 272)",
+          "oklch(74% 0.056 272)",
+          "oklch(85% 0.048 272)",
+          "oklch(95% 0.037 272)"
+        ]
+      },
+      "card-sheen": {
+        "role": "neutral",
+        "displayName": "Card Sheen",
+        "tonalRamp": [
+          "oklch(15% 0.032 271)",
+          "oklch(26% 0.042 271)",
+          "oklch(38% 0.049 271)",
+          "oklch(50% 0.052 271)",
+          "oklch(62% 0.052 271)",
+          "oklch(74% 0.048 271)",
+          "oklch(85% 0.041 271)",
+          "oklch(95% 0.032 271)"
+        ]
+      },
+      "card-shade": {
+        "role": "neutral",
+        "displayName": "Card Shade",
+        "tonalRamp": [
+          "oklch(15% 0.019 272)",
+          "oklch(26% 0.024 272)",
+          "oklch(38% 0.028 272)",
+          "oklch(50% 0.030 272)",
+          "oklch(62% 0.030 272)",
+          "oklch(74% 0.028 272)",
+          "oklch(85% 0.024 272)",
+          "oklch(95% 0.019 272)"
+        ]
+      },
+      "panel-top": {
+        "role": "neutral",
+        "displayName": "Raised Panel Top",
+        "tonalRamp": [
+          "oklch(15% 0.034 272)",
+          "oklch(26% 0.044 272)",
+          "oklch(38% 0.052 272)",
+          "oklch(50% 0.056 272)",
+          "oklch(62% 0.055 272)",
+          "oklch(74% 0.051 272)",
+          "oklch(85% 0.044 272)",
+          "oklch(95% 0.034 272)"
+        ]
+      },
+      "panel-edge-top": {
+        "role": "neutral",
+        "displayName": "Raised Panel Edge Top",
+        "tonalRamp": [
+          "oklch(15% 0.031 271)",
+          "oklch(26% 0.041 271)",
+          "oklch(38% 0.048 271)",
+          "oklch(50% 0.052 271)",
+          "oklch(62% 0.051 271)",
+          "oklch(74% 0.047 271)",
+          "oklch(85% 0.040 271)",
+          "oklch(95% 0.031 271)"
+        ]
+      },
+      "panel-edge-bottom": {
+        "role": "neutral",
+        "displayName": "Raised Panel Edge Bottom",
+        "tonalRamp": [
+          "oklch(15% 0.032 272)",
+          "oklch(26% 0.042 272)",
+          "oklch(38% 0.050 272)",
+          "oklch(50% 0.053 272)",
+          "oklch(62% 0.053 272)",
+          "oklch(74% 0.049 272)",
+          "oklch(85% 0.041 272)",
+          "oklch(95% 0.032 272)"
+        ]
+      },
+      "slab": {
+        "role": "neutral",
+        "displayName": "Slab",
+        "tonalRamp": [
+          "oklch(15% 0.006 271)",
+          "oklch(26% 0.009 271)",
+          "oklch(38% 0.010 271)",
+          "oklch(50% 0.011 271)",
+          "oklch(62% 0.011 271)",
+          "oklch(74% 0.010 271)",
+          "oklch(85% 0.008 271)",
+          "oklch(95% 0.006 271)"
+        ]
+      },
+      "slab-edge": {
+        "role": "neutral",
+        "displayName": "Slab Edge",
+        "tonalRamp": [
+          "oklch(15% 0.021 272)",
+          "oklch(26% 0.028 272)",
+          "oklch(38% 0.032 272)",
+          "oklch(50% 0.035 272)",
+          "oklch(62% 0.035 272)",
+          "oklch(74% 0.032 272)",
+          "oklch(85% 0.027 272)",
+          "oklch(95% 0.021 272)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Request Blue",
+        "tonalRamp": [
+          "oklch(15% 0.104 271)",
+          "oklch(26% 0.136 271)",
+          "oklch(38% 0.160 271)",
+          "oklch(50% 0.171 271)",
+          "oklch(62% 0.170 271)",
+          "oklch(74% 0.157 271)",
+          "oklch(85% 0.134 271)",
+          "oklch(95% 0.104 271)"
+        ]
+      },
+      "accent-text": {
+        "role": "primary",
+        "displayName": "Request Blue Text",
+        "tonalRamp": [
+          "oklch(15% 0.069 272)",
+          "oklch(26% 0.090 272)",
+          "oklch(38% 0.106 272)",
+          "oklch(50% 0.113 272)",
+          "oklch(62% 0.113 272)",
+          "oklch(74% 0.104 272)",
+          "oklch(85% 0.089 272)",
+          "oklch(95% 0.069 272)"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "On Request Blue",
+        "tonalRamp": [
+          "oklch(15% 0.009 272)",
+          "oklch(26% 0.012 272)",
+          "oklch(38% 0.014 272)",
+          "oklch(50% 0.015 272)",
+          "oklch(62% 0.015 272)",
+          "oklch(74% 0.014 272)",
+          "oklch(85% 0.012 272)",
+          "oklch(95% 0.009 272)"
+        ]
+      },
+      "status-ok": {
+        "role": "secondary",
+        "displayName": "Status OK",
+        "tonalRamp": [
+          "oklch(15% 0.087 160)",
+          "oklch(26% 0.114 160)",
+          "oklch(38% 0.134 160)",
+          "oklch(50% 0.143 160)",
+          "oklch(62% 0.142 160)",
+          "oklch(74% 0.131 160)",
+          "oklch(85% 0.112 160)",
+          "oklch(95% 0.087 160)"
+        ]
+      },
+      "status-warn": {
+        "role": "secondary",
+        "displayName": "Status Warn",
+        "tonalRamp": [
+          "oklch(15% 0.085 77)",
+          "oklch(26% 0.112 77)",
+          "oklch(38% 0.131 77)",
+          "oklch(50% 0.140 77)",
+          "oklch(62% 0.139 77)",
+          "oklch(74% 0.128 77)",
+          "oklch(85% 0.110 77)",
+          "oklch(95% 0.085 77)"
+        ]
+      },
+      "status-err": {
+        "role": "secondary",
+        "displayName": "Status Error",
+        "tonalRamp": [
+          "oklch(15% 0.098 22)",
+          "oklch(26% 0.129 22)",
+          "oklch(38% 0.151 22)",
+          "oklch(50% 0.162 22)",
+          "oklch(62% 0.161 22)",
+          "oklch(74% 0.148 22)",
+          "oklch(85% 0.126 22)",
+          "oklch(95% 0.098 22)"
+        ]
+      },
+      "status-ai": {
+        "role": "secondary",
+        "displayName": "Status AI",
+        "tonalRamp": [
+          "oklch(15% 0.086 296)",
+          "oklch(26% 0.113 296)",
+          "oklch(38% 0.133 296)",
+          "oklch(50% 0.142 296)",
+          "oklch(62% 0.141 296)",
+          "oklch(74% 0.130 296)",
+          "oklch(85% 0.111 296)",
+          "oklch(95% 0.086 296)"
+        ]
+      },
+      "status-info": {
+        "role": "secondary",
+        "displayName": "Status Info",
+        "tonalRamp": [
+          "oklch(15% 0.073 225)",
+          "oklch(26% 0.096 225)",
+          "oklch(38% 0.112 225)",
+          "oklch(50% 0.120 225)",
+          "oklch(62% 0.119 225)",
+          "oklch(74% 0.110 225)",
+          "oklch(85% 0.094 225)",
+          "oklch(95% 0.073 225)"
+        ]
+      },
+      "system-dark-bg": {
+        "role": "neutral",
+        "displayName": "System Dark Ground",
+        "tonalRamp": [
+          "oklch(15% 0.001 107)",
+          "oklch(26% 0.002 107)",
+          "oklch(38% 0.002 107)",
+          "oklch(50% 0.002 107)",
+          "oklch(62% 0.002 107)",
+          "oklch(74% 0.002 107)",
+          "oklch(85% 0.002 107)",
+          "oklch(95% 0.001 107)"
+        ]
+      },
+      "system-dark-fg": {
+        "role": "neutral",
+        "displayName": "System Dark Ink",
+        "tonalRamp": [
+          "oklch(15% 0.002 106)",
+          "oklch(26% 0.002 106)",
+          "oklch(38% 0.002 106)",
+          "oklch(50% 0.003 106)",
+          "oklch(62% 0.003 106)",
+          "oklch(74% 0.002 106)",
+          "oklch(85% 0.002 106)",
+          "oklch(95% 0.002 106)"
+        ]
+      },
+      "system-dark-muted": {
+        "role": "neutral",
+        "displayName": "System Dark Muted",
+        "tonalRamp": [
+          "oklch(15% 0.003 107)",
+          "oklch(26% 0.005 107)",
+          "oklch(38% 0.005 107)",
+          "oklch(50% 0.006 107)",
+          "oklch(62% 0.006 107)",
+          "oklch(74% 0.005 107)",
+          "oklch(85% 0.004 107)",
+          "oklch(95% 0.003 107)"
+        ]
+      },
+      "system-dark-faint": {
+        "role": "neutral",
+        "displayName": "System Dark Faint",
+        "tonalRamp": [
+          "oklch(15% 0.004 107)",
+          "oklch(26% 0.005 107)",
+          "oklch(38% 0.006 107)",
+          "oklch(50% 0.006 107)",
+          "oklch(62% 0.006 107)",
+          "oklch(74% 0.006 107)",
+          "oklch(85% 0.005 107)",
+          "oklch(95% 0.004 107)"
+        ]
+      },
+      "system-dark-rule": {
+        "role": "neutral",
+        "displayName": "System Dark Rule",
+        "tonalRamp": [
+          "oklch(15% 0.002 107)",
+          "oklch(26% 0.003 107)",
+          "oklch(38% 0.003 107)",
+          "oklch(50% 0.004 107)",
+          "oklch(62% 0.004 107)",
+          "oklch(74% 0.003 107)",
+          "oklch(85% 0.003 107)",
+          "oklch(95% 0.002 107)"
+        ]
+      },
+      "system-dark-accent": {
+        "role": "primary",
+        "displayName": "System Dark Blue",
+        "tonalRamp": [
+          "oklch(15% 0.110 261)",
+          "oklch(26% 0.144 261)",
+          "oklch(38% 0.169 261)",
+          "oklch(50% 0.181 261)",
+          "oklch(62% 0.180 261)",
+          "oklch(74% 0.166 261)",
+          "oklch(85% 0.141 261)",
+          "oklch(95% 0.110 261)"
+        ]
+      },
+      "system-dark-accent-text": {
+        "role": "primary",
+        "displayName": "System Dark Blue Text",
+        "tonalRamp": [
+          "oklch(15% 0.083 263)",
+          "oklch(26% 0.109 263)",
+          "oklch(38% 0.128 263)",
+          "oklch(50% 0.137 263)",
+          "oklch(62% 0.136 263)",
+          "oklch(74% 0.125 263)",
+          "oklch(85% 0.107 263)",
+          "oklch(95% 0.083 263)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only, two tones."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "One per layer and the closing panel."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Contact links."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "One sentence per layer, muted, 30ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Rail items and footer."
+      },
+      "plate-tag": {
+        "displayName": "Plate tag",
+        "purpose": "Route names, status codes and timings on a card, in drawing units."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-top-highlight",
+        "value": "inset 0 3px 0 rgb(255 255 255 / 0.07)",
+        "purpose": "Inset highlight under the top edge of a plate (painted at double size)."
+      },
+      {
+        "name": "card-cast",
+        "value": "radial-gradient(closest-side, rgb(0 0 0 / 0.6) 50%, transparent)",
+        "purpose": "Shadow a plate throws on the one below, offset 5% and 7%; fades with the casting plate."
+      },
+      {
+        "name": "card-slab",
+        "value": "3 copies, #05060a with 1px #1c2133 border, 5px apart in Z",
+        "purpose": "Thickness of a plate; fades with its plate."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one easing for panel, marker, rail and tone transitions."
+      },
+      {
+        "name": "camera-glide",
+        "value": "smoothstep over the middle 64% of a screen, rest for the first and last 18%",
+        "purpose": "Scroll to camera pose between stops."
+      },
+      {
+        "name": "camera-overview",
+        "value": "rotateX 57deg, rotateZ 45deg, scale 0.46 (opening) or 0.42 (closing), gap 150px or 180px",
+        "purpose": "Isometric view of the whole stack."
+      },
+      {
+        "name": "camera-focus",
+        "value": "rotateX 24deg, rotateZ -8deg, scale 1, gap 700px",
+        "purpose": "A layer facing the visitor."
+      },
+      {
+        "name": "ground-depth",
+        "value": "--d 0 at the opening, 0.86 to 1 across the layers, 1 at the close; tone flips to deep above 0.45",
+        "purpose": "Darkens the ground and scales the dot grid and glows."
+      },
+      {
+        "name": "panel-in",
+        "value": "opacity 0.35s, translateY 14px over 0.6s, 0.1s delay",
+        "purpose": "Text panel appearing near its stop."
+      },
+      {
+        "name": "marker-in",
+        "value": "opacity 0.3s, scale 0.4 to 1 over 0.5s, delay n * 140ms + 150ms",
+        "purpose": "Markers on the focused plate, in order."
+      },
+      {
+        "name": "plate-loop",
+        "value": "8s linear infinite (some 6s or 7s), start time in --t, animating --o and --tf",
+        "purpose": "The looped process on each card; runs only on .is-live plates."
+      },
+      {
+        "name": "riser-dots",
+        "value": "6.4s per pass, 4 dots, alternate directions",
+        "purpose": "Requests going down and answers coming up."
+      },
+      {
+        "name": "scroll-cue",
+        "value": "1.8s infinite",
+        "purpose": "Line drawing down beside the cue label."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "flight not started; stacked document, plate animations paused",
+        "purpose": "Fallback for prefers-reduced-motion and no script."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desktop",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Card (plate)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The one card style every layer wears: lit dark surface, brighter top edge, raised gradient panels, hairline drawing, small tags, a status colour only where it states a status.",
+      "html": "<svg class=\"ds-plate\" viewBox=\"0 0 100 60\" role=\"img\" aria-label=\"Sample plate\"><defs><linearGradient id=\"ds-panel\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#2b3352\"/><stop offset=\"1\" stop-color=\"#1a2033\"/></linearGradient><linearGradient id=\"ds-edge\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#a3aed1\"/><stop offset=\"1\" stop-color=\"#4f5878\"/></linearGradient></defs><rect class=\"ds-panel\" x=\"6\" y=\"8\" width=\"30\" height=\"20\" rx=\"1.5\"/><rect class=\"ds-soft\" x=\"9\" y=\"13\" width=\"14\" height=\"1.8\"/><rect class=\"ds-soft\" x=\"9\" y=\"18\" width=\"20\" height=\"1.8\"/><path d=\"M36 18H56\"/><rect class=\"ds-panel\" x=\"56\" y=\"10\" width=\"36\" height=\"16\" rx=\"1.5\"/><text class=\"ds-tag\" x=\"59\" y=\"16\">/posts</text><text class=\"ds-tag ds-ok\" x=\"89\" y=\"16\" text-anchor=\"end\">200</text><path class=\"ds-dash\" d=\"M21 28V42H56\"/><rect class=\"ds-panel\" x=\"56\" y=\"36\" width=\"36\" height=\"12\" rx=\"1.5\"/><text class=\"ds-tag\" x=\"59\" y=\"43\">/billing</text><text class=\"ds-tag ds-err\" x=\"89\" y=\"43\" text-anchor=\"end\">403</text><circle class=\"ds-packet\" cx=\"46\" cy=\"18\" r=\"1.1\"/></svg>",
+      "css": ".ds-plate { --bg: #1a2033; --fg: #e8ebf5; --muted: #9aa1b5; --faint: #4d556b; --accent: #6f8cff; --on-accent: #0b0d14; --ok: #5fe0a4; --warn: #ffbe55; --err: #ff7a7a; font-family: 'Host Grotesk Variable', system-ui, sans-serif; width: 360px; fill: none; stroke: #d3d8e8; stroke-width: 0.3; stroke-linecap: round; stroke-linejoin: round; background: radial-gradient(70% 55% at 22% 12%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 70%), linear-gradient(155deg, #2b3350, var(--bg) 50%, #121625); border: 1px solid #5e6a92; border-top-color: #97a3cc; border-radius: 8px; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.07); } .ds-plate .ds-panel { fill: url(#ds-panel); stroke: url(#ds-edge); } .ds-plate .ds-soft { fill: var(--faint); stroke: none; } .ds-plate .ds-dash { stroke: var(--muted); stroke-dasharray: 0.9 1; } .ds-plate .ds-tag { fill: var(--muted); stroke: none; font-size: 2.3px; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; } .ds-plate .ds-tag.ds-ok { fill: var(--ok); } .ds-plate .ds-tag.ds-err { fill: var(--err); } .ds-plate .ds-packet { fill: var(--accent); stroke: none; }"
+    },
+    {
+      "name": "Text panel with numbered points",
+      "kind": "custom",
+      "refersTo": "point-number",
+      "description": "Per layer: a title, one muted sentence and three numbered points whose numerals match the markers on the card.",
+      "html": "<section class=\"ds-panel-text\"><h2>Who gets in</h2><p>Invisible when it is right, expensive when it is wrong.</p><ol><li>Sessions that expire</li><li>Roles: who may see what</li><li>Reset, lockout, second factor</li></ol></section>",
+      "css": ".ds-panel-text { --bg: #0a0c16; --fg: #eef0f7; --muted: #a3a9bb; --faint: #5a6178; --rule: #262b3d; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; font-family: 'Host Grotesk Variable', system-ui, sans-serif; background: #06070c; color: var(--fg); padding: 2rem 24px; max-width: 27rem; font-size: 1.0625rem; line-height: 1.6; } .ds-panel-text h2 { margin: 0; font-size: 2.5rem; font-weight: 500; line-height: 1.08; letter-spacing: -0.025em; } .ds-panel-text p { margin: 0.9rem 0 0; color: var(--muted); max-width: 30ch; } .ds-panel-text ol { list-style: none; margin: 1.75rem 0 0; padding: 0; counter-reset: point; display: grid; gap: 0.7rem; } .ds-panel-text li { counter-increment: point; display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.75rem; align-items: baseline; font-weight: 500; } .ds-panel-text li::before { content: counter(point); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-size: 0.8125rem; font-weight: 600; line-height: 1; }"
+    },
+    {
+      "name": "Links",
+      "kind": "button",
+      "refersTo": "link",
+      "description": "The only call to action: text links with an accent underline. The first in a group is accent text at rest.",
+      "html": "<div class=\"ds-links\"><a href=\"#\">Talk to Kevin</a><a href=\"#\">LinkedIn</a><a href=\"#\">CV</a></div>",
+      "css": ".ds-links { --bg: #fcfcfc; --fg: #171717; --muted: #6b6b6b; --accent: #0055ff; --accent-text: #0047d6; font-family: 'Host Grotesk Variable', system-ui, sans-serif; background: var(--bg); color: var(--fg); padding: 24px; display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; font-size: 1.25rem; font-weight: 500; } .ds-links a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 0.3em; } .ds-links a:first-child, .ds-links a:hover { color: var(--accent-text); } .ds-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Navigation rail",
+      "kind": "nav",
+      "refersTo": "rail-item",
+      "description": "Desktop only. Layer names with a tick; the current tick grows and turns accent.",
+      "html": "<nav class=\"ds-rail\" aria-label=\"Layers\"><a href=\"#\">Interface</a><a href=\"#\" class=\"ds-current\">Auth</a><a href=\"#\">Server</a><a href=\"#\">Models</a><a href=\"#\">Cloud</a><a href=\"#\">Insights</a></nav>",
+      "css": ".ds-rail { --bg: #0a0c16; --fg: #eef0f7; --muted: #a3a9bb; --faint: #5a6178; --rule: #262b3d; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; font-family: 'Host Grotesk Variable', system-ui, sans-serif; background: #06070c; padding: 24px; display: grid; gap: 0.6rem; justify-items: end; font-size: 0.8125rem; width: 10rem; } .ds-rail a { display: flex; align-items: center; gap: 0.6rem; color: var(--muted); text-decoration: none; transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-rail a::after { content: ''; width: 14px; height: 1.5px; background: var(--faint); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-rail a:hover, .ds-rail a.ds-current { color: var(--fg); } .ds-rail a.ds-current::after { width: 34px; height: 2px; background: var(--accent); } .ds-rail a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Hero headline",
+      "kind": "custom",
+      "refersTo": "link-primary",
+      "description": "The paper opening: text mark, two-tone display headline, scroll cue.",
+      "html": "<div class=\"ds-hero\"><div class=\"ds-mark\">A/1</div><h1>Products are complex. <span>Skip finding out yourself.</span></h1><p class=\"ds-cue\">Scroll to take one apart</p></div>",
+      "css": ".ds-hero { --bg: #fcfcfc; --fg: #171717; --muted: #6b6b6b; --accent: #0055ff; --accent-text: #0047d6; font-family: 'Host Grotesk Variable', system-ui, sans-serif; background: var(--bg); color: var(--fg); padding: 3rem 24px; } .ds-hero .ds-mark { font-size: 1.5rem; font-weight: 700; line-height: 1; margin-bottom: 2.5rem; } .ds-hero h1 { margin: 0; font-size: clamp(2.75rem, 6vw, 5.25rem); font-weight: 500; line-height: 1; letter-spacing: -0.035em; text-wrap: balance; } .ds-hero h1 span { display: block; color: var(--muted); } .ds-hero .ds-cue { display: flex; align-items: center; gap: 0.75rem; margin: 2.5rem 0 0; font-size: 0.875rem; color: var(--muted); } .ds-hero .ds-cue::before { content: ''; width: 1.5px; height: 2.25rem; background: var(--accent); transform-origin: top; animation: ds-drop 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite; } @keyframes ds-drop { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } } @media (prefers-reduced-motion: reduce) { .ds-hero .ds-cue::before { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Exploded Drawing",
+    "overview": "The site is one figure: a product pulled apart into six layers (Interface, Auth, Server, Models, Cloud, Insights) and flown through by a scroll-driven camera. It opens on white paper with a large two-tone headline and the whole stack in isometric view. Scrolling moves the camera inside the stack, and the ground darkens to a deep blue-black with two soft glows and a dot grid. Every layer is the same dark card, drawn in thin lines, running its own looped process.\n\nText is minimal: a headline, then per layer a title, one sentence and three numbered points keyed to markers on the card. The technical edge comes from the drawings and their small labels, not from decoration. Colour beyond blue appears only as status.",
+    "keyCharacteristics": [
+      "Two grounds: white paper for the opening, a deep ground for everything inside the stack.",
+      "One card style for all six plates, on either ground.",
+      "Blue is a request in motion or the active control. Green, amber, coral, violet and cyan are status only.",
+      "One typeface, Host Grotesk Variable, self-hosted.",
+      "Scroll is the only navigation device; without script or with reduced motion the page is a plain stacked document."
+    ],
+    "rules": [
+      {
+        "name": "The Three Tones Rule",
+        "body": "Colour is chosen by setting `data-tone` to `paper`, `deep` or `card` on a container, never by writing a hex in a component. The plates always carry `card`; the stage carries `paper` or `deep`, set by the camera.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Opening Rule",
+        "body": "While the flight runs, the opening is white paper in every system mode. `paper` and `deep` pin `color-scheme` so form controls and scrollbars follow the ground, not the visitor's setting.",
+        "section": "colors"
+      },
+      {
+        "name": "The Depth Rule",
+        "body": "The ground is one continuous value `--d` from 0 (paper) to 1 (deepest), written by the camera. The base colour is `color-mix(in oklab, paper-bg, deep-ground d)`, and the dot grid (white at up to 9%, 30px pitch) and both glows scale with the same `--d`. The tone flips from `paper` to `deep` when `--d` passes 0.45, and the browser theme colour follows.",
+        "section": "colors"
+      },
+      {
+        "name": "The Meaning Only Rule",
+        "body": "A status colour is used only where the drawing states that thing: a check that passed, a counter filling, a 403, a model working, a row being read. Blue stays the request and the active control. No status colour is ever a layer's identity or an ornament.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "Hierarchy comes from size, weight 500 against 400, and foreground against muted. No second typeface, no uppercase tracking, no italics.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tied Shadow Rule",
+        "body": "A cast shadow belongs to the plate that casts it, and fades with it. A plate the camera has passed must not darken the one in focus.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Double Size Rule",
+        "body": "Plates are painted at 200% and scaled to 50% so lines and labels stay sharp when the camera tilts and zooms. Keep this when changing plate size.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set colour through `data-tone` and the shared custom properties; add a new colour as a token in `src/styles/global.css` first.",
+      "Do keep every plate in the one card style, on any ground.",
+      "Do use blue for a request in motion and the active control, and a status colour only where the drawing states that status.",
+      "Do animate `--o` and `--tf` inside plates, and gate animations on `.is-live`.",
+      "Do keep the page readable as a stacked document without script and with reduced motion.",
+      "Do keep copy to a title, one sentence and three points per layer, with markers matching the points.",
+      "Do check both the paper and deep ground, and the system light and dark fallback, when touching stage text or lines."
+    ],
+    "donts": [
+      "Don't animate `opacity` or `transform` on anything inside a plate drawing.",
+      "Don't give a layer its own colour or card style. One colour per layer was tried and rejected as too much.",
+      "Don't use status colours as decoration, or blue as a status.",
+      "Don't let the opening follow the system dark mode while the flight runs.",
+      "Don't add a second typeface or load fonts from a third party.",
+      "Don't add drop shadows to text, links or panels; depth belongs to the stack.",
+      "Don't let a cast shadow outlive the plate that casts it."
+    ]
+  }
+}
