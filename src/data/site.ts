@@ -10,22 +10,42 @@ export const brand = {
 };
 
 export const hero = {
-  title: 'Products are complex. Skip finding out yourself.',
-  text: 'It starts as a box on a page. Scroll, and watch what it needs before anyone can use it.',
+  title: 'Products are complex.',
+  sub: 'Skip finding out yourself.',
+  cue: 'Scroll to take one apart',
 };
 
-// One entry per build stage. `name` is the caption under the figure; the order is the order of the
-// figure's layers (src/components/Figure.astro).
-export const stages = [
-  { id: 'wireframe', name: 'wireframe', title: 'It starts with boxes on a page.', text: 'This is the cheap part. It is also where most of the decisions get made, long before any code exists.' },
-  { id: 'frontend', name: 'frontend', title: 'Then it looks finished.', text: 'The boxes become an interface people can touch. Nothing behind it works yet. This is where most demos stop.' },
-  { id: 'server', name: 'server + database', title: 'Now the button has to do something.', text: "Requests go out, answers come back, and the data has to live somewhere it won't get lost." },
-  { id: 'auth', name: 'authentication', title: 'Who is allowed in?', text: 'Sign-in, sessions, permissions. Invisible when it is right, expensive when it is wrong.' },
-  { id: 'cloud', name: 'cloud', title: 'It has to stay up while you sleep.', text: 'Everything above needs somewhere to run. One machine becomes several, with deploys, scaling, monitoring and backups.' },
-  { id: 'models', name: 'ML models', title: 'And then it should think.', text: 'Models read, classify and answer in the background. They are slow, costly and sometimes wrong, so they need queues and checks.' },
+// One entry per layer of the stack, top to bottom. `points` are numbered 1..3 and match the
+// markers drawn on that layer's plate in src/components/Stack.astro.
+export const layers = [
+  {
+    id: 'interface', label: 'Interface', title: 'What people see',
+    text: 'The part everyone judges. It has to hold up in every state, on every screen.',
+    points: ['Loading, empty and error states', 'Fits a phone', 'Works with a keyboard'],
+  },
+  {
+    id: 'sign-in', label: 'Sign-in', title: 'Who gets in',
+    text: 'Invisible when it is right, expensive when it is wrong.',
+    points: ['Sessions that expire', 'Roles: who may see what', 'Reset, lockout, second factor'],
+  },
+  {
+    id: 'server', label: 'Server', title: 'Where the work happens',
+    text: 'Every request is checked before it touches your data.',
+    points: ['Validate every input', 'Rate limits', 'Backups you have tested'],
+  },
+  {
+    id: 'models', label: 'Models', title: 'Where it thinks',
+    text: 'Slow, costly and sometimes wrong. So it gets supervision.',
+    points: ['Guardrails in and out', 'Queues for slow work', 'Evals: is it still right?'],
+  },
+  {
+    id: 'cloud', label: 'Cloud', title: 'What keeps it up',
+    text: 'No single machine matters. It stays up while you sleep.',
+    points: ['Load balancing', 'Redundancy across zones', 'Scaling and alerts'],
+  },
 ];
 
 export const close = {
   title: 'That was one product.',
-  text: "I'm Kevin Kraus, a product engineer in Hamburg. I have taken products from a sketch to production many times, so you don't have to find out each of these steps yourself.",
+  text: "I'm Kevin Kraus. I have taken products from sketch to production many times, so you don't have to find out each layer yourself.",
 };

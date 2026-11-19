@@ -13,6 +13,8 @@ Constraints: minimal with a technical edge (references the user named: rauno.me,
 Backup directions: .impeccable/backup/ (round-2 "sheet" is the named fallback).
 Iteration 1 (user): accent changed from orange to blue; figure redrawn as an exploded isometric stack that assembles; stage headings rewritten as sentences.
 
+Iteration 2 (user): less text, a hero that kicks in, and an immersive fly-through. The page is now one sticky full-screen stage: scroll flies a 3D camera from the assembled stack (hero) down through five plates (interface, sign-in, server, models, cloud), each showing three numbered points, and ends on the exploded overview with the contact links. The text column, ticks and isometric SVG figure below are superseded by this.
+
 ## Direction contract
 
 THESIS: A nearly empty page where a few sentences tell the journey and one small isometric line figure does the showing: it grows from a box into a running system as you read. Refuses the dark hero with a node diagram and a row of feature cards.

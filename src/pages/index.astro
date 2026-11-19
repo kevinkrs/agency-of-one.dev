@@ -1,165 +1,152 @@
 ---
 import Base from '../layouts/Base.astro';
-import Figure from '../components/Figure.astro';
-import { brand, hero, stages, close } from '../data/site';
+import Stack from '../components/Stack.astro';
+import { brand, hero, layers, close } from '../data/site';
 
 const links = [
   { label: 'Talk to Kevin', href: `mailto:${brand.email}` },
   { label: 'LinkedIn', href: brand.linkedin },
   { label: 'CV', href: brand.cv },
 ];
-const closeLinks = [
-  { label: brand.email, href: `mailto:${brand.email}` },
-  links[1],
-  links[2],
-];
+// One screen of scroll per stop: hero, the layers, the end.
+const stops = layers.length + 2;
 ---
-<Base title="Agency of One: Kevin Kraus, product engineer" description={`${hero.title} ${hero.text}`}>
-  <ol class="ticks" aria-hidden="true">
-    {stages.map(() => <li />)}
-  </ol>
-  <main class="layout">
-    <div class="fig-col">
-      <div class="fig"><Figure /></div>
-    </div>
-    <div class="text">
-      <section class="hero" data-stage="0">
+<Base title="Agency of One: Kevin Kraus, product engineer" description={`${hero.title} ${hero.sub} One product, taken apart layer by layer.`}>
+  <main class="flight" data-flight style={`--stops: ${stops}`}>
+    <div class="snap" id="top" style="--at: 0"></div>
+    {layers.map((l, i) => <div class="snap" id={l.id} style={`--at: ${i + 1}`}></div>)}
+    <div class="snap" id="contact" style={`--at: ${stops - 1}`}></div>
+
+    <div class="stage" data-stage>
+      <div class="scene" aria-hidden="true"><Stack /></div>
+
+      <section class="panel hero" data-panel>
         <div class="mark">{brand.mark}</div>
-        <h1>{hero.title}</h1>
-        <p>{hero.text}</p>
+        <h1>{hero.title} <span>{hero.sub}</span></h1>
         <div class="links">
           {links.map((l) => <a href={l.href}>{l.label}</a>)}
         </div>
+        <p class="cue">{hero.cue}</p>
       </section>
 
-      {stages.map((s, i) => (
-        <section class="stage" id={s.id} data-stage={i + 1}>
-          <h2>{s.title}</h2>
-          <p>{s.text}</p>
+      {layers.map((l) => (
+        <section class="panel" data-panel>
+          <h2>{l.title}</h2>
+          <p>{l.text}</p>
+          <ol>
+            {l.points.map((point) => <li>{point}</li>)}
+          </ol>
         </section>
       ))}
 
-      <section class="close" id="contact" data-stage="6">
-        <div class="close-body">
-          <h2>{close.title}</h2>
-          <p>{close.text}</p>
-          <div class="links big">
-            {closeLinks.map((l) => <a href={l.href}>{l.label}</a>)}
-          </div>
+      <section class="panel end" data-panel>
+        <h2>{close.title}</h2>
+        <p>{close.text}</p>
+        <div class="links big">
+          <a href={`mailto:${brand.email}`}>{brand.email}</a>
+          <a href={brand.linkedin}>LinkedIn</a>
+          <a href={brand.cv}>CV</a>
         </div>
-        <footer>
-          <span>Agency of One · Kevin Kraus · Hamburg</span>
-          <a href="/impressum/">Impressum</a>
-          <a href="/datenschutz/">Datenschutz</a>
-        </footer>
       </section>
+
+      <nav class="rail" aria-label="Layers">
+        {layers.map((l) => <a href={`#${l.id}`} data-nav>{l.label}</a>)}
+      </nav>
+
+      <footer>
+        <span>Agency of One · Kevin Kraus · Hamburg</span>
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
+      </footer>
     </div>
   </main>
 </Base>
 
 <style>
-  /* Mobile first: single column, figure pinned on top. */
-  .layout { display: block; }
-  .fig-col { display: contents; }
-  .fig {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    height: 42svh;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg);
-    border-bottom: 1px solid var(--rule);
-  }
-  .ticks { display: none; }
+  /* Default: a plain stacked document. This is what shows without the script and with reduced
+     motion. The flight below only switches on once src/scripts/flight.ts adds .js-flight. */
+  .flight { --p: min(78vw, 46svh); --ox: 0px; --oy: 0px; }
+  .snap { display: none; }
+  .scene { display: grid; place-items: center; height: 62svh; perspective: 1400px; overflow: hidden; pointer-events: none; }
+  .panel { padding: 3rem 24px; max-width: 34rem; }
+  .rail { display: none; }
 
-  section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 60svh;
-    padding: 4rem 24px;
-  }
-  section > :global(*), .close-body > :global(*) { max-width: 440px; }
-  p { color: var(--muted); }
-  h1 { font-size: 2.5rem; line-height: 1.15; }
-  h2 { font-size: 1.75rem; line-height: 1.2; }
-  h1 + p, h2 + p { margin-top: 1rem; }
+  h1 { font-size: clamp(2.75rem, 6vw, 5.25rem); line-height: 1; letter-spacing: -0.035em; }
+  h1 span { display: block; color: var(--muted); }
+  h2 { font-size: clamp(1.75rem, 2.6vw, 2.5rem); line-height: 1.08; letter-spacing: -0.025em; }
+  p { margin-top: 0.9rem; color: var(--muted); max-width: 30ch; }
+  .end p { max-width: 38ch; }
+  .mark { font-size: 1.5rem; font-weight: 700; line-height: 1; margin-bottom: 2.5rem; }
 
-  .mark { font-size: 1.5rem; font-weight: 700; line-height: 1; margin-bottom: 3.5rem; }
-  .links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 2.5rem; font-size: 1.25rem; font-weight: 500; }
+  ol { list-style: none; margin: 1.75rem 0 0; padding: 0; counter-reset: point; display: grid; gap: 0.7rem; }
+  li { counter-increment: point; display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.75rem; align-items: baseline; font-weight: 500; }
+  li::before {
+    content: counter(point);
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 2.25rem; font-size: 1.25rem; font-weight: 500; }
   .links a:first-child { color: var(--accent-text); }
-  .links.big { font-size: 1.5rem; }
+  .links.big { font-size: clamp(1.25rem, 1.8vw, 1.5rem); }
+  .cue { display: none; }
+  footer { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; padding: 2rem 24px; font-size: 0.8125rem; color: var(--muted); }
 
-  .close { min-height: 80svh; }
-  .close-body { margin-block: auto; padding-block: 4rem; }
-  .close h2 { font-size: 2.5rem; line-height: 1.15; }
-  footer { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; max-width: none; font-size: 0.8125rem; color: var(--faint); }
+  /* ---- The flight ---- */
+  :global(.js-flight) { scroll-snap-type: y proximity; }
+  :global(.js-flight) .flight { position: relative; height: calc(var(--stops) * 100svh); --oy: -19svh; }
+  :global(.js-flight) .snap { display: block; position: absolute; top: calc(var(--at) * 100svh); height: 1px; width: 1px; scroll-snap-align: start; }
+  :global(.js-flight) .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  :global(.js-flight) .scene { position: absolute; inset: 0; height: auto; overflow: visible; }
+
+  :global(.js-flight) .panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Solid on phones, so the plates flying underneath never run through the text. */
+    padding: 22px 24px 7svh;
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.35s var(--ease), transform 0.6s var(--ease), visibility 0s 0.35s;
+  }
+  :global(.js-flight) .panel.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0.1s, 0.1s, 0s; }
+
+  :global(.js-flight) .cue { display: flex; align-items: center; gap: 0.75rem; margin-top: 2.5rem; font-size: 0.875rem; max-width: none; }
+  :global(.js-flight) .cue::before { content: ''; width: 1.5px; height: 2.25rem; background: var(--accent); transform-origin: top; animation: drop 1.8s var(--ease) infinite; }
+  @keyframes drop { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+
+  :global(.js-flight) footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 14px; opacity: 0; transition: opacity 0.35s var(--ease); }
+  :global(.js-flight) .end.is-active ~ footer { opacity: 1; }
 
   @media (min-width: 900px) {
-    .layout {
-      display: grid;
-      grid-template-columns: 520px 360px;
-      column-gap: 90px;
-      max-width: 1000px;
-      margin-inline: auto;
-      justify-content: center;
-      align-items: stretch;
-    }
-    .fig-col { display: block; grid-column: 2; grid-row: 1; }
-    .text { grid-column: 1; grid-row: 1; }
-    .fig {
-      top: calc(50svh - 240px);
-      height: 480px;
-      padding: 0;
-      border-bottom: 0;
-      background: none;
-    }
+    .flight { --p: min(60svh, 40vw); }
+    :global(.js-flight) .flight { --ox: 17vw; --oy: 0px; }
+    :global(.js-flight) .panel { left: max(6vw, 56px); right: auto; bottom: auto; top: 50%; width: min(24rem, 32vw); padding: 0; background: none; border-top: 0; transform: translateY(calc(-50% + 14px)); }
+    :global(.js-flight) .panel.is-active { transform: translateY(-50%); }
+    :global(.js-flight) .panel.hero { width: min(46rem, 50vw); }
+    :global(.js-flight) .panel.end { width: min(30rem, 38vw); }
+    :global(.js-flight) footer { left: max(6vw, 56px); padding: 0 0 28px; }
 
-    section { padding: 4rem 0; }
-    .hero, .close { min-height: 100svh; }
-    .stage { min-height: 90svh; }
-    .close { padding-bottom: 2rem; }
-    .close-body { padding-block: 4rem; }
-
-    .ticks {
-      display: flex;
-      flex-direction: column;
-      gap: 34px;
-      position: fixed;
-      left: 56px;
-      top: 50%;
-      transform: translateY(-50%);
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .ticks li {
-      width: 18px;
-      height: 0;
-      border-top: 1.5px solid var(--faint);
-      transition: width 400ms var(--ease), border-color 400ms var(--ease), border-top-width 400ms var(--ease);
-    }
-    :global(html[data-stage="2"]) .ticks li:nth-child(-n+1),
-    :global(html[data-stage="3"]) .ticks li:nth-child(-n+2),
-    :global(html[data-stage="4"]) .ticks li:nth-child(-n+3),
-    :global(html[data-stage="5"]) .ticks li:nth-child(-n+4),
-    :global(html[data-stage="6"]) .ticks li:nth-child(-n+5) { border-color: var(--fg); }
-    :global(html[data-stage="1"]) .ticks li:nth-child(1),
-    :global(html[data-stage="2"]) .ticks li:nth-child(2),
-    :global(html[data-stage="3"]) .ticks li:nth-child(3),
-    :global(html[data-stage="4"]) .ticks li:nth-child(4),
-    :global(html[data-stage="5"]) .ticks li:nth-child(5),
-    :global(html[data-stage="6"]) .ticks li:nth-child(6) {
-      width: 38px;
-      border-top-width: 2.5px;
-      border-color: var(--accent);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ticks li { transition: none; }
+    :global(.js-flight) .rail { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); display: grid; gap: 0.6rem; justify-items: end; font-size: 0.8125rem; }
+    .rail a { display: flex; align-items: center; gap: 0.6rem; color: var(--muted); text-decoration: none; transition: color 0.3s var(--ease); }
+    .rail a::after { content: ''; width: 14px; height: 1.5px; background: var(--faint); transition: width 0.4s var(--ease), background-color 0.3s var(--ease); }
+    .rail a:hover, .rail a.is-current { color: var(--fg); }
+    .rail a.is-current::after { width: 34px; height: 2px; background: var(--accent); }
   }
 </style>
+
+<script>
+  import '../scripts/flight.ts';
+</script>
