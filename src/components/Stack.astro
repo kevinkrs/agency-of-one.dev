@@ -19,10 +19,16 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
     const Drawing = drawings[i];
     return (!only || only === layer.id) && (
       <svg class:list={['plate', { 'is-focus is-live': flat }]} data-plate data-tone="card" style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
+        <defs>
+          <linearGradient id="plate-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3352" /><stop offset="1" stop-color="#1a2033" /></linearGradient>
+          <linearGradient id="plate-edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a3aed1" /><stop offset="1" stop-color="#4f5878" /></linearGradient>
+        </defs>
         <Drawing />
       </svg>
     );
   })}
+  {!flat && layers.map((_, i) => [1, 2, 3].map((n) => <i class="slab" data-of={i} style={`--i: ${i}; --n: ${n}`} />))}
+  {!flat && layers.slice(1).map((_, i) => <i class="cast" data-of={i + 1} style={`--i: ${i + 1}`} />)}
   {!flat && layers.slice(1).map((_, i) => <><i class="riser l" style={`--i: ${i}`} /><i class="riser r" style={`--i: ${i}`} /></>)}
   {!flat && Array.from({ length: 8 }, (_, n) => <i class:list={['dot', n % 2 ? 'r' : 'l']} data-dot />)}
 </div>
@@ -37,13 +43,24 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
        camera tilts and zooms. will-change pins that double-size bitmap. */
     width: 200%;
     height: 200%;
-    background: linear-gradient(155deg, #181c2a, var(--bg) 55%);
+    /* A lit dark surface: sheen from the top left, a faint accent glow, a brighter top edge. */
+    background:
+      radial-gradient(70% 55% at 22% 12%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 70%),
+      linear-gradient(155deg, #1e2436, var(--bg) 48%, #0a0c13);
     border: 2px solid var(--edge);
+    border-top-color: #6d7799;
     border-radius: 16px;
+    box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.07);
+    stroke: #d3d8e8;
     transform-origin: 0 0;
     transform: translateZ(calc(var(--gap) * var(--i) * -1px)) scale(0.5);
     will-change: transform;
   }
+  /* Three darker copies under each plate read as the slab's thickness; .cast is the shadow a plate
+     throws on the one below. flight.ts fades both with their plate. */
+  .slab { position: absolute; inset: 0; border-radius: 8px; background: #05060a; border: 1px solid #1c2133; transform: translateZ(calc(var(--gap) * var(--i) * -1px - var(--n) * 5px)); }
+  .cast { position: absolute; inset: -4%; background: radial-gradient(closest-side, rgb(0 0 0 / 0.55) 55%, transparent); transform: translateZ(calc(var(--gap) * var(--i) * -1px + 3px)) translate(5%, 7%); pointer-events: none; }
+
   /* Risers join each plate to the next one down, on the left and right edge; dots are the
      requests going down (left) and the answers coming back up (right). flight.ts moves the dots. */
   .riser {
@@ -65,4 +82,9 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
 
   .world.flat { display: flex; flex-wrap: wrap; gap: 32px; width: auto; height: auto; transform: none; }
   .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1px; border-radius: 8px; }
+</style>
+
+<!-- Inline so url(#...) resolves against this document: every plain rect in a drawing becomes a lit, raised panel. -->
+<style is:inline>
+  .plate rect:not([class]) { fill: url(#plate-panel); stroke: url(#plate-edge); }
 </style>

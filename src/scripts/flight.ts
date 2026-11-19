@@ -43,6 +43,7 @@ function init() {
   const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
   const navs = [...root.querySelectorAll<HTMLElement>('[data-nav]')];
   const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+  const followers = [...root.querySelectorAll<HTMLElement>('[data-of]')]; // slabs and cast shadows
   document.documentElement.classList.add('js-flight');
 
   // ?at=3 pins a stop, for working on one layer and for screenshots.
@@ -68,6 +69,7 @@ function init() {
       // Running: the plate the camera is on, and every plate in the two overviews.
       el.classList.toggle('is-live', end || at === 0 || j === at - 1);
     });
+    followers.forEach((el) => (el.style.opacity = plateOpacity(Number(el.dataset.of), c).toFixed(3)));
     // The ground darkens with depth; once it is dark the stage switches to light text.
     stage.style.setProperty('--d', c.d.toFixed(3));
     stage.dataset.tone = c.d > 0.45 ? 'deep' : '';
