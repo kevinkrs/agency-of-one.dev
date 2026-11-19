@@ -18,7 +18,7 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
   {layers.map((layer, i) => {
     const Drawing = drawings[i];
     return (!only || only === layer.id) && (
-      <svg class:list={['plate', { 'is-focus is-live': flat }]} data-plate data-tone={layer.id} style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
+      <svg class:list={['plate', { 'is-focus is-live': flat }]} data-plate data-tone="card" style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
         <Drawing />
       </svg>
     );
@@ -37,9 +37,9 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
        camera tilts and zooms. will-change pins that double-size bitmap. */
     width: 200%;
     height: 200%;
-    background: var(--bg);
-    border: 3px solid var(--fg);
-    border-radius: 12px;
+    background: linear-gradient(155deg, #181c2a, var(--bg) 55%);
+    border: 2px solid var(--edge);
+    border-radius: 16px;
     transform-origin: 0 0;
     transform: translateZ(calc(var(--gap) * var(--i) * -1px)) scale(0.5);
     will-change: transform;
@@ -64,5 +64,5 @@ const drawings = [Interface, SignIn, Server, Models, Cloud];
   .riser.r, .dot.r { left: calc(100% + 16px); }
 
   .world.flat { display: flex; flex-wrap: wrap; gap: 32px; width: auto; height: auto; transform: none; }
-  .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1.5px; border-radius: 6px; }
+  .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1px; border-radius: 8px; }
 </style>

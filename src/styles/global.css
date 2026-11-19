@@ -41,10 +41,7 @@ a:hover { color: var(--accent-text); }
 h1, h2, p { margin: 0; }
 h1, h2 { font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
 
-/* One tone per layer of the stack. A plate always wears its tone; the whole stage takes it on
-   while the camera is on that layer. The opening and closing screens keep the neutral tokens. */
-[data-tone='interface'] { --bg: #ffd400; --fg: #141414; --muted: #5c4d00; --faint: #b39500; --rule: #d9b400; --accent: #1a3cff; --accent-text: #1430cc; --on-accent: #fff; }
-[data-tone='sign-in'] { --bg: #ff6b3d; --fg: #1a0f0a; --muted: #6b2410; --faint: #c24a25; --rule: #e05a30; --accent: #fff; --accent-text: #1a0f0a; --on-accent: #1a0f0a; }
-[data-tone='server'] { --bg: #1f4fff; --fg: #fff; --muted: #c9d6ff; --faint: #7f9bff; --rule: #4a70ff; --accent: #ffd400; --accent-text: #ffd400; --on-accent: #141414; }
-[data-tone='models'] { --bg: #5b2be0; --fg: #fff; --muted: #d6c9ff; --faint: #9a7bf0; --rule: #7a52ea; --accent: #7dffb0; --accent-text: #7dffb0; --on-accent: #141414; }
-[data-tone='cloud'] { --bg: #0c1a33; --fg: #fff; --muted: #b9c4d9; --faint: #5a6b8c; --rule: #25365a; --accent: #ff6b3d; --accent-text: #ff8a66; --on-accent: #141414; }
+/* Every plate wears the same dark card style, on any ground. */
+[data-tone='card'] { --bg: #10131c; --fg: #e8ebf5; --muted: #9aa1b5; --faint: #4d556b; --rule: #2a3044; --edge: #4a5371; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; }
+/* Text and lines on the stage once the camera is inside the stack and the ground has gone dark. */
+[data-tone='deep'] { --bg: #0a0c16; --fg: #eef0f7; --muted: #a3a9bb; --faint: #5a6178; --rule: #262b3d; --accent: #6f8cff; --accent-text: #9db1ff; --on-accent: #0b0d14; }

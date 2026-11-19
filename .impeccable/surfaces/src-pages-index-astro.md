@@ -17,6 +17,8 @@ Iteration 2 (user): less text, a hero that kicks in, and an immersive fly-throug
 
 Iteration 3 (user): plates carry running processes (one file each in src/components/plates/), each layer has its own colour tone (yellow, orange, blue, violet, navy) that floods the stage while the camera is on it, the opening and closing screens stay neutral white, and the layers are joined by risers with dots travelling down and up.
 
+Iteration 4 (user): the per-layer colour flood was rejected as too much (kept on branch `color-tones`). Now every plate wears one dark card style, and the ground starts as white paper on the opening screen and deepens through a gradient to near-black with two soft blue glows and a dot grid as the camera goes in; the closing screen stays deep. Reference the user named for the ground: railway.com.
+
 ## Direction contract
 
 THESIS: A nearly empty page where a few sentences tell the journey and one small isometric line figure does the showing: it grows from a box into a running system as you read. Refuses the dark hero with a node diagram and a row of feature cards.
