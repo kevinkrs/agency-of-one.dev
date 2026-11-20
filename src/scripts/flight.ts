@@ -51,6 +51,7 @@ function init() {
   const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
   const themeColor = document.querySelector('meta[name="theme-color"]');
   const followers = [...root.querySelectorAll<HTMLElement>('[data-of]')]; // slabs and cast shadows
+  const pieces = [...world.children] as HTMLElement[];
   document.documentElement.classList.add('js-flight');
 
   // ?at=3 pins a stop, for working on one layer and for screenshots.
@@ -67,16 +68,19 @@ function init() {
     // Phones: the overviews are pulled together so all plates clear the text panel.
     if (innerWidth < 900) c.gap *= 1 - 0.2 * (1 - c.k);
     const sway = pinned !== null ? 0 : (1 - c.k) * 4 * Math.sin(now / 1900);
-    world.style.setProperty('--gap', c.gap.toFixed(1));
+    // --gap does not inherit (see plates.css), so each piece of the stack gets it directly.
+    for (const el of pieces) el.style.setProperty('--gap', c.gap.toFixed(1));
     world.style.transform = `translate3d(var(--ox), calc(var(--oy) + ${c.y.toFixed(1)}px), 0) scale(${c.s.toFixed(4)}) rotateX(${(c.rx - my * 4).toFixed(2)}deg) rotateZ(${(c.rz + sway + mx * 6).toFixed(2)}deg) translateZ(${(c.fi * c.gap).toFixed(1)}px)`;
     const at = Math.round(p);
     const near = Math.abs(p - at) < 0.3;
+    const still = Math.abs(p - at) < 0.2;
     const end = at === STOPS.length - 1;
     plates.forEach((el, j) => {
       el.style.opacity = plateOpacity(j, c).toFixed(3);
       el.classList.toggle('is-focus', near && j === at - 1);
-      // Running: the plate the camera is on, and every plate in the two overviews.
-      el.classList.toggle('is-live', end || at === 0 || j === at - 1);
+      // Running: the plate the camera is on, and every plate in the two overviews. They hold
+      // still while the camera moves, which keeps the flight smooth on phones.
+      el.classList.toggle('is-live', still && (end || at === 0 || j === at - 1));
     });
     followers.forEach((el) => (el.style.opacity = plateOpacity(Number(el.dataset.of), c).toFixed(3)));
     // The ground darkens with depth; once it is dark the stage switches to light text.

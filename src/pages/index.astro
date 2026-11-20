@@ -104,18 +104,22 @@ const stops = layers.length + 2;
 
   /* ---- The flight ---- */
   :global(.js-flight) { scroll-snap-type: y proximity; }
+  /* Touch: a swipe always lands on the next stop and never skips one, however hard it is thrown.
+     While the finger stays down the camera follows it, so a slow drag still scrubs. */
+  @media (pointer: coarse) {
+    :global(.js-flight) { scroll-snap-type: y mandatory; }
+    :global(.js-flight) .snap { scroll-snap-stop: always; }
+  }
   :global(.js-flight) .flight { position: relative; height: calc(var(--stops) * 100svh); --oy: -19svh; }
   :global(.js-flight) .snap { display: block; position: absolute; top: calc(var(--at) * 100svh); height: 1px; width: 1px; scroll-snap-align: start; }
   :global(.js-flight) .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; color: var(--fg); transition: color 0.5s var(--ease);
     /* --d (0..1) comes from flight.ts: the paper darkens into a deep ground with two soft glows
        and a dot grid, the further the camera is inside the stack. */
-    --paper: #fcfcfc;
-    --base: color-mix(in oklab, var(--paper), #06070c calc(var(--d, 0) * 100%));
     background:
       radial-gradient(circle, color-mix(in srgb, #fff calc(var(--d, 0) * 9%), transparent) 1px, transparent 1.6px) 0 0 / 30px 30px,
       radial-gradient(110% 85% at 78% 12%, color-mix(in srgb, #3f5bff calc(var(--d, 0) * 46%), transparent), transparent 62%),
       radial-gradient(90% 80% at 8% 96%, color-mix(in srgb, #00b7ff calc(var(--d, 0) * 20%), transparent), transparent 60%),
-      var(--base);
+      color-mix(in oklab, #fcfcfc, #06070c calc(var(--d, 0) * 100%));
   }
   :global(.js-flight) .scene { position: absolute; inset: 0; height: auto; overflow: visible; perspective-origin: 50% calc(50% + var(--oy)); }
 
