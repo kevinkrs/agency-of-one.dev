@@ -105,9 +105,13 @@ const stops = layers.length + 2;
   /* ---- The flight ---- */
   :global(.js-flight) { scroll-snap-type: y proximity; }
   /* Touch: a swipe always lands on the next stop and never skips one, however hard it is thrown.
-     While the finger stays down the camera follows it, so a slow drag still scrubs. */
+     While the finger stays down the camera follows it, so a slow drag still scrubs.
+     The body scrolls instead of the page, so a phone browser keeps its toolbar where it is. When
+     the toolbar slides in or out the screen changes height, and the browser then snaps back to the
+     stop it came from: swipes get swallowed and the page can jump back to the top. */
   @media (pointer: coarse) {
-    :global(.js-flight) { scroll-snap-type: y mandatory; }
+    :global(.js-flight) { height: 100svh; overflow: hidden; scroll-snap-type: none; }
+    :global(.js-flight body) { height: 100svh; overflow-y: auto; scroll-snap-type: y mandatory; overscroll-behavior: none; }
     :global(.js-flight) .snap { scroll-snap-stop: always; }
   }
   :global(.js-flight) .flight { position: relative; height: calc(var(--stops) * 100svh); --oy: -19svh; }
