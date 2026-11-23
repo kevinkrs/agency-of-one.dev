@@ -1,0 +1,111 @@
+{
+  "title": "Choose the visual world for agency-of-one.dev",
+  "question": "The roll assigned The Prompt Book. Keep it, take an alternate, or re-roll. Whichever you pick, scrolling drives one product being built, ending in email + LinkedIn + kevinkrs.com.",
+  "options": [
+    {
+      "id": "assigned", "kind": "assigned", "label": "The Prompt Book", "kicker": "THE ROLL",
+      "lineage": "theatre: front of house, backstage and the stage manager's cue stack",
+      "thesis": "The visitor watches a simple product on stage; scrolling flies the set away and shows the one person running every cue behind it.",
+      "palette": ["#6b1020", "#f5a81c", "#2a4bd0", "#f4f1ea", "#121014"],
+      "materials": ["velvet curtain", "spike tape", "rope and counterweights", "cue lights"],
+      "viewport": "A full-width proscenium in oxblood: a small product screen plays on stage, the headline sits on the valance, a cue stack runs down the right wing with cue 1 standing by, and the contact action is a door plaque top right.",
+      "risk": "The metaphor sits between a CTO and the real mechanism, so every cue has to name a real technical event.",
+      "raised": [
+        {"from": "challenger-tower", "raise": "Every cue that has run stays visible in the stack, so the page ends as a full record of what the build took."},
+        {"from": "challenger-splitflap", "raise": "The cue stack is a fixed grid: rows change state in place and never move."},
+        {"from": "challenger-shader", "raise": "One continuous scene from curtain to fly loft, with no section cuts."}
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "challenger-section", "kind": "challenger", "catalogId": "architecture-inhabitable-space-daylight-section",
+      "label": "The Section", "verdict": "wins",
+      "lineage": "architectural section drawings with a travelling sunbeam",
+      "thesis": "The product is a building cut open: the shopfront is the interface, the floors below are server, auth, cloud and ML, and a request travels down as a beam of light.",
+      "palette": ["#f1efe8", "#2b2d31", "#f4b63a", "#5d7bb0"],
+      "materials": ["limewash wall", "charcoal section cut", "sun gold beam", "inclined architect's lettering"],
+      "viewport": "One long section drawing: the street-level shopfront holds the headline and a working app screen, the ground line cuts the page at 60%, and the first basement floor shows below it. The contact action is the plaque on the door.",
+      "case": "Shows the hidden part of a product at one glance, which is the core message. It also matches my own top-ranked idea, so there is no separate pick card.",
+      "risk": "A drawing can read calm and static; the travelling beam has to carry all the energy.",
+      "html": ".impeccable/mocks/decision/challenger-section.html",
+      "hero": "https://impeccable.style/worlds/cards/architecture-inhabitable-space-daylight-section-hero.webp"
+    },
+    {
+      "id": "challenger-console", "kind": "challenger", "catalogId": "pop-culture-shelf-elbow-panel-console",
+      "label": "Elbow Console", "verdict": "competitive",
+      "lineage": "pill-cornered starship wall panels",
+      "thesis": "Each layer of the stack is a flat colour bank on black, and scrolling sweeps the elbow frame from bank to bank as systems come online.",
+      "palette": ["#000000", "#c9a0ff", "#ffb38a", "#f5c542", "#8fa8ff"],
+      "materials": ["flat pastel blocks", "thick elbow frames", "condensed uppercase", "numeric code clusters"],
+      "viewport": "A thick lilac elbow frames the viewport with the headline in condensed caps inside it; a pill column on the left lists the layers with only WIREFRAME lit in gold.",
+      "case": "Tech teams identify with it at once; it loses on clarity for non-technical solo entrepreneurs.",
+      "risk": "Reads as a sci-fi fan homage and can put a costume over the message.",
+      "html": ".impeccable/mocks/decision/challenger-console.html",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-elbow-panel-console-hero.webp"
+    },
+    {
+      "id": "challenger-train", "kind": "challenger", "catalogId": "design-canon-constructivist-agit-train",
+      "label": "The Build Train", "verdict": "competitive",
+      "lineage": "Constructivist poster trains: diagonals, stencil type, one red wedge",
+      "thesis": "Each railcar is one stage of the build, and a red wedge drives the request from car to car as you scroll sideways.",
+      "palette": ["#e9dfc8", "#1a1a1a", "#d8261c"],
+      "materials": ["newsprint", "stencil caps", "photomontage", "red wedge"],
+      "viewport": "The first car fills the viewport on a diagonal with the stencil headline; the red wedge enters from the left and points at the edge of the next car.",
+      "case": "Car by car is the clearest linear pipeline; it loses on identification for a consultant's audience.",
+      "risk": "Cream, black and red is where many generated pages land, and the poster tone can feel loud for a one-person business.",
+      "html": ".impeccable/mocks/decision/challenger-train.html",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-constructivist-agit-train-hero.webp"
+    },
+    {
+      "id": "challenger-tower", "kind": "challenger", "catalogId": "clay-ceramics-fracture-coiled-earth-tower",
+      "label": "Coiled Earth Tower", "verdict": "declined",
+      "lineage": "hand-coiled clay towers",
+      "thesis": "The product rises course by course.",
+      "palette": ["#b5562f", "#6b4a34", "#efe6d8"],
+      "materials": ["terracotta coils", "slip-white seams"],
+      "viewport": "A tower section with the current course marked dark.",
+      "case": "Craft and clay say nothing about software to this audience.",
+      "kept": "Everything built stays visible as a record.",
+      "risk": "Reads as a pottery studio.",
+      "hero": "https://impeccable.style/worlds/cards/clay-ceramics-fracture-coiled-earth-tower-hero.webp"
+    },
+    {
+      "id": "challenger-shader", "kind": "challenger", "catalogId": "webgl-shader-portal",
+      "label": "Shader Portal", "verdict": "declined",
+      "lineage": "experiential studio WebGL sites",
+      "thesis": "A living shader with thin type over it.",
+      "palette": ["#0a1a3a", "#ff6a2b", "#e8ecf5"],
+      "materials": ["fragment shader", "film grain"],
+      "viewport": "One hero word over a breathing field.",
+      "case": "A mood, not a mechanism: it hides the offer and shows no build.",
+      "kept": "One continuous scene instead of stacked sections.",
+      "risk": "Impressive and empty.",
+      "hero": "https://impeccable.style/worlds/cards/webgl-shader-portal-hero.webp"
+    },
+    {
+      "id": "challenger-splitflap", "kind": "challenger", "catalogId": "signals-instruments-split-flap-concourse",
+      "label": "Split-Flap Concourse", "verdict": "declined",
+      "lineage": "rail station departure boards",
+      "thesis": "Every moving part of a product as a row on one board.",
+      "palette": ["#141414", "#ffffff", "#ffb000", "#8a8f96"],
+      "materials": ["matte flaps", "brushed steel"],
+      "viewport": "A full board of rows flipping into place.",
+      "case": "Lists complexity but cannot illustrate a flow through it.",
+      "kept": "A fixed grid where state changes in place.",
+      "risk": "A table, not a story.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "kind": "canon", "label": "The category standard",
+    "thesis": "The developer-tool landing page: a dark ground, a node diagram that animates as you scroll, executed at the level of linear.app and railway.com.",
+    "palette": ["#0b0d12", "#e6e8ee", "#5b8cff"],
+    "materials": ["dark neutral ground", "thin connection lines", "product UI panels"],
+    "viewport": "Centred headline and action over a live architecture diagram.",
+    "risk": "Indistinguishable from every developer-tool site by design."
+  },
+  "steer": true
+}

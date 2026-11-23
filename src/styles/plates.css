@@ -1,0 +1,46 @@
+/* Shared drawing vocabulary for the plates in src/components/plates/. Every plate is a 100x100
+   plan-view drawing. Animations run only on plates marked .is-live (the one the camera is on, and all of them
+   in the closing overview); markers show on the .is-focus plate. */
+.plate { fill: none; stroke: var(--fg); stroke-width: 0.3; stroke-linecap: round; stroke-linejoin: round; }
+.plate .fill { fill: var(--fg); stroke: none; }
+.plate .soft { fill: var(--faint); stroke: none; }
+.plate .solid { fill: var(--bg); }
+.plate .dash { stroke: var(--muted); stroke-dasharray: 0.9 1; }
+.plate .hair { stroke: var(--faint); stroke-width: 0.14; }
+.plate .node { stroke-width: 1.1; }
+.plate .lit { stroke: var(--accent); }
+.plate .lit-fill { fill: var(--accent); stroke: none; }
+/* Status colours. They carry meaning, never decoration: ok = succeeded or healthy, warn = waiting,
+   limited or slow, err = rejected or failed, ai = the model at work, info = data being stored or
+   copied. Blue (.lit) stays the colour of a request in motion and of the active control.
+   Each works as a stroke; add -fill for a filled shape, and on a .tag it colours the text. */
+.plate .ok { stroke: var(--ok); } .plate .warn { stroke: var(--warn); } .plate .err { stroke: var(--err); } .plate .ai { stroke: var(--ai); } .plate .info { stroke: var(--info); }
+.plate .ok-fill { fill: var(--ok); stroke: none; } .plate .warn-fill { fill: var(--warn); stroke: none; } .plate .err-fill { fill: var(--err); stroke: none; } .plate .ai-fill { fill: var(--ai); stroke: none; } .plate .info-fill { fill: var(--info); stroke: none; }
+.plate .tag.ok { fill: var(--ok); stroke: none; } .plate .tag.warn { fill: var(--warn); stroke: none; } .plate .tag.err { fill: var(--err); stroke: none; } .plate .tag.ai { fill: var(--ai); stroke: none; } .plate .tag.info { fill: var(--info); stroke: none; }
+
+/* Tiny technical labels: route names, status codes, timings. Keep them short. */
+.plate .tag { fill: var(--muted); stroke: none; font-size: 2.3px; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+/* A request or token travelling along a path. Give it style="offset-path: path('M..')" and an
+   animation from the plate's own keyframes that moves offset-distance 0% -> 100%. */
+.plate .packet { fill: var(--accent); stroke: none; offset-rotate: 0deg; }
+
+/* Plates animate --o and --tf instead of opacity and transform. Animating those two directly makes
+   the browser paint each moving piece as its own low-resolution image inside the 3D scene, which
+   shows as blur. Registered custom properties animate on the main thread and stay sharp. */
+/* --d and --gap change on every frame of the flight. Neither inherits, so a change restyles only
+   the element it is set on, not the hundreds of shapes inside the plates. */
+@property --d { syntax: '<number>'; inherits: false; initial-value: 0; }
+@property --gap { syntax: '<number>'; inherits: false; initial-value: 120; }
+@property --o { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --tf { syntax: '<transform-list> | none'; inherits: false; initial-value: none; }
+/* Elements placed with a transform attribute keep it; animate a child instead. */
+.plate * { opacity: var(--o); }
+.plate *:not([transform]) { transform: var(--tf); }
+
+.plate:not(.is-live) * { animation-play-state: paused !important; }
+
+.plate .marker circle { fill: var(--accent); stroke: var(--bg); stroke-width: 0.5; }
+.plate .marker text { fill: var(--on-accent); stroke: none; font-size: 3.1px; font-weight: 600; }
+/* In the flight, markers only show on the plate the camera is on, one after the other. */
+.js-flight .plate .marker { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: center; transition: opacity 0.3s var(--ease), transform 0.5s var(--ease); }
+.js-flight .plate.is-focus .marker { opacity: 1; transform: none; transition-delay: calc(var(--n) * 140ms + 150ms); }

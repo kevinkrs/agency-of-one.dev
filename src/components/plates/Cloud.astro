@@ -1,0 +1,181 @@
+---
+// Cloud plate. One 8s loop: traffic enters the load balancer and is handed to machines in two
+// zones in turn. 2.5s a1 fails (dashed, health tick stops, pager fires), traffic skips it and the
+// load on the rest climbs. 4.8s the autoscaler crosses its limit and brings up s1 in the waiting
+// slot. 7.4s a1 is replaced and s1 is removed. Packet timings (--t) are seconds into the cycle;
+// all state changes share the same percentage windows of the 8s cycle.
+import Marker from './Marker.astro';
+
+const W = 15, H = 16;
+const machines = [
+  { k: 'a1', x: 9, y: 36 }, { k: 'a2', x: 28, y: 36 },
+  { k: 'b1', x: 57, y: 36 }, { k: 'b2', x: 76, y: 36 },
+  { k: 's', x: 76, y: 58 },
+];
+const route = {
+  a1: 'M50 0V23H16.5V36', a2: 'M50 0V23H35.5V36',
+  b1: 'M50 0V23H64.5V36', b2: 'M50 0V23H83.5V36', s: 'M50 0V23H74V66H76',
+};
+// who gets each request: calm, then a1 is skipped, then s1 joins
+const packets: [number, keyof typeof route][] = [
+  [0.2, 'a1'], [0.8, 'b1'], [1.4, 'a2'], [2.0, 'b2'],
+  [3.0, 'b1'], [3.5, 'a2'], [4.0, 'b2'], [4.5, 'b1'], [5.0, 'a2'],
+  [5.5, 's'], [6.0, 'b1'], [6.5, 'a2'], [7.0, 'b2'],
+];
+---
+<!-- traffic in, balancer, wires to every machine -->
+<path d="M50 0V8M50 17V23M16.5 23H83.5M35.5 23V36M64.5 23V36M83.5 23V36" />
+<path class="gone" d="M16.5 23V36" />
+<path class="dash down off" d="M16.5 23V36" />
+<path class="dash" d="M74 23V66H76" />
+<path class="solid-wire off" d="M74 23V66H76" />
+<rect x="34" y="8" width="32" height="9" rx="2" />
+<text class="tag" x="37" y="13.5">balancer</text>
+
+<!-- zones -->
+<rect class="dash" x="6" y="28" width="40" height="52" rx="2" />
+<rect class="dash" x="54" y="28" width="40" height="52" rx="2" />
+<text class="tag" x="9" y="77.6">zone a</text>
+<text class="tag" x="57" y="77.6">zone b</text>
+
+<!-- machines -->
+{machines.map(({ k, x, y }) => (
+  <g class={k === 's' ? 's-on' : ''}>
+    <rect class={k === 'a1' ? 'gone' : ''} x={x} y={y} width={W} height={H} rx="1.5" />
+    <g class={k === 'a1' ? 'dim' : ''}>
+      <path class={k === 'a1' ? 'tick tick-a1' : 'tick'} style={`--t: ${machines.findIndex((m) => m.k === k) * 0.15}s`} d={`M${x + 2.4} ${y + 4.2}l1.1 1.1 1.9-2.3`} />
+      <path class="hair" d={`M${x + 2.4} ${y + 7.6}h10.2M${x + 2.4} ${y + 10}h10.2`} />
+      <rect class="soft" x={x + 2.4} y={y + 12.4} width="10.2" height="1.6" />
+      <rect class={`fill load load-${k}`} x={x + 2.4} y={y + 12.4} width="10.2" height="1.6" />
+    </g>
+  </g>
+))}
+<rect class="dash down off" x="9" y="36" width={W} height={H} rx="1.5" />
+<rect class="dash slot" x="76" y="58" width={W} height={H} rx="1.5" />
+
+<!-- pager -->
+<rect x="9" y="58" width="15" height="10" rx="1.5" />
+<rect class="lit alert off" x="9" y="58" width="15" height="10" rx="1.5" />
+<g transform="translate(13.5 63.2)"><g class="bell"><path d="M-1.8 1.4h3.6l-.7-1.1v-1.5a1.1 1.1 0 0 0-2.2 0v1.5z" /></g></g>
+<text class="tag" x="17" y="63.9">pager</text>
+
+<!-- health count -->
+<text class="tag h1" x="28" y="63.9">healthy 4/4</text>
+<text class="tag h2" x="28" y="63.9">healthy 3/4</text>
+<text class="tag h3" x="28" y="63.9">healthy 4/5</text>
+
+<!-- autoscaler -->
+<path class="dash" d="M83.5 74V84" />
+<rect x="6" y="84" width="88" height="10" rx="1.5" />
+<rect class="lit scale-box off" x="6" y="84" width="88" height="10" rx="1.5" />
+<text class="tag" x="9" y="90.2">autoscaler</text>
+<text class="tag" x="33" y="90.2">cpu &gt; 70 %</text>
+<text class="tag scale-tag" x="60" y="90.2">scale +1</text>
+<circle class="packet hop pulse" r="0.9" style="--t: 4.85s; offset-path: path('M83.5 84V74')" />
+
+<!-- requests -->
+{packets.map(([t, k]) => <circle class="packet hop" r="0.9" style={`--t: ${t}s; offset-path: path('${route[k]}')`} />)}
+
+<Marker n={1} x={66} y={8} /><Marker n={2} x={50} y={50} /><Marker n={3} x={94} y={84} />
+
+<style>
+  .off { --o: 0; }
+  .load { transform-box: fill-box; transform-origin: left; --tf: scaleX(0.35); }
+  .load-s { --tf: scaleX(0.1); }
+  .bell { transform-origin: 0 -1.2px; }
+  .solid-wire { stroke: var(--fg); }
+
+  .hop { --o: 0; animation: cloud-hop 8s linear var(--t) infinite; }
+  .pulse { animation-name: cloud-pulse; }
+  .tick { animation: cloud-ping 8s linear var(--t) infinite; }
+  .tick-a1 { animation-name: cloud-ping-a1; }
+  .load { animation: cloud-load 8s linear infinite; }
+  .load-a1 { animation-name: cloud-load-a1; }
+  .load-s { animation-name: cloud-load-s; }
+  .gone { animation: cloud-gone 8s linear infinite; }
+  .down { animation: cloud-down 8s linear infinite; }
+  .dim { animation: cloud-dim 8s linear infinite; }
+  .alert { animation: cloud-alert 8s linear infinite; }
+  .bell { animation: cloud-bell 8s linear infinite; }
+  .h1 { animation: cloud-h1 8s linear infinite; }
+  .h2 { --o: 0; animation: cloud-h2 8s linear infinite; }
+  .h3 { --o: 0; animation: cloud-h3 8s linear infinite; }
+  .scale-box { animation: cloud-scale-box 8s linear infinite; }
+  .scale-tag { --o: 0; animation: cloud-scale-tag 8s linear infinite; }
+  .s-on { --o: 0; animation: cloud-s-on 8s linear infinite; }
+  .solid-wire { animation: cloud-s-on 8s linear infinite; }
+  .slot { animation: cloud-slot 8s linear infinite; }
+
+  @keyframes cloud-hop {
+    0% { offset-distance: 0%; --o: 0; }
+    1% { --o: 1; }
+    11% { offset-distance: 100%; --o: 1; }
+    12%, 100% { offset-distance: 100%; --o: 0; }
+  }
+  @keyframes cloud-pulse {
+    0% { offset-distance: 0%; --o: 0; fill: var(--info); }
+    1% { --o: 1; }
+    11% { offset-distance: 100%; --o: 1; }
+    12%, 100% { offset-distance: 100%; --o: 0; fill: var(--info); }
+  }
+  /* health check: a tick lights every 2s */
+  @keyframes cloud-ping {
+    0%, 4.5%, 25%, 29.5%, 50%, 54.5%, 75%, 79.5%, 100% { stroke: var(--fg); }
+    1%, 3%, 26%, 28%, 51%, 53%, 76%, 78% { stroke: var(--ok); }
+  }
+  /* a1: two pings, then the tick stops until the machine is replaced */
+  @keyframes cloud-ping-a1 {
+    0%, 4.5%, 25%, 29.5%, 100% { stroke: var(--fg); --o: 1; }
+    1%, 3%, 26%, 28% { stroke: var(--ok); --o: 1; }
+    34%, 92% { stroke: var(--fg); --o: 0; }
+    95% { --o: 1; }
+  }
+  @keyframes cloud-load {
+    0%, 34% { --tf: scaleX(0.35); fill: var(--fg); }
+    38% { --tf: scaleX(0.55); fill: var(--fg); }
+    50% { --tf: scaleX(0.72); fill: var(--fg); }
+    56% { --tf: scaleX(0.8); fill: var(--warn); }
+    60% { --tf: scaleX(0.86); fill: var(--warn); }
+    67%, 91% { --tf: scaleX(0.5); fill: var(--fg); }
+    96%, 100% { --tf: scaleX(0.35); fill: var(--fg); }
+  }
+  @keyframes cloud-load-a1 {
+    0%, 31% { --tf: scaleX(0.35); }
+    34%, 93% { --tf: scaleX(0.05); }
+    96%, 100% { --tf: scaleX(0.35); }
+  }
+  @keyframes cloud-load-s {
+    0%, 66% { --tf: scaleX(0.1); }
+    75%, 92% { --tf: scaleX(0.45); }
+    96%, 100% { --tf: scaleX(0.1); }
+  }
+  /* a1 solid parts leave, the dashed outline takes over */
+  @keyframes cloud-gone { 0%, 31%, 95%, 100% { --o: 1; } 34%, 92% { --o: 0; } }
+  @keyframes cloud-down { 0%, 31%, 95%, 100% { --o: 0; } 34%, 92% { --o: 1; stroke: var(--err); } }
+  @keyframes cloud-dim { 0%, 31%, 95%, 100% { --o: 1; } 34%, 92% { --o: 0.3; } }
+  @keyframes cloud-alert { 0%, 31%, 54%, 100% { --o: 0; stroke: var(--err); } 33%, 47% { --o: 1; stroke: var(--err); } }
+  @keyframes cloud-bell {
+    0%, 31%, 54%, 100% { stroke: var(--fg); --tf: rotate(0); }
+    33% { stroke: var(--err); --tf: rotate(14deg); }
+    36% { stroke: var(--err); --tf: rotate(-12deg); }
+    39% { stroke: var(--err); --tf: rotate(9deg); }
+    42% { stroke: var(--err); --tf: rotate(-5deg); }
+    45%, 47% { stroke: var(--err); --tf: rotate(0); }
+  }
+  @keyframes cloud-h1 {
+    0%, 100% { --o: 1; fill: var(--muted); }
+    3%, 31% { --o: 1; fill: var(--ok); }
+    33%, 94% { --o: 0; fill: var(--ok); }
+    96% { --o: 1; fill: var(--ok); }
+  }
+  @keyframes cloud-h2 { 0%, 31%, 67%, 100% { --o: 0; fill: var(--warn); } 33%, 65% { --o: 1; fill: var(--warn); } }
+  @keyframes cloud-h3 {
+    0%, 66%, 94%, 100% { --o: 0; fill: var(--warn); }
+    68% { --o: 1; fill: var(--warn); }
+    74%, 92% { --o: 1; fill: var(--ok); }
+  }
+  @keyframes cloud-scale-box { 0%, 59%, 75%, 100% { --o: 0; stroke: var(--info); } 61%, 69% { --o: 1; stroke: var(--info); } }
+  @keyframes cloud-scale-tag { 0%, 60%, 94%, 100% { --o: 0; fill: var(--info); } 62%, 92% { --o: 1; fill: var(--info); } }
+  @keyframes cloud-s-on { 0%, 65%, 95%, 100% { --o: 0; } 68%, 92% { --o: 1; } }
+  @keyframes cloud-slot { 0%, 64%, 96%, 100% { --o: 1; } 67%, 93% { --o: 0; } }
+</style>

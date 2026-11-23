@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import Stack from '../components/Stack.astro';
+import BuildTrace from '../components/BuildTrace.astro';
+import { brand, hero, layers, close } from '../data/site';
+
+const links = [
+  { label: 'Talk to Kevin', href: `mailto:${brand.email}` },
+  { label: 'LinkedIn', href: brand.linkedin },
+  { label: 'CV', href: brand.cv },
+];
+// One screen of scroll per stop: hero, the layers, the end.
+const stops = layers.length + 2;
+---
+<Base title="Agency of One: Kevin Kraus, product engineer" description={`${hero.title} ${hero.sub} One product, taken apart layer by layer.`}>
+  <main class="flight" data-flight style={`--stops: ${stops}`}>
+    <div class="snap" id="top" style="--at: 0"></div>
+    {layers.map((l, i) => <div class="snap" id={l.id} style={`--at: ${i + 1}`}></div>)}
+    <div class="snap" id="contact" style={`--at: ${stops - 1}`}></div>
+
+    <div class="stage" data-stage>
+      <div class="scene" aria-hidden="true"><Stack /></div>
+
+      <section class="panel hero" data-panel>
+        <div class="mark">
+          <svg viewBox="3.5 3.5 25 25" aria-hidden="true"><rect x="5.5" y="5.5" width="21" height="21" rx="3.5" fill="none" stroke="currentColor" stroke-width="4" /><rect x="10.5" y="10.5" width="4" height="8" fill="currentColor" /></svg>
+          {brand.mark}
+        </div>
+        <h1>{hero.title} <span>{hero.sub}</span></h1>
+        <p class="who">{hero.who}</p>
+        <div class="links">
+          {links.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+        <p class="cue">{hero.cue}</p>
+      </section>
+
+      {layers.map((l) => (
+        <section class="panel" data-panel>
+          <h2>{l.title}</h2>
+          <p>{l.text}</p>
+          <ol>
+            {l.points.map((point) => <li>{point}</li>)}
+          </ol>
+        </section>
+      ))}
+
+      <section class="panel end" data-panel>
+        <h2>{close.title}</h2>
+        <p>{close.text}</p>
+        <BuildTrace />
+        <div class="links big">
+          <a href={`mailto:${brand.email}`}>{brand.email}</a>
+          <a href={brand.linkedin}>LinkedIn</a>
+          <a href={brand.cv}>CV</a>
+        </div>
+      </section>
+
+      <nav class="rail" aria-label="Layers">
+        {layers.map((l) => <a href={`#${l.id}`} data-nav>{l.label}</a>)}
+      </nav>
+
+      <footer>
+        <span>Agency of One · Kevin Kraus · Hamburg</span>
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
+      </footer>
+    </div>
+  </main>
+</Base>
+
+<style>
+  /* Default: a plain stacked document. This is what shows without the script and with reduced
+     motion. The flight below only switches on once src/scripts/flight.ts adds .js-flight. */
+  .flight { --p: min(78vw, 46svh); --ox: 0px; --oy: 0px; }
+  .snap { display: none; }
+  .scene { display: grid; place-items: center; height: 62svh; perspective: 1400px; overflow: hidden; pointer-events: none; }
+  .panel { padding: 3rem 24px; max-width: 34rem; }
+  .rail { display: none; }
+
+  h1 { font-size: clamp(2.75rem, 6vw, 5.25rem); line-height: 1; letter-spacing: -0.035em; }
+  h1 span { display: block; color: var(--muted); }
+  h2 { font-size: clamp(1.75rem, 2.6vw, 2.5rem); line-height: 1.08; letter-spacing: -0.025em; }
+  p { margin-top: 0.9rem; color: var(--muted); max-width: 30ch; }
+  .end p { max-width: 38ch; }
+  .who { max-width: 36ch; margin-top: 1.5rem; color: var(--fg); }
+  .mark { display: flex; align-items: baseline; gap: 0.32em; font-size: 1.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; margin-bottom: 2.5rem; }
+  /* The symbol is a little taller than the capital A and centred on it. */
+  .mark svg { width: 0.84em; height: 0.84em; color: var(--accent); transform: translateY(0.07em); }
+
+  ol { list-style: none; margin: 1.75rem 0 0; padding: 0; counter-reset: point; display: grid; gap: 0.7rem; }
+  li { counter-increment: point; display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.75rem; align-items: baseline; font-weight: 500; }
+  li::before {
+    content: counter(point);
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 2.25rem; font-size: 1.25rem; font-weight: 500; }
+  .links a:first-child { color: var(--accent-text); }
+  .links.big { font-size: clamp(1.25rem, 1.8vw, 1.5rem); }
+  .cue { display: none; }
+  footer { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; padding: 2rem 24px; font-size: 0.8125rem; color: var(--muted); }
+
+  /* ---- The flight ---- */
+  :global(.js-flight) { scroll-snap-type: y proximity; }
+  /* Touch: a swipe always lands on the next stop and never skips one, however hard it is thrown.
+     While the finger stays down the camera follows it, so a slow drag still scrubs.
+     The body scrolls instead of the page, so a phone browser keeps its toolbar where it is. When
+     the toolbar slides in or out the screen changes height, and the browser then snaps back to the
+     stop it came from: swipes get swallowed and the page can jump back to the top. */
+  @media (pointer: coarse) {
+    :global(.js-flight) { height: 100svh; overflow: hidden; scroll-snap-type: none; }
+    :global(.js-flight body) { height: 100svh; overflow-y: auto; scroll-snap-type: y mandatory; overscroll-behavior: none; }
+    :global(.js-flight) .snap { scroll-snap-stop: always; }
+  }
+  :global(.js-flight) .flight { position: relative; height: calc(var(--stops) * 100svh); --oy: -19svh; }
+  :global(.js-flight) .snap { display: block; position: absolute; top: calc(var(--at) * 100svh); height: 1px; width: 1px; scroll-snap-align: start; }
+  :global(.js-flight) .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; color: var(--fg); transition: color 0.5s var(--ease);
+    /* --d (0..1) comes from flight.ts: the paper darkens into a deep ground with two soft glows
+       and a dot grid, the further the camera is inside the stack. */
+    background:
+      radial-gradient(circle, color-mix(in srgb, #fff calc(var(--d, 0) * 9%), transparent) 1px, transparent 1.6px) 0 0 / 30px 30px,
+      radial-gradient(110% 85% at 78% 12%, color-mix(in srgb, #3f5bff calc(var(--d, 0) * 46%), transparent), transparent 62%),
+      radial-gradient(90% 80% at 8% 96%, color-mix(in srgb, #00b7ff calc(var(--d, 0) * 20%), transparent), transparent 60%),
+      color-mix(in oklab, #fcfcfc, #06070c calc(var(--d, 0) * 100%));
+  }
+  :global(.js-flight) .scene { position: absolute; inset: 0; height: auto; overflow: visible; perspective-origin: 50% calc(50% + var(--oy)); }
+
+  :global(.js-flight) .panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Solid on phones, so the plates flying underneath never run through the text. */
+    padding: 22px 24px 7svh;
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.35s var(--ease), transform 0.6s var(--ease), visibility 0s 0.35s;
+  }
+  :global(.js-flight) .panel.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0.1s, 0.1s, 0s; }
+
+  :global(.js-flight) .cue { display: flex; align-items: center; gap: 0.75rem; margin-top: 2.5rem; font-size: 0.875rem; max-width: none; }
+  :global(.js-flight) .cue::before { content: ''; width: 1.5px; height: 2.25rem; background: var(--accent); transform-origin: top; animation: drop 1.8s var(--ease) infinite; }
+  @keyframes drop { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+
+  :global(.js-flight) footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 14px; opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease), visibility 0s 0.35s; }
+  :global(.js-flight) .end.is-active ~ footer { opacity: 1; visibility: visible; transition-delay: 0s; }
+  :global(.js-flight) .panel.end { padding-bottom: 5.5rem; }
+
+  @media (min-width: 900px) {
+    .flight { --p: min(60svh, 40vw); }
+    :global(.js-flight) .flight { --ox: 17vw; --oy: 0px; }
+    :global(.js-flight) .panel { left: max(6vw, 56px); right: auto; bottom: auto; top: 50%; width: min(27rem, 32vw); padding: 0; background: none; border-top: 0; transform: translateY(calc(-50% + 14px)); }
+    :global(.js-flight) .panel.is-active { transform: translateY(-50%); }
+    :global(.js-flight) .panel.hero { width: min(46rem, 50vw); }
+    :global(.js-flight) .panel.end { width: min(30rem, 38vw); padding-bottom: 0; }
+    :global(.js-flight) footer { left: max(6vw, 56px); padding: 0 0 28px; }
+
+    :global(.js-flight) .rail { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); display: grid; gap: 0.6rem; justify-items: end; font-size: 0.8125rem; }
+    .rail a { display: flex; align-items: center; gap: 0.6rem; color: var(--muted); text-decoration: none; transition: color 0.3s var(--ease); }
+    .rail a::after { content: ''; width: 14px; height: 1.5px; background: var(--faint); transition: width 0.4s var(--ease), background-color 0.3s var(--ease); }
+    .rail a:hover, .rail a.is-current { color: var(--fg); }
+    .rail a.is-current::after { width: 34px; height: 2px; background: var(--accent); }
+  }
+</style>
+
+<script>
+  import '../scripts/flight.ts';
+</script>

@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>Elbow Console</title>
+<style>
+*{box-sizing:border-box;margin:0}body{width:1440px;height:900px;overflow:hidden;background:#000;font-family:"Arial Narrow",Arial,sans-serif;color:#000;position:relative;text-transform:uppercase}
+.top{position:absolute;left:40px;top:40px;width:300px;height:190px;background:#c9a0ff;border-radius:90px 0 0 0}
+.bar{position:absolute;left:340px;top:40px;right:40px;height:64px;display:flex;gap:10px}
+.bar div{background:#c9a0ff;flex:1;border-radius:0 32px 32px 0}.bar div:first-child{flex:3;border-radius:0}.bar div:nth-child(2){background:#ffb38a;border-radius:0;flex:1}
+.cut{position:absolute;left:340px;top:104px;width:70px;height:70px;background:#c9a0ff}.cut:after{content:"";position:absolute;inset:0;background:#000;border-radius:60px 0 0 0}
+.col{position:absolute;left:40px;top:240px;width:300px;bottom:40px;display:flex;flex-direction:column;gap:10px}
+.col div{flex:1;background:#8fa8ff;display:flex;align-items:flex-end;justify-content:flex-end;padding:12px 18px;font:700 26px/1 "Arial Narrow",Arial,sans-serif}
+.col div:nth-child(1){background:#f5c542}.col div:nth-child(3){background:#ffb38a}.col div:nth-child(5){background:#c9a0ff}.col div:last-child{border-radius:0 0 0 90px}
+h1{position:absolute;left:430px;top:190px;color:#ffb38a;font:700 112px/.92 "Arial Narrow",Arial,sans-serif;letter-spacing:.01em;max-width:900px}
+.cta{position:absolute;left:430px;top:560px;background:#f5c542;font:700 28px/1 "Arial Narrow",Arial,sans-serif;padding:22px 40px;border-radius:40px}
+.codes{position:absolute;right:60px;bottom:60px;display:grid;grid-template-columns:repeat(5,90px);gap:10px}
+.codes span{background:#8fa8ff;height:40px;border-radius:20px}.codes span:nth-child(3n){background:#c9a0ff}.codes span:nth-child(7){background:#f5c542}
+</style>
+<div class="top"></div><div class="bar"><div></div><div></div><div></div></div><div class="cut"></div>
+<div class="col"><div>01 Wireframe</div><div>02 Frontend</div><div>03 Server</div><div>04 Auth</div><div>05 Cloud</div><div>06 Models</div></div>
+<h1>Products are complex. Skip finding out yourself.</h1>
+<div class="cta">Talk to Kevin</div>
+<div class="codes"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>

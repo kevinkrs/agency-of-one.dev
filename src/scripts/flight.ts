@@ -1,0 +1,124 @@
+// Scroll flies a camera down through the stack. Stop 0 is the hero, then one stop per layer, then
+// the end. LAYERS must match the number of layers in src/data/site.ts.
+export const LAYERS = 6;
+
+export type Pose = { rx: number; rz: number; s: number; gap: number; fi: number; k: number; y: number; d: number };
+// rx/rz: camera tilt in degrees. s: scale. gap: px between plates. fi: index of the plate the
+// camera looks at. k: 1 when inside the stack (plates above the camera fade), 0 for overviews.
+// y: px the whole view is shifted down (negative = up), to centre an overview that hangs low.
+// d: how deep the ground has darkened, 0 (the opening's paper) to 1 (deepest).
+const overview = (s: number, gap: number, fi: number, y: number, d: number): Pose => ({ rx: 57, rz: 45, s, gap, fi, k: 0, y, d });
+const focus = (i: number): Pose => ({ rx: 24, rz: -8, s: 1, gap: 700, fi: i, k: 1, y: 0, d: 0.86 + (i / (LAYERS - 1)) * 0.14 });
+export const STOPS: Pose[] = [
+  overview(0.46, 150, 0, -150, 0),
+  ...Array.from({ length: LAYERS }, (_, i) => focus(i)),
+  overview(0.42, 180, (LAYERS - 1) / 2, 0, 1),
+];
+
+const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
+// Rest at each stop for the first and last `rest` share of a screen, glide in between.
+const glide = (t: number, rest: number) => {
+  const u = clamp((t - rest) / (1 - 2 * rest));
+  return u * u * (3 - 2 * u);
+};
+
+export function pose(p: number, rest = 0.18): Pose {
+  const max = STOPS.length - 1;
+  const q = clamp(p, 0, max);
+  const i = Math.min(max - 1, Math.floor(q));
+  const t = glide(q - i, rest);
+  const a = STOPS[i], b = STOPS[i + 1];
+  const mix = (key: keyof Pose) => a[key] * (1 - t) + b[key] * t; // exact at both ends
+  return { rx: mix('rx'), rz: mix('rz'), s: mix('s'), gap: mix('gap'), fi: mix('fi'), k: mix('k'), y: mix('y'), d: mix('d') };
+}
+
+// Plates the camera has flown past vanish; plates further down dim with depth.
+export function plateOpacity(j: number, c: Pose) {
+  const z = ((c.fi - j) * c.gap) / 700;
+  const inside = z > 0 ? clamp(1 - z * 1.8) : Math.max(0.15, 1 + z * 0.5);
+  return 1 + (inside - 1) * c.k;
+}
+
+// Moves `from` towards `to` over `ms` milliseconds: about two thirds of the way every TRAIL ms,
+// so a jump of one stop settles in roughly a second.
+const TRAIL = 300;
+export function follow(from: number, to: number, ms: number) {
+  const next = to + (from - to) * Math.exp(-Math.min(ms, 100) / TRAIL);
+  return Math.abs(to - next) < 0.001 ? to : next;
+}
+
+function init() {
+  const root = document.querySelector<HTMLElement>('[data-flight]');
+  const world = root?.querySelector<HTMLElement>('[data-world]');
+  const stage = root?.querySelector<HTMLElement>('[data-stage]');
+  // Without the script, or with reduced motion, the page stays a plain stacked document.
+  if (!root || !world || !stage || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const plates = [...root.querySelectorAll<HTMLElement>('[data-plate]')];
+  const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+  const navs = [...root.querySelectorAll<HTMLElement>('[data-nav]')];
+  const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const followers = [...root.querySelectorAll<HTMLElement>('[data-of]')]; // slabs and cast shadows
+  const pieces = [...world.children] as HTMLElement[];
+  document.documentElement.classList.add('js-flight');
+
+  // ?at=3 pins a stop, for working on one layer and for screenshots.
+  const pinned = new URLSearchParams(location.search).get('at');
+  let mx = 0, my = 0;
+  const touch = matchMedia('(pointer: coarse)').matches;
+  let shown: number | undefined, last = 0;
+  addEventListener('pointermove', (e) => {
+    mx = e.clientX / innerWidth - 0.5;
+    my = e.clientY / innerHeight - 0.5;
+  });
+
+  const frame = (now: number) => {
+    const target = pinned !== null ? Number(pinned) : clamp(-root.getBoundingClientRect().top / stage.offsetHeight, 0, STOPS.length - 1);
+    // On touch the browser snaps to the next stop in a fraction of a second. The camera trails the
+    // scroll position instead of mirroring it, so the flight between two stops takes its time.
+    shown = touch && pinned === null ? follow(shown ?? target, target, now - last) : target;
+    last = now;
+    const p = shown;
+    // Touch needs no rests: the browser's snapping already holds the page on each stop, and
+    // without them the camera uses the whole swipe to travel.
+    const c = pose(p, touch && pinned === null ? 0 : undefined);
+    // Phones: the overviews are pulled together so all plates clear the text panel.
+    if (innerWidth < 900) c.gap *= 1 - 0.2 * (1 - c.k);
+    const sway = pinned !== null ? 0 : (1 - c.k) * 4 * Math.sin(now / 1900);
+    // --gap does not inherit (see plates.css), so each piece of the stack gets it directly.
+    for (const el of pieces) el.style.setProperty('--gap', c.gap.toFixed(1));
+    world.style.transform = `translate3d(var(--ox), calc(var(--oy) + ${c.y.toFixed(1)}px), 0) scale(${c.s.toFixed(4)}) rotateX(${(c.rx - my * 4).toFixed(2)}deg) rotateZ(${(c.rz + sway + mx * 6).toFixed(2)}deg) translateZ(${(c.fi * c.gap).toFixed(1)}px)`;
+    const at = Math.round(p);
+    const near = Math.abs(p - at) < 0.3;
+    const still = Math.abs(p - at) < 0.2;
+    const end = at === STOPS.length - 1;
+    plates.forEach((el, j) => {
+      el.style.opacity = plateOpacity(j, c).toFixed(3);
+      el.classList.toggle('is-focus', near && j === at - 1);
+      // Running: the plate the camera is on, and every plate in the two overviews. They hold
+      // still while the camera moves, which keeps the flight smooth on phones.
+      el.classList.toggle('is-live', still && (end || at === 0 || j === at - 1));
+    });
+    followers.forEach((el) => (el.style.opacity = plateOpacity(Number(el.dataset.of), c).toFixed(3)));
+    // The ground darkens with depth; once it is dark the stage switches to light text.
+    stage.style.setProperty('--d', c.d.toFixed(3));
+    const tone = c.d > 0.45 ? 'deep' : 'paper';
+    if (stage.dataset.tone !== tone) {
+      // Also on <html>, so overscroll and scrollbars match the ground, and in the browser chrome.
+      stage.dataset.tone = document.documentElement.dataset.tone = tone;
+      themeColor?.setAttribute('content', tone === 'deep' ? '#06070c' : '#fcfcfc');
+    }
+    // Dots run the full height of the stack on the one riser: even ones down, odd ones back up.
+    const depth = (plates.length - 1) * c.gap;
+    dots.forEach((el, n) => {
+      const u = (now / 6400 + n / dots.length) % 1;
+      el.style.transform = `translateZ(${(-(n % 2 ? 1 - u : u) * depth).toFixed(1)}px)`;
+    });
+    panels.forEach((el, i) => el.classList.toggle('is-active', near && i === at));
+    navs.forEach((el, i) => el.classList.toggle('is-current', i === at - 1));
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+
+if (typeof document !== 'undefined') init();

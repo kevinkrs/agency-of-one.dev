@@ -1,0 +1,100 @@
+{
+ "title": "Round 2: minimal, with a technical edge",
+ "question": "Three directions built on rauno.me, teenage.engineering and railway.com. In each, scrolling shows the journey of one product being built and ends in email + LinkedIn + kevinkrs.com. Pick one, steer, or re-roll.",
+ "options": [
+  {
+   "id": "sheet",
+   "kind": "grounded",
+   "label": "The Drawing Sheet",
+   "lineage": "engineering drawing sheets and exploded assembly views; closest to teenage.engineering",
+   "thesis": "One product drawn as a thin-line exploded view: each scroll step slides in the next layer, from wireframe to ML, with leader lines and small callouts.",
+   "palette": [
+    "#e6e6e4",
+    "#111111",
+    "#ff5a00",
+    "#8a8a86"
+   ],
+   "materials": [
+    "light grey sheet",
+    "hairline isometric linework",
+    "one orange for the part being added",
+    "title block with name and contact"
+   ],
+   "viewport": "A light grey sheet with a fine border. Left third: the headline in small, tight type and the contact action. Right two thirds: the isometric stack with only the wireframe plate drawn and ghost outlines of the layers to come. Bottom right: a title block reading Agency of One, Kevin Kraus, sheet 1 of 6.",
+   "risk": "Isometric line drawings are a known look; it stays special only if the linework is drawn with real care.",
+   "html": ".impeccable/mocks/decision/sheet.html"
+  },
+  {
+   "id": "canvas",
+   "kind": "grounded",
+   "label": "The Canvas",
+   "lineage": "node canvases with live connections; closest to railway.com",
+   "thesis": "One dotted canvas the camera travels across: a sketch becomes a screen, the screen gets a server, and requests start running along the lines as dots.",
+   "palette": [
+    "#14171c",
+    "#cfd4dc",
+    "#ffb224",
+    "#5b6472"
+   ],
+   "materials": [
+    "dark dotted canvas",
+    "thin connection lines",
+    "amber request dots",
+    "small mono labels on nodes"
+   ],
+   "viewport": "A dark dotted canvas fills the viewport. Top left: the headline in small type with the contact action under it. Centre: a single node, a hand-drawn wireframe, with one dashed line leaving the right edge toward the next node off screen.",
+   "risk": "Dark canvas with one bright accent is the look most developer sites already have.",
+   "html": ".impeccable/mocks/decision/canvas.html"
+  },
+  {
+   "id": "figure",
+   "kind": "grounded",
+   "label": "One Figure",
+   "lineage": "bare text-first personal sites with one crafted interactive detail; closest to rauno.me",
+   "thesis": "A narrow column of short sentences tells the journey, and one small live figure beside it grows from a box into a running system as you read.",
+   "palette": [
+    "#fcfcfc",
+    "#171717",
+    "#0055ff",
+    "#a3a3a3"
+   ],
+   "materials": [
+    "near-white page",
+    "small precise type",
+    "one sticky line figure",
+    "blue for whatever is moving"
+   ],
+   "viewport": "Almost empty near-white page. A 520px text column left of centre: A/1 mark, the headline at modest size, one sentence, the contact links. To its right, a 360px sticky figure: one outlined rectangle with a blinking cursor. Thin tick marks down the far left edge show the six stages.",
+   "risk": "The quietest of the three; if the figure is not excellent the page reads as a plain text site.",
+   "html": ".impeccable/mocks/decision/figure.html"
+  }
+ ],
+ "reroll": {
+  "registers": [
+   "safer",
+   "bolder"
+  ]
+ },
+ "buildPath": {
+  "value": "code"
+ },
+ "canon": true,
+ "canonCard": {
+  "kind": "canon",
+  "label": "The category standard",
+  "thesis": "The developer-tool landing page at the level of linear.app, vercel.com and railway.com: dark ground, centred headline, a node diagram that animates on scroll.",
+  "palette": [
+   "#0b0d12",
+   "#e6e8ee",
+   "#5b8cff"
+  ],
+  "materials": [
+   "dark neutral ground",
+   "thin connection lines",
+   "product UI panels"
+  ],
+  "viewport": "Centred headline and action over a live architecture diagram.",
+  "risk": "Indistinguishable from every developer-tool site by design."
+ },
+ "steer": true
+}

@@ -1,0 +1,140 @@
+---
+// Models plate: the same request three times, at three effort settings. Low thinks once: fast,
+// but one eval fails. Balanced thinks twice: all evals pass in reasonable time. High thinks three
+// times: the best scores, and too slow. Every request goes in through the input guard and the
+// queue, through the model, and out through the output guard; then latency and evals report.
+// One cycle is 21s; all times are seconds into it.
+import Marker from './Marker.astro';
+
+const CYCLE = 21;
+const runs = [
+  { key: 'a', label: 'low', x: 9.5, w: 6.5, start: 0, end: 5.5, passes: 1, latency: '0.6 s', bar: 4, tone: 'ok', scores: ['0.95', '0.82', '0.58'] },
+  { key: 'b', label: 'balanced', x: 16.5, w: 12.5, start: 5.5, end: 12.5, passes: 2, latency: '1.5 s', bar: 9, tone: '', scores: ['0.97', '0.93', '0.86'] },
+  { key: 'c', label: 'high', x: 29.5, w: 7, start: 12.5, end: 21, passes: 3, latency: '3.9 s', bar: 15, tone: 'warn', scores: ['0.98', '0.95', '0.90'] },
+];
+const PASS = 0.8; // an eval below this fails
+const FIRST = 2, GAP = 1.3, STEP = 0.2; // first pass after a run starts, time between passes, delay per layer
+const out = (r: (typeof runs)[number]) => FIRST + r.passes * GAP - 0.1; // when the answer leaves the model
+const passes = runs.flatMap((r) => Array.from({ length: r.passes }, (_, k) => r.start + FIRST + k * GAP));
+
+const sizes = [4, 6, 6, 6, 6, 3];
+const X0 = 47, DX = 6.4, CY = 30, DY = 6.4;
+const rnd = (a: number, b: number, c = 0) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
+const node = (l: number, i: number) => ({ x: X0 + l * DX, y: CY + (i - (sizes[l] - 1) / 2) * DY });
+const shield = (x: number) => `M${x} 23h10v9c0 4-2.5 6.5-5 8-2.5-1.5-5-4-5-8z`;
+const history = [5, 8, 6, 11, 7, 9];
+const evals = [{ y: 75, w: 15 }, { y: 81, w: 12 }, { y: 87, w: 9 }];
+
+// The keyframes are generated, because their percentages follow from the times above.
+const pct = (s: number) => `${((s / CYCLE) * 100).toFixed(2)}%`;
+// Visible from `from` to `to` seconds, hidden for the rest of the cycle.
+const shown = (name: string, from: number, to: number) => {
+  const on = `${from > 0 ? pct(from) : '0%'}, ${to < CYCLE ? pct(to) : '100%'} { --o: 1; }`;
+  const before = from > 0 ? `0%, ${pct(from - 0.15)} { --o: 0; }` : '';
+  const after = to < CYCLE ? `${pct(to + 0.15)}, ${from > 0 ? '100%' : '99.9%'} { --o: 0; }${from > 0 ? '' : ' 100% { --o: 1; }'}` : '';
+  return `@keyframes ${name} { ${before} ${on} ${after} }`;
+};
+const dim = 'fill: var(--bg); stroke: var(--fg);', lit = 'fill: color-mix(in srgb, var(--ai) calc(var(--a) * 100%), var(--bg)); stroke: var(--ai);';
+const thin = 'stroke: var(--faint); stroke-width: 0.12;', thick = 'stroke: color-mix(in srgb, var(--ai) calc(var(--w) * 100%), var(--faint)); stroke-width: 0.22;';
+const css = `
+  @keyframes models-hop { 0% { offset-distance: 0%; --o: 0; } ${pct(0.06)} { --o: 1; } ${pct(0.48)} { offset-distance: 100%; --o: 1; } ${pct(0.54)}, 100% { offset-distance: 100%; --o: 0; } }
+  @keyframes models-flash { 0%, ${pct(0.96)}, 100% { --o: 0; } ${pct(0.12)}, ${pct(0.54)} { --o: 1; } }
+  @keyframes models-slot { 0%, ${pct(0.54)}, 100% { --o: 0; } ${pct(0.06)}, ${pct(0.42)} { --o: 1; } }
+  @keyframes models-fire { 0%, 100% { ${dim} } ${passes.map((t) => `${pct(t)} { ${dim} } ${pct(t + 0.12)}, ${pct(t + 0.48)} { ${lit} } ${pct(t + 1.1)} { ${dim} }`).join(' ')} }
+  @keyframes models-edge { 0%, 100% { ${thin} } ${passes.map((t) => `${pct(t)} { ${thin} } ${pct(t + 0.12)}, ${pct(t + 0.36)} { ${thick} } ${pct(t + 0.84)} { ${thin} }`).join(' ')} }
+  ${runs.map((r) => shown(`models-run-${r.key}`, r.start, r.end)).join('\n')}
+  ${runs.map((r) => shown(`models-result-${r.key}`, r.start + out(r) + 0.6, r.end)).join('\n')}
+`;
+---
+<!-- request path -->
+<path d="M0 30H7M17 30H21M38 30H42M84 30H87M97 30H100" />
+<path d={shield(7)} /><path d={shield(87)} />
+<path class="dash" d="M92 23V4H29.5V26.5" />
+
+<!-- queue -->
+{[21, 27, 33].map((x) => <rect x={x} y="26.5" width="5" height="7" rx="0.8" />)}
+<text class="tag" x="21" y="38">3 waiting</text>
+
+<!-- the model: every edge, then every node -->
+<rect x="42" y="8" width="42" height="44" rx="2" />
+{sizes.slice(0, -1).map((n, l) => (
+  <g class="edges" style={`--t: ${(l * STEP + 0.08).toFixed(2)}s`}>
+    {Array.from({ length: n }, (_, i) => Array.from({ length: sizes[l + 1] }, (_, j) => {
+      const a = node(l, i), b = node(l + 1, j);
+      return <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} style={`--w: ${(rnd(l, i, j) ** 2).toFixed(2)}`} />;
+    }))}
+  </g>
+))}
+{sizes.map((n, l) => (
+  <g class="fire" style={`--t: ${(l * STEP).toFixed(2)}s`}>
+    {Array.from({ length: n }, (_, i) => <circle cx={node(l, i).x} cy={node(l, i).y} r="0.95" style={`--a: ${(0.25 + 0.75 * rnd(l, i)).toFixed(2)}`} />)}
+  </g>
+))}
+{runs.map((r) => <text class="tag run" style={`--k: models-run-${r.key}`} x="42" y="56">{r.passes === 1 ? 'thinks once' : `thinks ${r.passes} times`}</text>)}
+
+<!-- effort: the setting each run uses -->
+<rect x="7" y="44" width="32" height="14" rx="1.5" />
+<text class="tag" x="9.5" y="48.8">effort</text>
+{runs.map((r) => (
+  <>
+    <rect class="seg" x={r.x} y="50.5" width={r.w} height="5" rx="0.8" />
+    <rect class="lit run" style={`--k: models-run-${r.key}`} x={r.x} y="50.5" width={r.w} height="5" rx="0.8" />
+    <text class="tag" x={r.x + r.w / 2} y="53.8" text-anchor="middle">{r.label}</text>
+  </>
+))}
+
+<!-- one request per run, hop by hop, with the guards and the queue it passes -->
+{runs.map((r) => {
+  const at = (s: number) => `--t: ${(r.start + s).toFixed(2)}s`;
+  const hops: [number, string][] = [[0, 'M0 30H12'], [0.6, 'M12 30H23.5'], [1.5, 'M36 30H47'], [out(r), 'M79 30H92'], [out(r) + 0.6, 'M92 30H100']];
+  return (
+    <>
+      <path class="ok flash" style={at(0.45)} d={shield(7)} />
+      <path class="ok flash" style={at(out(r) + 0.5)} d={shield(87)} />
+      {[21, 27, 33].map((x, i) => <rect class="warn-fill slot" style={at(0.95 + i * 0.25)} x={x + 0.9} y="27.4" width="3.2" height="5.2" rx="0.4" />)}
+      {hops.map(([s, d]) => <circle class="packet hop" r="1.1" style={`${at(s)}; offset-path: path('${d}')`} />)}
+    </>
+  );
+})}
+
+<!-- latency: earlier requests, then this one -->
+<rect x="7" y="66" width="29" height="26" rx="1.5" />
+<text class="tag" x="10" y="70.5">latency</text>
+{history.map((h, i) => <rect class="soft" x={10 + i * 3.4} y={86 - h} width="2.2" height={h} />)}
+{runs.map((r) => (
+  <>
+    <rect class:list={[r.tone ? `${r.tone}-fill` : 'fill', 'result']} style={`--k: models-result-${r.key}`} x={10 + history.length * 3.4} y={86 - r.bar} width="2.2" height={r.bar} />
+    <text class:list={['tag', r.tone, 'result']} style={`--k: models-result-${r.key}`} x="10" y="90">{r.latency}</text>
+  </>
+))}
+
+<!-- evals: a check passes, a cross fails -->
+<path class="dash" d="M78 52V66" />
+<rect x="42" y="66" width="42" height="26" rx="1.5" />
+<text class="tag" x="45" y="70.5">evals</text>
+{evals.map((e) => <rect class="soft" x="52" y={e.y - 1.4} width={e.w} height="2.4" />)}
+{runs.map((r) => evals.map((e, i) => {
+  const ok = Number(r.scores[i]) >= PASS;
+  const style = `--k: models-result-${r.key}; --t: ${(i * 0.2).toFixed(1)}s`;
+  return (
+    <>
+      <path class:list={[ok ? 'ok' : 'err', 'result']} style={style} d={ok ? `M45.5 ${e.y}l1.4 1.4 2.4-2.9` : `M45.7 ${e.y - 1.3}l2.6 2.6m0-2.6l-2.6 2.6`} />
+      <text class:list={['tag', { err: !ok }, 'result']} style={style} x="81" y={e.y + 0.8} text-anchor="end">{r.scores[i]}</text>
+    </>
+  );
+}))}
+
+<Marker n={1} x={12} y={23} /><Marker n={2} x={38} y={26.5} /><Marker n={3} x={84} y={66} />
+
+<style is:inline set:html={css}></style>
+<style>
+  .edges line { stroke: var(--faint); stroke-width: 0.12; animation: models-edge 21s linear var(--t) infinite; }
+  .fire circle { fill: var(--bg); stroke-width: 0.2; animation: models-fire 21s linear var(--t) infinite; }
+  .seg { stroke: var(--faint); }
+  .hop, .flash, .slot, .run, .result { --o: 0; }
+  .hop { animation: models-hop 21s linear var(--t) infinite; }
+  .flash { animation: models-flash 21s linear var(--t) infinite; }
+  .slot { animation: models-slot 21s linear var(--t) infinite; }
+  /* --k names the keyframes that show an element during its own run. */
+  .run, .result { animation: var(--k) 21s linear var(--t, 0s) infinite; }
+</style>

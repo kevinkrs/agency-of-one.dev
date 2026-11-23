@@ -1,0 +1,17 @@
+---
+// Preview of the plates, flat and large, with their animations running: /plates/ shows all,
+// /plates/models/ one. For working on a drawing: it exists in `bun run dev` only and is left out
+// of the production build.
+import Base from '../../layouts/Base.astro';
+import Stack from '../../components/Stack.astro';
+import { layers } from '../../data/site';
+
+export function getStaticPaths() {
+  if (import.meta.env.PROD) return [];
+  return [{ params: { id: undefined } }, ...layers.map((l) => ({ params: { id: l.id } }))];
+}
+const { id } = Astro.params;
+---
+<Base title="Plates · Agency of One" description="Preview of the stack's plates." noindex>
+  <main style="padding: 32px"><Stack flat only={id} /></main>
+</Base>

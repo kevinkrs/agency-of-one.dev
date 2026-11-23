@@ -1,0 +1,91 @@
+---
+// The plates of the stack, top to bottom, in the order of `layers` in src/data/site.ts.
+// The camera (src/scripts/flight.ts) moves the whole stack in 3D; `flat` lays the plates out
+// side by side instead, for the preview pages under /plates/.
+import '../styles/plates.css';
+import { layers } from '../data/site';
+import Interface from './plates/Interface.astro';
+import Auth from './plates/Auth.astro';
+import Server from './plates/Server.astro';
+import Models from './plates/Models.astro';
+import Cloud from './plates/Cloud.astro';
+import Insights from './plates/Insights.astro';
+
+interface Props { flat?: boolean; only?: string }
+const { flat = false, only } = Astro.props;
+const drawings = [Interface, Auth, Server, Models, Cloud, Insights];
+---
+<div class:list={['world', { flat }]} data-world>
+  {layers.map((layer, i) => {
+    const Drawing = drawings[i];
+    return (!only || only === layer.id) && (
+      <svg class:list={['plate', { 'is-focus is-live': flat }]} data-plate data-tone="card" style={`--i: ${i}`} viewBox="0 0 100 100" role="img" aria-label={`${layer.label} layer`}>
+        <defs>
+          <linearGradient id="plate-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3352" /><stop offset="1" stop-color="#1a2033" /></linearGradient>
+          <linearGradient id="plate-edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a3aed1" /><stop offset="1" stop-color="#4f5878" /></linearGradient>
+        </defs>
+        <Drawing />
+      </svg>
+    );
+  })}
+  {!flat && layers.map((_, i) => [1, 2, 3].map((n) => <i class="slab" data-of={i} style={`--i: ${i}; --n: ${n}`} />))}
+  {!flat && layers.slice(1).map((_, i) => <i class="cast" data-of={i} style={`--i: ${i + 1}`} />)}
+  {!flat && layers.slice(1).map((_, i) => <i class="riser" style={`--i: ${i}`} />)}
+  {!flat && Array.from({ length: 4 }, () => <i class="dot" data-dot />)}
+</div>
+
+<style>
+  .world { position: relative; width: var(--p); height: var(--p); transform-style: preserve-3d; transform: scale(0.5) rotateX(57deg) rotateZ(45deg) translateZ(240px); }
+  .plate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* Painted at twice its size and scaled back down, so lines and labels stay sharp when the
+       camera tilts and zooms. will-change pins that double-size bitmap. */
+    width: 200%;
+    height: 200%;
+    /* A lit dark surface: sheen from the top left, a faint accent glow, a brighter top edge. */
+    background:
+      radial-gradient(70% 55% at 22% 12%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 70%),
+      linear-gradient(155deg, #2b3350, var(--bg) 50%, #121625);
+    border: 2px solid var(--edge);
+    border-top-color: #97a3cc;
+    border-radius: 16px;
+    box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.07);
+    stroke: #d3d8e8;
+    transform-origin: 0 0;
+    transform: translateZ(calc(var(--gap) * var(--i) * -1px)) scale(0.5);
+    will-change: transform;
+  }
+  /* Three darker copies under each plate read as the slab's thickness; .cast is the shadow a plate
+     throws on the one below. flight.ts fades the slab with its plate, and the shadow with the plate
+     that casts it, so a plate the camera has passed no longer darkens the one in focus. */
+  .slab { position: absolute; inset: 0; border-radius: 8px; background: #05060a; border: 1px solid #1c2133; transform: translateZ(calc(var(--gap) * var(--i) * -1px - var(--n) * 5px)); }
+  .cast { position: absolute; inset: -4%; background: radial-gradient(closest-side, rgb(0 0 0 / 0.6) 50%, transparent); transform: translateZ(calc(var(--gap) * var(--i) * -1px + 3px)) translate(5%, 7%); pointer-events: none; }
+
+  /* One riser joins each plate to the next one down, on the outer (right) edge; the dots on it are
+     requests going down and answers coming back up. flight.ts moves the dots. */
+  .riser {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 18px);
+    width: 2px;
+    height: calc(var(--gap) * 1px);
+    background: var(--fg);
+    opacity: 0.32;
+    transform-origin: top;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--gap) * var(--i) * -1px)) rotateX(-90deg);
+  }
+  /* A second ribbon at a right angle, so the riser never turns edge-on to the camera. */
+  .riser::after { content: ''; position: absolute; inset: 0; background: inherit; transform: rotateY(90deg); }
+  .dot { position: absolute; top: 50%; left: calc(100% + 19px); width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--accent); opacity: 0.9; }
+
+  .world.flat { display: flex; flex-wrap: wrap; gap: 32px; width: auto; height: auto; transform: none; }
+  .flat .plate { position: static; width: min(92vw, 720px); height: auto; aspect-ratio: 1; transform: none; will-change: auto; border-width: 1px; border-radius: 8px; }
+</style>
+
+<!-- Inline so url(#...) resolves against this document: every plain rect in a drawing becomes a lit, raised panel. -->
+<style is:inline>
+  .plate rect:not([class]) { fill: url(#plate-panel); stroke: url(#plate-edge); }
+</style>
