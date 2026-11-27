@@ -52,7 +52,7 @@ export const layers = [
 ];
 
 export const close = {
-  title: 'Building an AI\u2011native product, or adding AI to yours?', // \u2011: a hyphen the line may not break at
-  text: "I shipped enterprise\u2011level agentic pipelines at BCG and co\u2011founded HIVESOUND, a voice assistant for 1,000+ beekeepers. Reach out and skip the mistakes I've already made.",
+  title: 'Building with AI? I\u00a0make it hold up.', // \u00a0: keeps "I" off the end of a line
+  text: "I shipped enterprise\u2011level agentic pipelines at BCG and co\u2011founded HIVESOUND, a voice assistant for 1,000+ beekeepers. Whether you're building an AI\u2011native product or adding AI to yours, reach out and skip the mistakes I've already made.",
   build: 'Experience decides. Agents execute.', // heading of the build timeline under the text
 };
